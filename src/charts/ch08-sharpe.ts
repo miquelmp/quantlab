@@ -96,7 +96,7 @@ export const chart08: ChartDef<S8, D8> = {
           const lx = sx(xe) - 6;
           const ly = sy(ye) + (slope >= 0 ? -6 : 14);
           lines += `<text class="value-label small" x="${r1(lx)}" y="${r1(ly)}" text-anchor="end">${esc(`${f.name} · SR ${num(f.sr, ctx)}`)}</text>`;
-          pts += `<g class="fund" data-fund="${f.name}" tabindex="-1">` +
+          pts += `<g class="fund" data-fund="${f.name}">` +
             `<circle class="${i === d.best ? 's1' : 'muted'} dot handle" cx="${r1(sx(f.sigma))}" cy="${r1(sy(f.mu))}" r="9"/>` +
             `<text class="value-label" x="${r1(sx(f.sigma) + 13)}" y="${r1(sy(f.mu) + 5)}">${f.name}</text></g>`;
         });
