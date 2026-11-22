@@ -13,11 +13,13 @@ export const CHART_BY_CHAPTER: Record<number, string> = {
   6: 'montecarlo',
   7: 'volatilidad',
   8: 'sharpe',
+  9: 'lastre',
   14: 'kelly',
 };
 
 /** Prefijo de los textos de interfaz de cada gráfico en src/i18n/<idioma>.json. */
 export const I18N_PREFIX: Record<string, string> = {
+  lastre: 'c9.',
   sharpe: 'c8.',
   volatilidad: 'c7.',
   perdidas: 'c1.',
@@ -40,6 +42,7 @@ export async function loadChart(id: string): Promise<ChartDef<any, any>> {
     case 'kelly': return (await import('./ch14-kelly')).chart14;
     case 'volatilidad': return (await import('./ch07-volatilidad')).chart07;
     case 'sharpe': return (await import('./ch08-sharpe')).chart08;
+    case 'lastre': return (await import('./ch09-lastre')).chart09;
     default: throw new Error(`Gráfico desconocido: ${id}`);
   }
 }

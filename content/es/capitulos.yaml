@@ -48,8 +48,8 @@ capitulos:
     requisitos: [7]
   - numero: 9
     slug: 9-crecimiento-compuesto-lastre-volatilidad
-    publicado: false
-    descripcion: Crecimiento compuesto y lastre de la volatilidad.
+    publicado: true
+    descripcion: "Por qué la rentabilidad media engaña: el lastre de la volatilidad, la fórmula g ≈ μ − σ²/2 y 300 trayectorias simuladas de riqueza a 20 años."
     requisitos: [1, 7]
   - numero: 10
     slug: 10-covarianza-correlacion

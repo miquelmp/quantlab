@@ -217,3 +217,27 @@
     valor: 1.56
     tipo: numero
     tolerancia: 0.01
+"9.1":
+  - etiqueta: Rentabilidad media aritmética
+    valor: 0.1
+    tipo: porcentaje
+  - etiqueta: Rentabilidad acumulada de los dos años
+    valor: -0.04
+    tipo: porcentaje
+"9.2":
+  - etiqueta: Tasa de crecimiento con volatilidad del 15 %
+    valor: 0.05875
+    tipo: porcentaje
+    tolerancia: 0.0015
+  - etiqueta: Tasa de crecimiento con volatilidad del 30 %
+    valor: 0.025
+    tipo: porcentaje
+"9.3":
+  - etiqueta: Tasa de crecimiento del índice
+    valor: 0.0438
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Tasa de crecimiento del producto triplicado
+    valor: 0.0342
+    tipo: porcentaje
+    tolerancia: 0.001

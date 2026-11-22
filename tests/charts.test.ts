@@ -16,6 +16,7 @@ import { chart06 } from '../src/charts/ch06-montecarlo';
 import { chart14 } from '../src/charts/ch14-kelly';
 import { chart07, computeVol, probLoss, sampleVol } from '../src/charts/ch07-volatilidad';
 import { chart08, computeSharpe, sharpe, combo } from '../src/charts/ch08-sharpe';
+import { chart09, computeDrag, growthRate, zeroGrowthVol } from '../src/charts/ch09-lastre';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -166,9 +167,26 @@ describe('cap. 8 · la recta más empinada', () => {
   });
 });
 
+describe('cap. 9 · la media engaña', () => {
+  it('cifras del libro', () => {
+    expect(growthRate(0.025, 0.225)).toBeCloseTo(0, 3);
+    expect(growthRate(0.07, 0.15)).toBeCloseTo(0.05875, 6);
+    expect(growthRate(0.07, 0.3)).toBeCloseTo(0.025, 6);
+    expect(growthRate(0.06, 0.18)).toBeCloseTo(0.0438, 4);
+    expect(growthRate(0.18, 0.54)).toBeCloseTo(0.0342, 4);
+    expect(zeroGrowthVol(0.08)).toBeCloseTo(0.4, 6);
+  });
+  it('la mediana simulada sigue a g y la media a μ', () => {
+    const d = computeDrag({ mu: 0.08, sigma: 0.3, seed: 9 });
+    const med = d.median[d.median.length - 1];
+    expect(Math.abs(Math.log(med / (100 * Math.exp(growthRate(0.08, 0.3) * 20))))).toBeLessThan(0.3);
+    expect(d.median[d.median.length - 1]).toBeLessThan(d.mean[d.mean.length - 1]);
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {
