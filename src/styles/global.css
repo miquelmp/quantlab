@@ -117,8 +117,10 @@ html.js .no-js-only { display: none !important; }
   border-bottom: 1px solid var(--border);
 }
 .header-inner { max-width: 76rem; margin: 0 auto; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.75rem; min-height: 3.5rem; }
-.brand { display: flex; align-items: baseline; gap: 0.5rem; text-decoration: none; color: var(--text); font-weight: 700; letter-spacing: -0.01em; }
-.brand .logo { font-family: var(--font-mono); font-size: 1.05rem; color: var(--accent); }
+.brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--text); font-weight: 700; letter-spacing: -0.01em; }
+.brand .logo { flex: none; color: var(--accent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand .logo { --logo-ink: var(--bg); } }
+:root[data-theme="dark"] .brand .logo { --logo-ink: var(--bg); }
 .brand .pilot { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border: 1px solid var(--border); border-radius: 99px; padding: 0 0.45rem; }
 .main-nav { margin-left: auto; }
 .main-nav ul { list-style: none; display: flex; gap: 0.25rem; margin: 0; padding: 0; }

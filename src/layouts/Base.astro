@@ -78,7 +78,7 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href={u(`${lang}/`)}>
-        <span class="logo" aria-hidden="true">∑</span>
+        <svg class="logo" viewBox="0 0 32 32" width="26" height="26" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8" fill="currentColor"/><polyline points="6,23 11,18 14,20 19,12 22,15 26,8" fill="none" stroke="var(--logo-ink, #fff)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="8" r="2.4" fill="var(--logo-ink, #fff)"/></svg>
         <span>{t(lang, 'site.name')}</span>
         <span class="pilot">{t(lang, 'site.pilot')}</span>
       </a>
