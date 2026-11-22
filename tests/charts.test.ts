@@ -8,6 +8,7 @@ import { computeMC } from '../src/charts/ch06-montecarlo';
 import { computeKelly, growth, kellyFraction } from '../src/charts/ch14-kelly';
 import { chart01 } from '../src/charts/ch01-perdidas';
 import { chart03, computeDice, expectedGain, probAhead, PLAYERS } from '../src/charts/ch03-dados';
+import { chart04, computeWalk, probAbove, stepMean } from '../src/charts/ch04-paseo';
 import { chart02, futureValue, presentValue, simpleValue, annuityPayment, discountFactor } from '../src/charts/ch02-capitalizar';
 import { chart06 } from '../src/charts/ch06-montecarlo';
 import { chart14 } from '../src/charts/ch14-kelly';
@@ -51,6 +52,20 @@ describe('cap. 3 · el juego de los dos dados', () => {
     const d = computeDice({ n: 5000, prize: 4, seed: 3 });
     expect(Math.abs(d.mean0 - d.E)).toBeLessThan(3 * d.sd / Math.sqrt(5000));
     expect(d.ahead).toBeLessThanOrEqual(3 / PLAYERS);
+  });
+});
+
+describe('cap. 4 · el abanico del azar', () => {
+  it('cifras del ejemplo resuelto y del ejercicio 4.1', () => {
+    expect(probAbove(5, 0.6)).toBeCloseTo(0.6826, 4);
+    expect(20 + 5 * stepMean(0.6)).toBeCloseTo(21, 10);
+    expect(0.012 * Math.sqrt(252)).toBeCloseTo(0.1905, 4);
+  });
+  it('la dispersión simulada sigue la raíz del tiempo', () => {
+    const d = computeWalk({ p: 0.5, n: 256, m: 500, seed: 11 });
+    expect(Math.abs(d.finalSd / 16 - 1)).toBeLessThan(0.1);
+    const i16 = d.sdN.indexOf(16);
+    if (i16 >= 0) expect(Math.abs(d.sdObs[i16] / 4 - 1)).toBeLessThan(0.15);
   });
 });
 
@@ -104,7 +119,7 @@ describe('cap. 14 · Kelly', () => {
 
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart06, chart14] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart06, chart14] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {

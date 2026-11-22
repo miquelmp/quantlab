@@ -23,8 +23,8 @@ capitulos:
     requisitos: []
   - numero: 4
     slug: 4-paseos-aleatorios-raiz-del-tiempo
-    publicado: false
-    descripcion: Paseos aleatorios y la regla de la raíz del tiempo.
+    publicado: true
+    descripcion: El paseo aleatorio y la regla de la raíz del tiempo, con un abanico de trayectorias simuladas para ver cómo crece la incertidumbre.
     requisitos: [3]
   - numero: 5
     slug: 5-distribucion-normal-teorema-central-limite

@@ -70,6 +70,29 @@
   - etiqueta: Recargo sobre la pérdida esperada
     valor: 0.25
     tipo: porcentaje
+"4.1":
+  - etiqueta: Precio esperado al final (€)
+    valor: 21
+    tipo: numero
+  - etiqueta: Probabilidad de terminar por encima de 20 €
+    valor: 0.6826
+    tipo: porcentaje
+    tolerancia: 0.001
+"4.2":
+  - etiqueta: Volatilidad mensual
+    valor: 0.0722
+    tipo: porcentaje
+  - etiqueta: Volatilidad diaria
+    valor: 0.0157
+    tipo: porcentaje
+"4.3":
+  - etiqueta: Número de sesiones
+    valor: 400
+    tipo: numero
+  - etiqueta: Probabilidad de un resultado negativo
+    valor: 0.159
+    tipo: porcentaje
+    tolerancia: 0.001
 "6.1":
   - etiqueta: Número de escenarios
     valor: 40000
