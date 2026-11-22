@@ -21,6 +21,8 @@ import { chart10, computeCorr, portVol, correlation } from '../src/charts/ch10-c
 import { chart11, equalWeightVol, floorVol, twoAssetVol, effectiveN } from '../src/charts/ch11-diversificacion';
 import { chart12, computeFrontier, minVarWeight2, portStats, covMatrix } from '../src/charts/ch12-frontera';
 import { chart13, computeCapm, betaFrom, capm, totalVol } from '../src/charts/ch13-capm';
+import { chart15, computeTails, tTail, tailNormal, tailT } from '../src/charts/ch15-colas';
+import { chart16, computeVar, normalVaR, normalES, tVaR, tES, binomTail, kupiec } from '../src/charts/ch16-var';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -257,9 +259,49 @@ describe('cap. 13 · lo que paga el mercado', () => {
   });
 });
 
+describe('cap. 15 · lo que la campana no ve', () => {
+  it('cifras del libro', () => {
+    expect(tailNormal(0.06) / 2).toBeCloseTo(9.9e-10, 11);
+    expect(tTail(6 * Math.SQRT2, 4)).toBeCloseTo(5.3e-4, 5);
+    expect(tailT(0.04, 4)).toBeCloseTo(0.0048, 4);
+    expect(252 / (tailNormal(0.04) / 2) / 252 / 252).toBeGreaterThan(0);
+    expect(1 / (252 * tailNormal(0.04) / 2)).toBeCloseTo(125, -1);
+    expect(tTail(0, 7)).toBeCloseTo(0.5, 10);
+  });
+  it('con 4 grados de libertad salen unos 60 días más allá de ±4 % en 50 años', () => {
+    const d = computeTails({ nu: 4, seed: 15 });
+    expect(d.countT).toBeGreaterThan(35);
+    expect(d.countT).toBeLessThan(90);
+    expect(d.countN).toBeLessThan(4);
+    expect(d.kurtT).toBeGreaterThan(d.kurtN);
+  });
+});
+
+describe('cap. 16 · el umbral y lo que hay detrás', () => {
+  it('cifras del libro', () => {
+    expect(normalVaR(0.95) * 3000).toBeCloseTo(4935, -1);
+    expect(normalVaR(0.99) * 3000).toBeCloseTo(6979, -1);
+    expect(normalES(0.975) * 3000).toBeCloseTo(7013, -1);
+    expect(normalES(0.99) * 3000).toBeCloseTo(7996, -1);
+    expect(tVaR(0.99, 4)).toBeCloseTo(2.65, 2);
+    expect(tES(0.99, 4)).toBeCloseTo(3.69, 2);
+    expect(normalVaR(0.99) * 0.008 * 2e6).toBeCloseTo(37222, -1);
+    expect(normalVaR(0.99) * 0.008 * 2e6 * Math.sqrt(10)).toBeCloseTo(117705, -2);
+    expect(normalES(0.99) * 0.008 * 2e6).toBeCloseTo(42643, -1);
+    expect(binomTail(7, 250, 0.01)).toBeCloseTo(0.0137, 3);
+  });
+  it('las colas gruesas dan más excepciones de las esperadas con el VaR normal al 99 %', () => {
+    const d = computeVar({ conf: 0.99, model: 0, nu: 4, seed: 16 });
+    expect(d.expected).toBeCloseTo(25.2, 5);
+    expect(d.exc).toBeGreaterThan(15);
+    expect(Number.isFinite(d.kup.pValue)).toBe(true);
+    expect(kupiec(25, 2520, 0.01).pValue).toBeGreaterThan(0.9);
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12, chart13] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12, chart13, chart15, chart16] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {
@@ -275,3 +317,24 @@ describe('los gráficos se dibujan sin errores con cualquier configuración extr
     });
   }
 });
+
+describe('casos límite señalados en revisión', () => {
+  it('cap. 12: con rentabilidades iguales y cortos, la frontera es horizontal y sin volatilidad cero falsa', () => {
+    const d = computeFrontier({ ...chart12.defaults, shorts: 1, m1: 0.04, m2: 0.04, m3: 0.04 });
+    expect(d.frontier.length).toBeGreaterThan(1);
+    for (const p of d.frontier) { expect(p.mu).toBeCloseTo(0.04, 10); expect(p.sigma).toBeGreaterThanOrEqual(d.gmv.sigma - 1e-12); }
+  });
+});
+
+describe('cap. 16 · ejes', () => {
+  it('con t de 3 g. l. al 99,9 % el ES sigue dentro del gráfico', () => {
+    const st = { conf: 0.999, model: 1, nu: 3, seed: 16 };
+    const d = computeVar(st);
+    const svg = chart16.panels[0].render(d, st, 400, { tr: (k: string) => k, fmt: { decimal: ',', group: '.' } } as never);
+    const xs = [...svg.matchAll(/<line class="neg" x1="([-\d.]+)"/g)].map((m) => Number(m[1]));
+    expect(xs.length).toBe(2);
+    for (const x of xs) { expect(x).toBeGreaterThan(0); expect(x).toBeLessThan(400); }
+    expect(svg).toContain('neg-zone');
+  });
+});
+

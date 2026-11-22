@@ -34,6 +34,14 @@ function build(api: ChartApi) {
     v = Math.min(Number(el.max), Math.max(Number(el.min), v));
     api.set(key, el.dataset.pct === '1' ? v / 100 : v);
   });
+  // Al salir del campo, muestra el valor que se usa de verdad si estaba fuera de los límites.
+  wrap.addEventListener('change', (ev) => {
+    const el = ev.target as HTMLInputElement;
+    const v = Number(el.value.replace(',', '.'));
+    if (!el.dataset.edit || !Number.isFinite(v)) return;
+    const c = Math.min(Number(el.max), Math.max(Number(el.min), v));
+    if (c !== v) el.value = String(c);
+  });
   api.root.querySelector('[data-act="reset"]')?.addEventListener('click', () => {
     setTimeout(() => wrap.querySelectorAll<HTMLInputElement>('input[data-edit]').forEach((el) => {
       const k = el.dataset.edit!;

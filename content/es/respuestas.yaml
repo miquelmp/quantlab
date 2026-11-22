@@ -303,3 +303,49 @@
   - etiqueta: Alfa
     valor: -0.002
     tipo: porcentaje
+"15.1":
+  - etiqueta: Una vez cada… (años)
+    valor: 125
+    tipo: numero
+    tolerancia: 3
+"15.2":
+  - etiqueta: Media (%)
+    valor: 0
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Varianza (%²)
+    valor: 2.5
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Curtosis
+    valor: 4.24
+    tipo: numero
+    tolerancia: 0.005
+"15.3":
+  - etiqueta: Sesiones al año
+    valor: 1.21
+    tipo: numero
+    tolerancia: 0.02
+  - etiqueta: Veces más que con la normal
+    valor: 76
+    tipo: numero
+    tolerancia: 2
+"16.1":
+  - etiqueta: VaR a un día (€)
+    valor: 37222
+    tipo: numero
+    tolerancia: 30
+  - etiqueta: VaR a diez días (€)
+    valor: 117705
+    tipo: numero
+    tolerancia: 100
+"16.2":
+  - etiqueta: Déficit esperado (€)
+    valor: 42643
+    tipo: numero
+    tolerancia: 40
+"16.3":
+  - etiqueta: Probabilidad de 7 o más excepciones
+    valor: 0.014
+    tipo: porcentaje
+    tolerancia: 0.001

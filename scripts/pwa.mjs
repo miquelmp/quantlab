@@ -47,7 +47,9 @@ const PY = 'quantlab-pyodide';
 const PRECACHE = ${JSON.stringify(urls)};
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CORE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+  // Sin skipWaiting: la versión nueva espera a que se cierren las pestañas abiertas, que aún usan
+  // los ficheros de la versión anterior (por ejemplo, el worker de Python al pulsar «Ejecutar»).
+  e.waitUntil(caches.open(CORE).then((c) => c.addAll(PRECACHE)));
 });
 
 self.addEventListener('activate', (e) => {

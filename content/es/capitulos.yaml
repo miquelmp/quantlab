@@ -78,13 +78,13 @@ capitulos:
     requisitos: [3, 6, 9]
   - numero: 15
     slug: 15-colas-gruesas
-    publicado: false
-    descripcion: Colas gruesas y extremos que la normal no ve.
+    publicado: true
+    descripcion: "Colas gruesas: por qué los días extremos son mucho más frecuentes de lo que predice la normal, con 50 años de rentabilidades simuladas y la t de Student."
     requisitos: [5]
   - numero: 16
     slug: 16-valor-en-riesgo-deficit-esperado
-    publicado: false
-    descripcion: Valor en riesgo (VaR) y déficit esperado.
+    publicado: true
+    descripcion: "Valor en riesgo y déficit esperado: cuánto puede perder una cartera en un mal día, qué hay más allá del umbral y cómo se comprueba un modelo con sus excepciones."
     requisitos: [5, 15]
 
 temas:
