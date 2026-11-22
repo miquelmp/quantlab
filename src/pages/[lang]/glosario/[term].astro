@@ -1,0 +1,56 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { LANGS } from '../../../i18n/config';
+import { t } from '../../../i18n';
+import { loadBook, type GlossaryTerm } from '../../../lib/book';
+import { initRenderer, renderInline, glossaryUrl, url, plain, type RenderCtx } from '../../../lib/render';
+import { refLabel, refHref } from '../../../lib/glossary';
+import { SITE } from '../../../config';
+
+export function getStaticPaths() {
+  return LANGS.flatMap((l) => loadBook(l.code).glossary.map((g) => ({ params: { lang: l.code, term: g.slug }, props: { slug: g.slug } })));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const { slug } = Astro.props as { slug: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book };
+const g = book.glossary.find((x) => x.slug === slug) as GlossaryTerm;
+const related = book.glossary.filter((x) => x.ref === g.ref && x.slug !== g.slug);
+const href = refHref(ctx, g.ref);
+const Term = g.term.charAt(0).toUpperCase() + g.term.slice(1);
+const desc = `${Term}: ${g.definitionText}.`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTerm',
+  name: g.term,
+  description: g.definitionText,
+  url: new URL(glossaryUrl(ctx, g.slug), SITE.url).toString(),
+  inDefinedTermSet: new URL(url(ctx, `${lang}/glosario/`), SITE.url).toString(),
+};
+---
+<Base lang={lang} title={`${Term} · ${t(lang, 'glossary.title')}`} description={desc} path={`glosario/${g.slug}/`} jsonLd={jsonLd} current="glossary">
+  <article class="prose">
+    <nav class="breadcrumbs" aria-label={t(lang, 'nav.breadcrumb')}>
+      <ol>
+        <li><a href={url(ctx, `${lang}/`)}>{t(lang, 'nav.home')}</a></li>
+        <li><a href={url(ctx, `${lang}/glosario/`)}>{t(lang, 'glossary.title')}</a></li>
+        <li aria-current="page">{g.term}</li>
+      </ol>
+    </nav>
+    <h1>{Term}</h1>
+    <p class="term-card"><Fragment set:html={renderInline(g.definition, ctx).replace(/^./, (c) => c.toUpperCase())} />.</p>
+    <p>{t(lang, 'glossary.definedIn')}{' '}
+      {href ? <a href={href}>{refLabel(lang, g.ref, book)}</a> : <span>{refLabel(lang, g.ref, book)} ({t(lang, 'nav.comingSoon').toLowerCase()})</span>}.
+    </p>
+    {related.length > 0 && (
+      <>
+        <h2>{t(lang, 'glossary.related')}</h2>
+        <ul>{related.map((r) => <li><a href={glossaryUrl(ctx, r.slug)}>{r.term}</a>: <Fragment set:html={renderInline(r.definition, ctx)} /></li>)}</ul>
+      </>
+    )}
+    <p><a href={url(ctx, `${lang}/glosario/`)}>← {t(lang, 'glossary.back')}</a></p>
+  </article>
+</Base>

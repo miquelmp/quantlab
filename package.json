@@ -1,0 +1,42 @@
+{
+  "name": "quantlab",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "check:content": "tsx scripts/check-content.ts",
+    "check:python": "python3 scripts/check_python.py",
+    "check:links": "node scripts/check-links.mjs",
+    "check": "npm run check:content && npm run check:python && npm test && npm run build && npm run check:links",
+    "check:a11y": "node scripts/check-a11y.cjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "7.4.7",
+    "github-slugger": "2.0.0",
+    "hast-util-to-string": "3.0.1",
+    "katex": "0.16.25",
+    "mdast-util-to-string": "4.0.0",
+    "rehype-katex": "7.0.1",
+    "rehype-stringify": "10.0.1",
+    "remark-gfm": "4.0.1",
+    "remark-math": "6.0.0",
+    "remark-parse": "11.0.0",
+    "remark-rehype": "11.1.2",
+    "shiki": "4.6.0",
+    "unified": "11.0.5",
+    "unist-util-visit": "5.2.0",
+    "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "@types/mdast": "4.0.4",
+    "axe-core": "4.14.0",
+    "tsx": "4.20.6",
+    "vitest": "5.1.0"
+  }
+}

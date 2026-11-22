@@ -1,0 +1,148 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Chart from '../../../components/Chart.astro';
+import Exercises from '../../../components/Exercises.astro';
+import { LANGS } from '../../../i18n/config';
+import { t } from '../../../i18n';
+import { loadBook, publishedChapters, chapterByNumber, type Chapter } from '../../../lib/book';
+import { initRenderer, renderBlocks, chapterUrl, url, type RenderCtx } from '../../../lib/render';
+import { SITE } from '../../../config';
+
+export async function getStaticPaths() {
+  return LANGS.flatMap((l) => publishedChapters(loadBook(l.code)).map((c) => ({ params: { lang: l.code, slug: c.slug }, props: { num: c.number } })));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const { num } = Astro.props as { num: number };
+const book = loadBook(lang);
+const ch = chapterByNumber(book, num) as Chapter;
+const part = book.parts.find((p) => p.number === ch.part)!;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book, chapter: num, headingShift: -1, usedTerms: new Set(), usedIds: new Set(), pyCounter: { n: 0 } };
+// Los ids de las secciones principales se reservan primero para que no los ocupen subtítulos.
+for (const s of ch.sections) ctx.usedIds!.add(s.id);
+
+const pub = publishedChapters(book);
+const idx = pub.findIndex((c) => c.number === num);
+const prev = idx > 0 ? pub[idx - 1] : null;
+const next = idx < pub.length - 1 ? pub[idx + 1] : null;
+const nextUnpublished = !next ? book.chapters.find((c) => c.number > num && !c.published) : null;
+
+const intro = renderBlocks(ch.intro, ctx);
+const rendered = ch.sections.map((s) => ({ ...s, html: s.type === 'grafico' || s.type === 'ejercicios' ? '' : renderBlocks(s.nodes, ctx) }));
+const level1 = rendered.filter((s) => s.type !== 'ampliacion');
+const advanced = rendered.find((s) => s.type === 'ampliacion');
+const pageTitle = `${t(lang, 'nav.chapter')} ${num} · ${ch.title}`;
+const pageUrl = new URL(url(ctx, `${lang}/capitulos/${ch.slug}/`), SITE.url).toString();
+const chKey = `${lang}/${num}`;
+const issueUrl = `${SITE.repo}/issues/new?` + new URLSearchParams({
+  title: `[Errata] ${t(lang, 'nav.chapter')} ${num}: `,
+  body: `${pageTitle}\n${pageUrl}\n\nSección:\n\nQué está mal:\n\nQué debería decir:\n`,
+}).toString();
+const hasPython = ch.python.length > 0;
+const tocItems = ch.sections.map((s) => ({ id: s.id, title: s.type === 'ampliacion' ? 'Ampliación' : s.title }));
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': ['Chapter', 'LearningResource'],
+    name: ch.title,
+    position: num,
+    description: ch.description,
+    inLanguage: lang,
+    url: pageUrl,
+    isAccessibleForFree: true,
+    license: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    learningResourceType: 'chapter',
+    timeRequired: `PT${ch.minutesLevel1 + ch.minutesAdvanced}M`,
+    isPartOf: { '@type': 'Book', name: book.title, url: new URL(url(ctx, `${lang}/`), SITE.url).toString() },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t(lang, 'nav.home'), item: new URL(url(ctx, `${lang}/`), SITE.url).toString() },
+      { '@type': 'ListItem', position: 2, name: `Parte ${part.roman} · ${part.title}`, item: new URL(url(ctx, `${lang}/indice/`), SITE.url).toString() + `#parte-${part.number}` },
+      { '@type': 'ListItem', position: 3, name: pageTitle, item: pageUrl },
+    ],
+  },
+];
+---
+<Base lang={lang} title={pageTitle} description={ch.description} path={`capitulos/${ch.slug}/`} jsonLd={jsonLd} ogType="article">
+  <div class="chapter-layout">
+    <article class="prose" data-chapter={chKey} data-title={pageTitle}>
+      <nav class="breadcrumbs" aria-label={t(lang, 'nav.breadcrumb')}>
+        <ol>
+          <li><a href={url(ctx, `${lang}/`)}>{t(lang, 'nav.home')}</a></li>
+          <li><a href={url(ctx, `${lang}/indice/#parte-${part.number}`)}>Parte {part.roman} · {part.title}</a></li>
+          <li aria-current="page">{t(lang, 'nav.chapter')} {num}</li>
+        </ol>
+      </nav>
+      <p class="chapter-kicker">{t(lang, 'nav.chapter')} {num}</p>
+      <h1>{ch.title}</h1>
+      <p class="chapter-meta">
+        <span>{t(lang, 'chapter.readingTime', { level1: ch.minutesLevel1, advanced: ch.minutesAdvanced })}</span>
+      </p>
+      {ch.prerequisites.length > 0 && (
+        <p class="prereq">{t(lang, 'chapter.prereq')}{' '}
+          {ch.prerequisites.map((n, i) => {
+            const c = chapterByNumber(book, n)!;
+            const href = chapterUrl(ctx, n);
+            return <>{i > 0 && ', '}{href ? <a href={href}>{t(lang, 'nav.chapter')} {n} · {c.title}</a> : <span>{t(lang, 'nav.chapter')} {n} · {c.title} ({t(lang, 'nav.comingSoon').toLowerCase()})</span>}</>;
+          })}
+        </p>
+      )}
+      <div class="chapter-intro" set:html={intro} />
+
+      <details class="toc-mobile">
+        <summary>{t(lang, 'nav.onThisPage')}</summary>
+        <ol>{tocItems.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}</ol>
+      </details>
+
+      {level1.map((s) => (
+        <section id={s.id} data-section data-title={s.title} aria-labelledby={`${s.id}-h`}>
+          <h2 id={`${s.id}-h`}>{s.title}<a class="anchor" href={`#${s.id}`} aria-label={t(lang, 'nav.permalink')}>#</a></h2>
+          {s.type === 'grafico' && ch.chart && <Chart chapter={num} spec={ch.chart} ctx={ctx} />}
+          {s.type === 'ejercicios' && <Exercises exercises={ch.exercises} ctx={ctx} />}
+          {s.html && <Fragment set:html={s.html} />}
+          {s.type === 'python' && hasPython && (
+            <p class="py-shared js-only">{t(lang, 'py.sharedNote')} <button type="button" class="btn" data-py-reset>{t(lang, 'py.resetEnv')}</button></p>
+          )}
+          <div data-end={s.id}></div>
+          <div class="section-done js-only"><button type="button" class="btn mark-read" data-mark={s.id} aria-pressed="false">{t(lang, 'chapter.markRead')}</button></div>
+        </section>
+      ))}
+
+      {advanced && (
+        <section id={advanced.id} data-section data-title="Ampliación">
+          <details class="advanced">
+            <summary>
+              <h2 class="adv-title" id={`${advanced.id}-h`}>{advanced.title} <span class="badge">{t(lang, 'chapter.advancedBadge')}</span></h2>
+              <span class="adv-note">{t(lang, 'chapter.advancedNote')}</span>
+            </summary>
+            <div class="adv-body">
+              <Fragment set:html={advanced.html} />
+              <div data-end={advanced.id}></div>
+              <div class="section-done js-only"><button type="button" class="btn mark-read" data-mark={advanced.id} aria-pressed="false">{t(lang, 'chapter.markRead')}</button></div>
+            </div>
+          </details>
+        </section>
+      )}
+
+      <nav class="chapter-nav" aria-label={`${t(lang, 'nav.prev')} / ${t(lang, 'nav.next')}`}>
+        {prev ? <a class="prev" href={chapterUrl(ctx, prev.number)!} rel="prev"><small>← {t(lang, 'nav.prev')}</small>{t(lang, 'nav.chapter')} {prev.number} · {prev.title}</a> : <span aria-hidden="true" style="visibility:hidden"></span>}
+        {next
+          ? <a class="next" href={chapterUrl(ctx, next.number)!} rel="next"><small>{t(lang, 'nav.next')} →</small>{t(lang, 'nav.chapter')} {next.number} · {next.title}</a>
+          : nextUnpublished && <span class="next"><small>{t(lang, 'nav.comingSoon')}</small>{t(lang, 'nav.chapter')} {nextUnpublished.number} · {nextUnpublished.title}</span>}
+      </nav>
+      <p class="report"><a href={issueUrl} rel="noopener">{t(lang, 'chapter.reportError')}</a> · {t(lang, 'chapter.reportHint')}</p>
+    </article>
+
+    <aside class="toc toc-side" aria-label={t(lang, 'nav.onThisPage')}>
+      <div class="toc-inner">
+        <h2>{t(lang, 'nav.onThisPage')}</h2>
+        <ol>{tocItems.map((s) => <li><a href={`#${s.id}`} data-target={s.id}>{s.title}</a></li>)}</ol>
+      </div>
+    </aside>
+  </div>
+</Base>

@@ -1,0 +1,47 @@
+---
+import type { Exercise } from '../lib/book';
+import { renderInline, renderBlocks, type RenderCtx } from '../lib/render';
+import { t } from '../i18n';
+
+interface Props { exercises: Exercise[]; ctx: RenderCtx }
+const { exercises, ctx } = Astro.props;
+const lang = ctx.lang;
+const domId = (id: string) => `ejercicio-${id.replace('.', '-')}`;
+---
+<ol class="exercises">
+  {exercises.map((ex) => (
+    <li class="exercise" id={domId(ex.id)} data-exercise={ex.id}>
+      <div class="exercise-head">
+        <h3>{t(lang, 'ex.exercise')} {ex.id}</h3>
+        {ex.level && <span class={`tag tag-${ex.level}`}>{t(lang, `ex.level.${ex.level}`)}</span>}
+        {ex.kind && <span class="tag">{t(lang, `ex.type.${ex.kind}`)}</span>}
+      </div>
+      <p set:html={renderInline(ex.statement, ctx)} />
+      {ex.checks && ex.checks.length > 0 && (
+        <div class="checks js-only">
+          {ex.checks.map((c, i) => (
+            <div class="check-row" data-value={c.valor} data-tipo={c.tipo} data-tol={c.tolerancia ?? ''}>
+              <label for={`${domId(ex.id)}-${i}`}>{c.etiqueta}</label>
+              <div class="check-input">
+                <input id={`${domId(ex.id)}-${i}`} type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby={`${domId(ex.id)}-help`} disabled />
+                <button type="button" class="btn" data-check disabled>{t(lang, 'ex.check')}</button>
+              </div>
+              <div class="check-result" role="status" aria-live="polite"></div>
+            </div>
+          ))}
+          <p class="help" id={`${domId(ex.id)}-help`}>{t(lang, 'ex.inputHelp')}</p>
+        </div>
+      )}
+      <details class="solution">
+        <summary>{t(lang, 'ex.showAnswer')}</summary>
+        <div class="answer"><span class="answer-label">{t(lang, 'ex.answer')}</span><Fragment set:html={renderInline(ex.answer, ctx)} /></div>
+        {ex.solution.length > 0 && (
+          <details class="solution">
+            <summary>{t(lang, 'ex.showSolution')}</summary>
+            <div set:html={renderBlocks(ex.solution, { ...ctx, linkTerms: false })} />
+          </details>
+        )}
+      </details>
+    </li>
+  ))}
+</ol>

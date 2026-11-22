@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { t } from '../../i18n';
+import { loadBook, publishedChapters } from '../../lib/book';
+import { initRenderer, renderInline, chapterUrl, url, plain, type RenderCtx } from '../../lib/render';
+import { SITE } from '../../config';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book };
+const pub = publishedChapters(book);
+const first = pub[0];
+const [mainTitle, subTitle] = book.title.split(':').map((s) => s.trim());
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: book.title,
+  alternativeHeadline: book.subtitle,
+  inLanguage: lang,
+  isAccessibleForFree: true,
+  license: 'https://creativecommons.org/licenses/by-sa/4.0/',
+  url: new URL(url(ctx, `${lang}/`), SITE.url).toString(),
+  hasPart: pub.map((c) => ({ '@type': 'Chapter', name: c.title, position: c.number, url: new URL(chapterUrl(ctx, c.number)!, SITE.url).toString() })),
+};
+const introText = plain((book.prefaceIntro.find((n) => n.type === 'paragraph') as any)?.children ?? []);
+---
+<Base lang={lang} title={t(lang, 'site.bookTitle')} description={t(lang, 'site.tagline') + ' ' + book.subtitle} path="" jsonLd={jsonLd}>
+  <section class="hero">
+    <p class="chapter-kicker">{t(lang, 'site.name')} · {t(lang, 'site.pilot')}</p>
+    <h1>{mainTitle}</h1>
+    {subTitle && <p class="subtitle">{subTitle.charAt(0).toUpperCase() + subTitle.slice(1)}</p>}
+    <p class="lead">{t(lang, 'site.tagline')} {book.subtitle}.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href={chapterUrl(ctx, first.number)!}>{t(lang, 'home.start')}</a>
+      <a class="btn js-only" href="#" data-resume hidden>{t(lang, 'home.resume')}: <span data-resume-label></span></a>
+      <a class="btn" href="#graficos">{t(lang, 'home.charts')}</a>
+    </div>
+  </section>
+
+  <section class="prose" aria-labelledby="piloto">
+    <h2 id="piloto">{t(lang, 'home.pilotTitle')}</h2>
+    <p>{t(lang, 'home.pilotText')}</p>
+  </section>
+
+  <div class="cards" id="graficos">
+    {pub.map((c) => (
+      <article class="card">
+        <p class="kicker">{t(lang, 'nav.chapter')} {c.number}</p>
+        <h3><a href={chapterUrl(ctx, c.number)!}>{c.title}</a></h3>
+        <p>{c.description}</p>
+        {c.chart && <p style="margin-top:.6rem"><a href={chapterUrl(ctx, c.number)! + '#grafico-interactivo'}>{t(lang, 'home.chartLink')}: {c.chart.title}</a></p>}
+      </article>
+    ))}
+    <article class="card">
+      <p class="kicker">{t(lang, 'index.extra')}</p>
+      <h3><a href={url(ctx, `${lang}/glosario/`)}>{t(lang, 'glossary.title')}</a></h3>
+      <p>{t(lang, 'glossary.count', { n: book.glossary.length })}. <a href={url(ctx, `${lang}/formulas/`)}>{t(lang, 'formulas.title')}</a>.</p>
+    </article>
+  </div>
+
+  <section class="prose" aria-labelledby="partes">
+    <h2 id="partes">{t(lang, 'home.partsTitle')}</h2>
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="partes">
+      <table>
+        <thead><tr><th scope="col">{t(lang, 'home.part')}</th><th scope="col">{t(lang, 'home.question')}</th><th scope="col">{t(lang, 'home.chapters')}</th></tr></thead>
+        <tbody>
+          {book.parts.map((p) => (
+            <tr>
+              <th scope="row"><a href={url(ctx, `${lang}/indice/#parte-${p.number}`)}>{p.roman} · {p.title}</a></th>
+              <td>{p.question}</td>
+              <td>{p.chapters[0]}–{p.chapters[p.chapters.length - 1]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h2>{t(lang, 'home.howTitle')}</h2>
+    <ul>
+      <li>{t(lang, 'home.how1')}</li>
+      <li>{t(lang, 'home.how2')}</li>
+      <li>{t(lang, 'home.how3')}</li>
+    </ul>
+    <p>{introText}</p>
+    <p><a href={url(ctx, `${lang}/sobre-el-libro/`)}>{t(lang, 'about.title')} →</a></p>
+  </section>
+</Base>

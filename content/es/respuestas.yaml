@@ -1,0 +1,85 @@
+# Respuestas numéricas de los ejercicios de cálculo (comprobación automática).
+# Se extraen de las «Soluciones de los ejercicios» del libro; el libro no se toca (supuesto D-03).
+#
+# Cada ejercicio tiene una o varias partes:
+#   etiqueta:   lo que se pide, tal como lo verá el lector junto al campo.
+#   valor:      la respuesta, en tanto por uno si tipo = porcentaje (−12 % → -0.12).
+#   tipo:       porcentaje | numero
+#   tolerancia: margen admitido, en las mismas unidades que «valor».
+#               Si se omite: 0,0005 para porcentajes y 0,5 % relativo para números.
+
+"1.1":
+  - etiqueta: Rentabilidad simple
+    valor: -0.12
+    tipo: porcentaje
+  - etiqueta: Rentabilidad logarítmica
+    valor: -0.1278
+    tipo: porcentaje
+  - etiqueta: Rentabilidad necesaria para volver a 125 €
+    valor: 0.1364
+    tipo: porcentaje
+"1.2":
+  - etiqueta: Rentabilidad acumulada
+    valor: 0.1491
+    tipo: porcentaje
+  - etiqueta: Rentabilidad anual constante equivalente
+    valor: 0.0474
+    tipo: porcentaje
+  - etiqueta: Media aritmética
+    valor: 0.05
+    tipo: porcentaje
+"6.1":
+  - etiqueta: Número de escenarios
+    valor: 40000
+    tipo: numero
+    tolerancia: 0
+"6.2":
+  - etiqueta: Error estándar con 10.000 puntos
+    valor: 0.0164
+    tipo: numero
+    tolerancia: 0.0006
+  - etiqueta: Puntos necesarios para un error de 0,001
+    valor: 2700000
+    tipo: numero
+    tolerancia: 50000
+"6.4":
+  - etiqueta: Extremo inferior del intervalo
+    valor: 0.0651
+    tipo: porcentaje
+    tolerancia: 0.0002
+  - etiqueta: Extremo superior del intervalo
+    valor: 0.0751
+    tipo: porcentaje
+    tolerancia: 0.0002
+"14.1":
+  - etiqueta: Fracción de Kelly
+    valor: 0.16
+    tipo: porcentaje
+"14.2":
+  - etiqueta: Fracción de Kelly
+    valor: 0.0667
+    tipo: porcentaje
+  - etiqueta: Crecimiento por apuesta con Kelly completo
+    valor: 0.0064
+    tipo: numero
+    tolerancia: 0.00005
+  - etiqueta: Crecimiento por apuesta con medio Kelly
+    valor: 0.00486
+    tipo: numero
+    tolerancia: 0.00005
+  - etiqueta: Proporción del crecimiento que conserva medio Kelly
+    valor: 0.76
+    tipo: porcentaje
+    tolerancia: 0.006
+"14.3":
+  - etiqueta: Fracción del capital
+    valor: 1.25
+    tipo: porcentaje
+  - etiqueta: Crecimiento en exceso con Kelly completo
+    valor: 0.03125
+    tipo: porcentaje
+    tolerancia: 0.0007
+  - etiqueta: Crecimiento en exceso con medio Kelly
+    valor: 0.0234
+    tipo: porcentaje
+    tolerancia: 0.0007

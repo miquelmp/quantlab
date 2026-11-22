@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { t } from '../../i18n';
+import { loadBook } from '../../lib/book';
+import { initRenderer, renderBlocks, renderInline, url, type RenderCtx } from '../../lib/render';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book, headingShift: -1, usedTerms: new Set(), usedIds: new Set() };
+const intro = renderBlocks(book.prefaceIntro, ctx);
+const sections = book.preface.map((s) => ({ ...s, html: renderBlocks(s.nodes, ctx) }));
+---
+<Base lang={lang} title={t(lang, 'about.title')} description={book.subtitle} path="sobre-el-libro/" current="about">
+  <article class="prose">
+    <h1>{t(lang, 'about.title')}</h1>
+    <p class="chapter-intro"><strong>{book.title}</strong>. {book.subtitle}.</p>
+    <p class="disclaimer"><Fragment set:html={renderInline(book.disclaimer, ctx)} /></p>
+    <h2 id="prefacio">Prefacio</h2>
+    <Fragment set:html={intro} />
+    {sections.map((s) => (
+      <section>
+        <h3 id={s.id}>{s.title}</h3>
+        <Fragment set:html={s.html} />
+      </section>
+    ))}
+    <h2 id="esta-web">{t(lang, 'about.webTitle')}</h2>
+    <p>{t(lang, 'about.web1')}</p>
+    <p>{t(lang, 'about.web2')} <a href={url(ctx, `${lang}/licencia/`)}>{t(lang, 'footer.license')}</a>.</p>
+  </article>
+</Base>

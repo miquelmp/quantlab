@@ -1,0 +1,133 @@
+---
+import 'katex/dist/katex.min.css';
+import '../styles/global.css';
+import { SITE, ANALYTICS_GOATCOUNTER } from '../config';
+import { LANGS, getLang } from '../i18n/config';
+import { t, tPrefix } from '../i18n';
+import { loadBook } from '../lib/book';
+import { renderInline } from '../lib/render';
+
+interface Props {
+  lang: string;
+  title: string;
+  description: string;
+  /** Ruta de la página sin el prefijo de idioma, p. ej. «capitulos/6-monte-carlo/». */
+  path: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  ogType?: string;
+  current?: string;
+}
+
+const { lang, title, description, path, jsonLd, ogType = 'website', current } = Astro.props;
+const L = getLang(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const u = (p: string) => base + p.replace(/^\//, '');
+const canonical = new URL(u(`${lang}/${path}`), SITE.url).toString();
+const book = loadBook(lang);
+const ctx = { lang, base, book };
+const fullTitle = title === t(lang, 'site.bookTitle') ? `${title} · ${t(lang, 'site.name')}` : `${title} · ${t(lang, 'site.bookTitle')}`;
+const uiStrings = tPrefix(lang, 'chapter.', 'ex.', 'py.', 'index.', 'chart.');
+const nav = [
+  { key: 'index', href: u(`${lang}/indice/`), label: t(lang, 'nav.index') },
+  { key: 'glossary', href: u(`${lang}/glosario/`), label: t(lang, 'nav.glossary') },
+  { key: 'formulas', href: u(`${lang}/formulas/`), label: t(lang, 'nav.formulas') },
+  { key: 'about', href: u(`${lang}/sobre-el-libro/`), label: t(lang, 'nav.about') },
+];
+const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+---
+<!doctype html>
+<html lang={L.htmlLang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {LANGS.length > 1 && LANGS.map((l) => (
+    <link rel="alternate" hreflang={l.htmlLang} href={new URL(u(`${l.code}/${path}`), SITE.url).toString()} />
+  ))}
+  <meta property="og:type" content={ogType} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content={t(lang, 'site.bookTitle')} />
+  <meta property="og:locale" content={L.locale.replace('-', '_')} />
+  <meta name="twitter:card" content="summary" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href={u('favicon.svg')} type="image/svg+xml" />
+  <link rel="sitemap" href={u('sitemap-index.xml')} />
+  <script is:inline>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      try {
+        var th = localStorage.getItem('quantlab:theme');
+        if (th === 'light' || th === 'dark') d.setAttribute('data-theme', th);
+        var fs = localStorage.getItem('quantlab:fs');
+        if (fs) d.setAttribute('data-fs', fs);
+      } catch (e) {}
+    })();
+  </script>
+  {ld.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+  {ANALYTICS_GOATCOUNTER && <script is:inline async data-goatcounter={ANALYTICS_GOATCOUNTER} src="https://gc.zgo.at/count.js"></script>}
+</head>
+<body>
+  <a class="skip-link" href="#main">{t(lang, 'nav.skip')}</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href={u(`${lang}/`)}>
+        <span class="logo" aria-hidden="true">∑</span>
+        <span>{t(lang, 'site.name')}</span>
+        <span class="pilot">{t(lang, 'site.pilot')}</span>
+      </a>
+      <button class="nav-toggle js-only" type="button" aria-expanded="false" aria-controls="main-nav">{t(lang, 'nav.menu')}</button>
+      <nav class="main-nav" id="main-nav" aria-label={t(lang, 'nav.main')}>
+        <ul>
+          {nav.map((n) => <li><a href={n.href} aria-current={current === n.key ? 'page' : undefined}>{n.label}</a></li>)}
+        </ul>
+      </nav>
+      <details class="settings js-only">
+        <summary aria-label={t(lang, 'settings.label')} title={t(lang, 'settings.label')}><span aria-hidden="true">Aa</span></summary>
+        <div class="settings-panel">
+          <fieldset>
+            <legend>{t(lang, 'settings.theme')}</legend>
+            <div class="seg">
+              <button type="button" data-theme-set="auto" aria-pressed="true">{t(lang, 'settings.themeAuto')}</button>
+              <button type="button" data-theme-set="light" aria-pressed="false">{t(lang, 'settings.themeLight')}</button>
+              <button type="button" data-theme-set="dark" aria-pressed="false">{t(lang, 'settings.themeDark')}</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>{t(lang, 'settings.fontSize')}</legend>
+            <div class="seg">
+              <button type="button" data-fs-step="-1" aria-label={`A− (${t(lang, 'settings.smaller')})`}>A−</button>
+              <button type="button" data-fs-step="1" aria-label={`A+ (${t(lang, 'settings.larger')})`}>A+</button>
+            </div>
+          </fieldset>
+        </div>
+      </details>
+    </div>
+  </header>
+  <main id="main" class="page" tabindex="-1">
+    <slot />
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="disclaimer"><strong>{t(lang, 'footer.disclaimerTitle')}.</strong> <Fragment set:html={renderInline(book.disclaimer, ctx)} /></p>
+      <ul class="footer-links">
+        <li><a href={u(`${lang}/licencia/`)}>{t(lang, 'footer.license')}</a></li>
+        <li><a href={u(`${lang}/privacidad/`)}>{t(lang, 'footer.privacy')}</a></li>
+        <li><a href={u(`${lang}/aviso-legal/`)}>{t(lang, 'footer.legal')}</a></li>
+        <li><a href={SITE.repo}>{t(lang, 'footer.source')}</a></li>
+      </ul>
+      <p style="margin:0">{t(lang, 'footer.licenseShort')} · {t(lang, 'site.bookTitle')} ({SITE.bookVersion})</p>
+    </div>
+  </footer>
+  <script type="application/json" id="ui-strings" set:html={JSON.stringify(uiStrings)} />
+  <script>
+    import '../lib/client/site';
+  </script>
+</body>
+</html>

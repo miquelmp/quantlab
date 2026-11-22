@@ -1,0 +1,15 @@
+// @ts-check
+import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
+import { SITE } from './src/config.ts';
+
+export default defineConfig({
+  site: SITE.url,
+  base: SITE.base,
+  trailingSlash: 'always',
+  build: { format: 'directory' },
+  integrations: [sitemap()],
+  vite: {
+    worker: { format: 'es' },
+  },
+});
