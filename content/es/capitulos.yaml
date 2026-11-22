@@ -43,8 +43,8 @@ capitulos:
     requisitos: [4]
   - numero: 8
     slug: 8-ratio-de-sharpe
-    publicado: false
-    descripcion: Rentabilidad ajustada al riesgo con el ratio de Sharpe.
+    publicado: true
+    descripcion: "El ratio de Sharpe: cuánta rentabilidad extra paga cada unidad de riesgo, y por qué la recta más empinada domina a las demás. Gráfico con fondos arrastrables."
     requisitos: [7]
   - numero: 9
     slug: 9-crecimiento-compuesto-lastre-volatilidad

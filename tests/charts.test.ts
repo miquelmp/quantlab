@@ -15,6 +15,7 @@ import { chart02, futureValue, presentValue, simpleValue, annuityPayment, discou
 import { chart06 } from '../src/charts/ch06-montecarlo';
 import { chart14 } from '../src/charts/ch14-kelly';
 import { chart07, computeVol, probLoss, sampleVol } from '../src/charts/ch07-volatilidad';
+import { chart08, computeSharpe, sharpe, combo } from '../src/charts/ch08-sharpe';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -151,9 +152,23 @@ describe('cap. 7 · mismo destino, distinto viaje', () => {
   });
 });
 
+describe('cap. 8 · la recta más empinada', () => {
+  it('cifras del ejemplo resuelto', () => {
+    const d = computeSharpe(chart08.defaults);
+    expect(d.funds.map((f) => +f.sr.toFixed(3))).toEqual([0.417, 0.625, 0.364]);
+    expect(d.best).toBe(1);
+    expect(d.pt.mu).toBeCloseTo(0.095, 10);
+    expect(d.pt.sigma).toBeCloseTo(0.12, 10);
+    expect(sharpe(0.05, 0.05, 0.025)).toBeCloseTo(0.5, 10);
+    const c = combo(0.05, 0.05, 0.025, 2.8);
+    expect(c.mu).toBeCloseTo(0.095, 10);
+    expect(sharpe(c.mu, c.sigma, 0.025)).toBeCloseTo(0.5, 10);
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {
