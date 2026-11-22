@@ -241,3 +241,13 @@
     valor: 0.0342
     tipo: porcentaje
     tolerancia: 0.001
+"10.1":
+  - etiqueta: Correlación
+    valor: 0.24
+    tipo: numero
+    tolerancia: 0.005
+"10.2":
+  - etiqueta: Correlación
+    valor: -1
+    tipo: numero
+    tolerancia: 0.005

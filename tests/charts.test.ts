@@ -17,6 +17,7 @@ import { chart14 } from '../src/charts/ch14-kelly';
 import { chart07, computeVol, probLoss, sampleVol } from '../src/charts/ch07-volatilidad';
 import { chart08, computeSharpe, sharpe, combo } from '../src/charts/ch08-sharpe';
 import { chart09, computeDrag, growthRate, zeroGrowthVol } from '../src/charts/ch09-lastre';
+import { chart10, computeCorr, portVol, correlation } from '../src/charts/ch10-correlacion';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -184,9 +185,25 @@ describe('cap. 9 · la media engaña', () => {
   });
 });
 
+describe('cap. 10 · moverse juntos', () => {
+  it('cifras del libro', () => {
+    expect(portVol(1)).toBeCloseTo(0.2, 6);
+    expect(portVol(0.5)).toBeCloseTo(0.1732, 4);
+    expect(portVol(0)).toBeCloseTo(0.1414, 4);
+    expect(portVol(-0.5)).toBeCloseTo(0.1, 6);
+    expect(portVol(-1)).toBeCloseTo(0, 6);
+    expect(correlation([2, -1, 3, 0, 1], [1, -2, 2, 1, 3])).toBeCloseTo(0.676, 3);
+    expect(correlation([1, 3, -1, 1], [2, 0, 4, 2])).toBeCloseTo(-1, 10);
+  });
+  it('la nube simulada respeta la correlación y la parábola da casi cero', () => {
+    expect(Math.abs(computeCorr({ rho: 0.5, mode: 0, seed: 10 }).r - 0.5)).toBeLessThan(0.1);
+    expect(Math.abs(computeCorr({ rho: 0.5, mode: 1, seed: 10 }).r)).toBeLessThan(0.15);
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {

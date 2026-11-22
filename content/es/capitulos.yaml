@@ -53,8 +53,8 @@ capitulos:
     requisitos: [1, 7]
   - numero: 10
     slug: 10-covarianza-correlacion
-    publicado: false
-    descripcion: Covarianza y correlación entre activos.
+    publicado: true
+    descripcion: "Covarianza y correlación entre rentabilidades, con una nube de puntos interactiva y el efecto de la correlación sobre la volatilidad de una cartera."
     requisitos: [4]
   - numero: 11
     slug: 11-diversificacion
