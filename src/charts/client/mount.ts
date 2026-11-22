@@ -16,6 +16,8 @@ export interface ChartApi {
   data: any;
   renderPanels(ids?: string[]): void;
   panelEl(id: string): HTMLElement | null;
+  /** Cambia una clave del estado y vuelve a calcular (para extensiones con arrastre). */
+  set(key: string, value: number): void;
 }
 
 export interface ChartExt {
@@ -26,6 +28,7 @@ export interface ChartExt {
 async function loadExt(id: string): Promise<ChartExt | null> {
   if (id === 'montecarlo') return (await import('./ext-montecarlo')).ext;
   if (id === 'campana') return (await import('./ext-galton')).ext;
+  if (id === 'sharpe') return (await import('./ext-sharpe')).ext;
   return null;
 }
 
@@ -63,6 +66,7 @@ export async function mountChart(root: HTMLElement): Promise<void> {
     if (fromUrl[sl.key] !== undefined) state[sl.key] = Math.min(sl.max, Math.max(sl.min, fromUrl[sl.key]));
   }
   if (def.simulated && fromUrl.seed !== undefined) state.seed = Math.max(0, Math.round(fromUrl.seed));
+  for (const k of def.extraKeys ?? []) if (fromUrl[k] !== undefined) state[k] = fromUrl[k];
 
   const panels = new Map<string, HTMLElement>();
   root.querySelectorAll<HTMLElement>('[data-panel]').forEach((el) => panels.set(el.dataset.panel!, el));
@@ -75,6 +79,7 @@ export async function mountChart(root: HTMLElement): Promise<void> {
     root, def, ctx, state, data: null,
     renderPanels: (ids) => renderPanels(ids),
     panelEl: (pid) => panels.get(pid) ?? null,
+    set: (key, value) => { state[key] = value; schedule(key); },
   };
 
   let changed = new Set<string>(Object.keys(state));
@@ -175,7 +180,7 @@ export async function mountChart(root: HTMLElement): Promise<void> {
   });
   const shareBtn = root.querySelector<HTMLButtonElement>('[data-act="share"]');
   shareBtn?.addEventListener('click', async () => {
-    const keys = [...def.sliders.map((s) => s.key), ...(def.simulated ? ['seed'] : [])];
+    const keys = [...def.sliders.map((s) => s.key), ...(def.extraKeys ?? []), ...(def.simulated ? ['seed'] : [])];
     const value = keys.map((k) => `${k}:${+state[k].toFixed(6)}`).join(',');
     const u = new URL(location.href);
     u.searchParams.set(id, value);

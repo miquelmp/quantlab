@@ -36,6 +36,8 @@ export interface ChartDef<S extends Record<string, number>, D> {
   simulated: boolean;                  // tiene semilla y «Nueva semilla»
   defaults: S;
   sliders: SliderDef[];
+  /** Otras claves del estado que se guardan en el enlace compartible (p. ej. puntos arrastrables). */
+  extraKeys?: string[];
   compute: (s: S) => D;
   panels: PanelDef<S, D>[];
   stats: (d: D, s: S, ctx: ChartCtx) => Stat[];

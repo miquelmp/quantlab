@@ -171,3 +171,49 @@
     valor: 0.0234
     tipo: porcentaje
     tolerancia: 0.0007
+"7.1":
+  - etiqueta: Media diaria
+    valor: 0
+    tipo: porcentaje
+  - etiqueta: Volatilidad diaria
+    valor: 0.0126
+    tipo: porcentaje
+  - etiqueta: Volatilidad anualizada
+    valor: 0.201
+    tipo: porcentaje
+    tolerancia: 0.001
+"7.2":
+  - etiqueta: Volatilidad anual
+    valor: 0.104
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Clase de riesgo de mercado (1 a 7)
+    valor: 3
+    tipo: numero
+"8.1":
+  - etiqueta: Ratio de Sharpe de F1
+    valor: 0.39
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Ratio de Sharpe de F2
+    valor: 0.5
+    tipo: numero
+    tolerancia: 0.005
+"8.2":
+  - etiqueta: Fracción del capital invertida en F2
+    valor: 2.8
+    tipo: porcentaje
+    tolerancia: 0.005
+  - etiqueta: Rentabilidad esperada
+    valor: 0.095
+    tipo: porcentaje
+"8.3":
+  - etiqueta: Ratio de Sharpe anual
+    valor: 0.87
+    tipo: numero
+    tolerancia: 0.005
+"8.4":
+  - etiqueta: Estadístico t
+    valor: 1.56
+    tipo: numero
+    tolerancia: 0.01
