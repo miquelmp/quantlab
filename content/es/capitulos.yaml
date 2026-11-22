@@ -28,8 +28,8 @@ capitulos:
     requisitos: [3]
   - numero: 5
     slug: 5-distribucion-normal-teorema-central-limite
-    publicado: false
-    descripcion: La distribución normal y el teorema central del límite.
+    publicado: true
+    descripcion: La distribución normal y el teorema central del límite, con un tablero de Galton animado y la suma de dados convirtiéndose en campana.
     requisitos: [4]
   - numero: 6
     slug: 6-monte-carlo

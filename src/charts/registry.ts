@@ -9,6 +9,7 @@ export const CHART_BY_CHAPTER: Record<number, string> = {
   2: 'capitalizar',
   3: 'dados',
   4: 'paseo',
+  5: 'campana',
   6: 'montecarlo',
   14: 'kelly',
 };
@@ -19,6 +20,7 @@ export const I18N_PREFIX: Record<string, string> = {
   capitalizar: 'c2.',
   dados: 'c3.',
   paseo: 'c4.',
+  campana: 'c5.',
   montecarlo: 'c6.',
   kelly: 'c14.',
 };
@@ -29,6 +31,7 @@ export async function loadChart(id: string): Promise<ChartDef<any, any>> {
     case 'capitalizar': return (await import('./ch02-capitalizar')).chart02;
     case 'dados': return (await import('./ch03-dados')).chart03;
     case 'paseo': return (await import('./ch04-paseo')).chart04;
+    case 'campana': return (await import('./ch05-campana')).chart05;
     case 'montecarlo': return (await import('./ch06-montecarlo')).chart06;
     case 'kelly': return (await import('./ch14-kelly')).chart14;
     default: throw new Error(`Gráfico desconocido: ${id}`);

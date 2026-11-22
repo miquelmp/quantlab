@@ -25,6 +25,7 @@ export interface ChartExt {
 
 async function loadExt(id: string): Promise<ChartExt | null> {
   if (id === 'montecarlo') return (await import('./ext-montecarlo')).ext;
+  if (id === 'campana') return (await import('./ext-galton')).ext;
   return null;
 }
 

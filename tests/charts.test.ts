@@ -9,6 +9,8 @@ import { computeKelly, growth, kellyFraction } from '../src/charts/ch14-kelly';
 import { chart01 } from '../src/charts/ch01-perdidas';
 import { chart03, computeDice, expectedGain, probAhead, PLAYERS } from '../src/charts/ch03-dados';
 import { chart04, computeWalk, probAbove, stepMean } from '../src/charts/ch04-paseo';
+import { chart05, computeBell, sumPmf, DISTS } from '../src/charts/ch05-campana';
+import { normCdf } from '../src/charts/rng';
 import { chart02, futureValue, presentValue, simpleValue, annuityPayment, discountFactor } from '../src/charts/ch02-capitalizar';
 import { chart06 } from '../src/charts/ch06-montecarlo';
 import { chart14 } from '../src/charts/ch14-kelly';
@@ -69,6 +71,24 @@ describe('cap. 4 · el abanico del azar', () => {
   });
 });
 
+describe('cap. 5 · nace una campana', () => {
+  it('cifras del ejemplo resuelto y de los ejercicios', () => {
+    expect(normCdf((-5 - 0.7) / 4.5)).toBeCloseTo(0.103, 3);
+    expect(normCdf(-0.4)).toBeCloseTo(0.345, 3);
+    const pmf = sumPmf(12, DISTS[0]);
+    let p50 = 0;
+    for (const [v, p] of pmf) if (v >= 50) p50 += p;
+    expect(p50).toBeCloseTo(0.104, 3);
+    expect(1 - normCdf((49.5 - 42) / Math.sqrt(35))).toBeCloseTo(0.102, 3);
+  });
+  it('el tablero de Galton reparte las bolas como una binomial', () => {
+    const d = computeBell({ rows: 10, k: 2, dist: 0, seed: 5 });
+    const mean = d.bin.reduce((a, b) => a + b, 0) / d.bin.length;
+    expect(Math.abs(mean - 5)).toBeLessThan(3 * Math.sqrt(2.5 / d.bin.length));
+    expect(d.mu).toBe(7);
+  });
+});
+
 describe('cap. 6 · Monte Carlo', () => {
   const d = computeMC({ mu: 0.05, sigma: 0.15, years: 20, M: 10000, seed: 2024 });
   it('valores teóricos del libro', () => {
@@ -119,7 +139,7 @@ describe('cap. 14 · Kelly', () => {
 
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart06, chart14] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {
