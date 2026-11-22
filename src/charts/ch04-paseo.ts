@@ -17,7 +17,7 @@ export interface S4 extends Record<string, number> { p: number; n: number; m: nu
 export const MAX_STEPS = 1000;
 export const MAX_PATHS = 500;
 export const S0 = 20;
-const DRAWN = 100;          // trayectorias dibujadas como mucho (las estadísticas usan todas)
+const DRAWN = 60;           // trayectorias dibujadas como mucho (las estadísticas usan todas)
 
 export const stepMean = (p: number) => 2 * p - 1;
 export const stepSd = (p: number) => 2 * Math.sqrt(p * (1 - p));
@@ -62,7 +62,7 @@ export function computeWalk(s: S4): D4 {
   const n = Math.round(s.n);
   const m = Math.round(s.m);
   const { u } = buildBase(s.seed);
-  const k = Math.max(1, Math.ceil(n / 300));
+  const k = Math.max(1, Math.ceil(n / 200));
   const ts: number[] = [];
   for (let t = 0; t < n; t += k) ts.push(t);
   ts.push(n);

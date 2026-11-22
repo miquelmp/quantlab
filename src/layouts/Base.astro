@@ -57,6 +57,10 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   <meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)" />
   <link rel="icon" href={u('favicon.svg')} type="image/svg+xml" />
+  <link rel="manifest" href={u('manifest.webmanifest')} />
+  <link rel="apple-touch-icon" href={u('icons/apple-touch-icon.png')} />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content={t(lang, 'site.name')} />
   <link rel="sitemap" href={u('sitemap-index.xml')} />
   <script is:inline>
     (function () {
