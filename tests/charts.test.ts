@@ -7,6 +7,7 @@ import { recoveryGain, logReturn } from '../src/charts/ch01-perdidas';
 import { computeMC } from '../src/charts/ch06-montecarlo';
 import { computeKelly, growth, kellyFraction } from '../src/charts/ch14-kelly';
 import { chart01 } from '../src/charts/ch01-perdidas';
+import { chart02, futureValue, presentValue, simpleValue, annuityPayment, discountFactor } from '../src/charts/ch02-capitalizar';
 import { chart06 } from '../src/charts/ch06-montecarlo';
 import { chart14 } from '../src/charts/ch14-kelly';
 import { ES } from '../src/lib/format';
@@ -18,6 +19,22 @@ describe('cap. 1 · asimetría de las pérdidas', () => {
     expect(recoveryGain(0.9)).toBeCloseTo(9, 10);
     expect(recoveryGain(0.2)).toBeCloseTo(0.25, 10);
     expect(logReturn(50 / 40 - 1)).toBeCloseTo(0.2231, 4);
+  });
+});
+
+describe('cap. 2 · capitalizar y descontar', () => {
+  it('cifras del ejemplo resuelto y de los ejercicios', () => {
+    expect(futureValue(10000, 0.04, 3)).toBeCloseTo(11248.64, 2);
+    expect(presentValue([0, 0, 11000], 0.04)).toBeCloseTo(9778.96, 2);
+    expect(presentValue([0, 0, 11000], 0.03)).toBeCloseTo(10066.56, 2);
+    expect(futureValue(10000, 0.04, 3) - simpleValue(10000, 0.04, 3)).toBeCloseTo(48.64, 2);
+    expect(futureValue(2500, 0.03, 5)).toBeCloseTo(2898.19, 2);
+    expect(20000 * discountFactor(0.06, 4)).toBeCloseTo(15841.87, 2);
+    expect(20000 * discountFactor(0.02, 4)).toBeCloseTo(18476.91, 2);
+    expect(annuityPayment(15000, 0.05, 5)).toBeCloseTo(3464.62, 2);
+  });
+  it('con tipo negativo el factor de descuento supera la unidad', () => {
+    expect(discountFactor(-0.01, 10)).toBeGreaterThan(1);
   });
 });
 
@@ -71,7 +88,7 @@ describe('cap. 14 · Kelly', () => {
 
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart06, chart14] as any[]) {
+  for (const def of [chart01, chart02, chart06, chart14] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {

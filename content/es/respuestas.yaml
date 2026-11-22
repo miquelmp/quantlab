@@ -28,6 +28,29 @@
   - etiqueta: Media aritmética
     valor: 0.05
     tipo: porcentaje
+"2.1":
+  - etiqueta: Saldo final
+    valor: 2898.19
+    tipo: numero
+    tolerancia: 0.01
+  - etiqueta: Intereses procedentes del interés compuesto
+    valor: 23.19
+    tipo: numero
+    tolerancia: 0.01
+"2.2":
+  - etiqueta: Valor hoy al 6 %
+    valor: 15841.87
+    tipo: numero
+    tolerancia: 0.01
+  - etiqueta: Valor hoy al 2 %
+    valor: 18476.91
+    tipo: numero
+    tolerancia: 0.01
+"2.3":
+  - etiqueta: Cuota anual
+    valor: 3464.62
+    tipo: numero
+    tolerancia: 0.01
 "6.1":
   - etiqueta: Número de escenarios
     valor: 40000
