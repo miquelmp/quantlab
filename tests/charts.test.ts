@@ -20,6 +20,7 @@ import { chart09, computeDrag, growthRate, zeroGrowthVol } from '../src/charts/c
 import { chart10, computeCorr, portVol, correlation } from '../src/charts/ch10-correlacion';
 import { chart11, equalWeightVol, floorVol, twoAssetVol, effectiveN } from '../src/charts/ch11-diversificacion';
 import { chart12, computeFrontier, minVarWeight2, portStats, covMatrix } from '../src/charts/ch12-frontera';
+import { chart13, computeCapm, betaFrom, capm, totalVol } from '../src/charts/ch13-capm';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -239,9 +240,26 @@ describe('cap. 12 · la nube y su borde', () => {
   });
 });
 
+describe('cap. 13 · lo que paga el mercado', () => {
+  it('cifras del libro', () => {
+    expect(betaFrom(0.6, 0.15)).toBeCloseTo(0.6, 10);
+    expect(betaFrom(0.75, 0.3)).toBeCloseTo(1.5, 10);
+    expect(capm(0.6, 0.025, 0.055)).toBeCloseTo(0.058, 10);
+    expect(capm(1.5, 0.025, 0.055)).toBeCloseTo(0.1075, 10);
+    expect(betaFrom(0.7, 0.24, 0.16)).toBeCloseTo(1.05, 10);
+    expect(capm(0.8, 0.02, 0.05)).toBeCloseTo(0.06, 10);
+    expect(0.09 - capm(1.2, 0.02, 0.06)).toBeCloseTo(-0.002, 10);
+    expect(totalVol(0.6, 0.12)).toBeCloseTo(0.15, 10);
+  });
+  it('la regresión recupera la beta', () => {
+    const d = computeCapm(chart13.defaults);
+    expect(Math.abs(d.est[1] - 1.5)).toBeLessThan(0.25);
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12, chart13] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {

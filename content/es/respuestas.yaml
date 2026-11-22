@@ -287,3 +287,19 @@
     valor: 0.41
     tipo: numero
     tolerancia: 0.005
+"13.1":
+  - etiqueta: Beta
+    valor: 1.05
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Variación media esperada de la acción
+    valor: -0.0315
+    tipo: porcentaje
+"13.2":
+  - etiqueta: Rentabilidad esperada
+    valor: 0.06
+    tipo: porcentaje
+"13.3":
+  - etiqueta: Alfa
+    valor: -0.002
+    tipo: porcentaje

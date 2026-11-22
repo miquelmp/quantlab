@@ -367,6 +367,9 @@ pre { margin: 0; }
 .chart-svg .peg { fill: var(--muted); }
 .chart-svg .combo { fill: var(--series-2); stroke: var(--surface); stroke-width: 2; }
 .chart-svg .cloud { fill: none; stroke: var(--path); stroke-width: 3; stroke-linecap: round; }
+.chart-svg .dots { fill: none; stroke-width: 4; stroke-linecap: round; opacity: 0.45; }
+.chart-svg rect.mark.s1 { fill: var(--series-1); } .chart-svg rect.mark.s2 { fill: var(--series-2); } .chart-svg rect.mark.s3 { fill: var(--series-3); }
+.chart-svg rect.mark { stroke: var(--surface); stroke-width: 2; }
 .chart-edit { margin: 0.75rem 0; }
 .chart-edit-title { font-weight: 600; margin: 0 0 0.4rem; font-size: 0.95rem; }
 .chart-edit-tables { display: flex; flex-wrap: wrap; gap: 1rem; }

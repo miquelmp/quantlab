@@ -68,8 +68,8 @@ capitulos:
     requisitos: [11]
   - numero: 13
     slug: 13-beta-capm-factores
-    publicado: false
-    descripcion: Beta, CAPM y factores de riesgo.
+    publicado: true
+    descripcion: "La beta, el CAPM y la línea del mercado de valores: por qué, según el modelo, solo el riesgo ligado al mercado tiene premio."
     requisitos: [12]
   - numero: 14
     slug: 14-criterio-de-kelly
