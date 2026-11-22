@@ -16,6 +16,11 @@ import { chart06 } from '../src/charts/ch06-montecarlo';
 import { chart14 } from '../src/charts/ch14-kelly';
 import { chart07, computeVol, probLoss, sampleVol } from '../src/charts/ch07-volatilidad';
 import { chart08, computeSharpe, sharpe, combo } from '../src/charts/ch08-sharpe';
+import { chart09, computeDrag, growthRate, zeroGrowthVol } from '../src/charts/ch09-lastre';
+import { chart10, computeCorr, portVol, correlation } from '../src/charts/ch10-correlacion';
+import { chart11, equalWeightVol, floorVol, twoAssetVol, effectiveN } from '../src/charts/ch11-diversificacion';
+import { chart12, computeFrontier, minVarWeight2, portStats, covMatrix } from '../src/charts/ch12-frontera';
+import { chart13, computeCapm, betaFrom, capm, totalVol } from '../src/charts/ch13-capm';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -166,9 +171,95 @@ describe('cap. 8 · la recta más empinada', () => {
   });
 });
 
+describe('cap. 9 · la media engaña', () => {
+  it('cifras del libro', () => {
+    expect(growthRate(0.025, 0.225)).toBeCloseTo(0, 3);
+    expect(growthRate(0.07, 0.15)).toBeCloseTo(0.05875, 6);
+    expect(growthRate(0.07, 0.3)).toBeCloseTo(0.025, 6);
+    expect(growthRate(0.06, 0.18)).toBeCloseTo(0.0438, 4);
+    expect(growthRate(0.18, 0.54)).toBeCloseTo(0.0342, 4);
+    expect(zeroGrowthVol(0.08)).toBeCloseTo(0.4, 6);
+  });
+  it('la mediana simulada sigue a g y la media a μ', () => {
+    const d = computeDrag({ mu: 0.08, sigma: 0.3, seed: 9 });
+    const med = d.median[d.median.length - 1];
+    expect(Math.abs(Math.log(med / (100 * Math.exp(growthRate(0.08, 0.3) * 20))))).toBeLessThan(0.3);
+    expect(d.median[d.median.length - 1]).toBeLessThan(d.mean[d.mean.length - 1]);
+  });
+});
+
+describe('cap. 10 · moverse juntos', () => {
+  it('cifras del libro', () => {
+    expect(portVol(1)).toBeCloseTo(0.2, 6);
+    expect(portVol(0.5)).toBeCloseTo(0.1732, 4);
+    expect(portVol(0)).toBeCloseTo(0.1414, 4);
+    expect(portVol(-0.5)).toBeCloseTo(0.1, 6);
+    expect(portVol(-1)).toBeCloseTo(0, 6);
+    expect(correlation([2, -1, 3, 0, 1], [1, -2, 2, 1, 3])).toBeCloseTo(0.676, 3);
+    expect(correlation([1, 3, -1, 1], [2, 0, 4, 2])).toBeCloseTo(-1, 10);
+  });
+  it('la nube simulada respeta la correlación y la parábola da casi cero', () => {
+    expect(Math.abs(computeCorr({ rho: 0.5, mode: 0, seed: 10 }).r - 0.5)).toBeLessThan(0.1);
+    expect(Math.abs(computeCorr({ rho: 0.5, mode: 1, seed: 10 }).r)).toBeLessThan(0.15);
+  });
+});
+
+describe('cap. 11 · hasta dónde llega la diversificación', () => {
+  it('cifras del libro', () => {
+    expect(twoAssetVol(0.6, 0.18, 0.06, 0.1) ** 2).toBeCloseTo(0.012758, 6);
+    expect(twoAssetVol(0.6, 0.18, 0.06, 0.1)).toBeCloseTo(0.113, 3);
+    expect([1, 5, 20, 50].map((n) => +equalWeightVol(n, 0.25, 0.2).toFixed(3))).toEqual([0.25, 0.15, 0.122, 0.116]);
+    expect(floorVol(0.25, 0.2)).toBeCloseTo(0.112, 3);
+    expect(equalWeightVol(9, 0.3, 0)).toBeCloseTo(0.1, 10);
+    expect(equalWeightVol(10, 0.2, 0.4)).toBeCloseTo(0.136, 3);
+    expect(effectiveN([0.5, 0.2, 0.1, 0.1, 0.1])).toBeCloseTo(3.125, 10);
+  });
+});
+
+describe('cap. 12 · la nube y su borde', () => {
+  it('cifras del ejemplo resuelto y de los ejercicios', () => {
+    const w = minVarWeight2(0.06, 0.2, 0.2);
+    expect(w).toBeCloseTo(0.969, 3);
+    const s2 = { ...chart12.defaults, r13: 0, r23: 0 };
+    const p = portStats([w, 1 - w, 0], [0.04, 0.09, 0], covMatrix(s2));
+    expect(p.sigma).toBeCloseTo(0.0597, 4);
+    expect(p.mu).toBeCloseTo(0.0415, 4);
+    expect(minVarWeight2(0.12, 0.18, -1)).toBeCloseTo(0.6, 10);
+    const h = portStats([0.5, 0.5, 0], [0.04, 0.09, 0], covMatrix(s2));
+    expect(h.sigma).toBeCloseTo(0.11, 10);
+    expect((h.mu - 0.02) / h.sigma).toBeCloseTo(0.409, 3);
+  });
+  it('la cartera de mínima varianza no tiene más riesgo que ninguna cartera aleatoria', () => {
+    for (const shorts of [0, 1]) {
+      const d = computeFrontier({ ...chart12.defaults, shorts });
+      let min = Infinity;
+      for (let i = 0; i < d.cloud.length; i += 2) min = Math.min(min, d.cloud[i]);
+      expect(d.gmv.sigma).toBeLessThanOrEqual(min + 1e-4);
+      expect(d.tangent).not.toBeNull();
+    }
+  });
+});
+
+describe('cap. 13 · lo que paga el mercado', () => {
+  it('cifras del libro', () => {
+    expect(betaFrom(0.6, 0.15)).toBeCloseTo(0.6, 10);
+    expect(betaFrom(0.75, 0.3)).toBeCloseTo(1.5, 10);
+    expect(capm(0.6, 0.025, 0.055)).toBeCloseTo(0.058, 10);
+    expect(capm(1.5, 0.025, 0.055)).toBeCloseTo(0.1075, 10);
+    expect(betaFrom(0.7, 0.24, 0.16)).toBeCloseTo(1.05, 10);
+    expect(capm(0.8, 0.02, 0.05)).toBeCloseTo(0.06, 10);
+    expect(0.09 - capm(1.2, 0.02, 0.06)).toBeCloseTo(-0.002, 10);
+    expect(totalVol(0.6, 0.12)).toBeCloseTo(0.15, 10);
+  });
+  it('la regresión recupera la beta', () => {
+    const d = computeCapm(chart13.defaults);
+    expect(Math.abs(d.est[1] - 1.5)).toBeLessThan(0.25);
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12, chart13] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {

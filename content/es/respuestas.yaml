@@ -217,3 +217,89 @@
     valor: 1.56
     tipo: numero
     tolerancia: 0.01
+"9.1":
+  - etiqueta: Rentabilidad media aritmética
+    valor: 0.1
+    tipo: porcentaje
+  - etiqueta: Rentabilidad acumulada de los dos años
+    valor: -0.04
+    tipo: porcentaje
+"9.2":
+  - etiqueta: Tasa de crecimiento con volatilidad del 15 %
+    valor: 0.05875
+    tipo: porcentaje
+    tolerancia: 0.0015
+  - etiqueta: Tasa de crecimiento con volatilidad del 30 %
+    valor: 0.025
+    tipo: porcentaje
+"9.3":
+  - etiqueta: Tasa de crecimiento del índice
+    valor: 0.0438
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Tasa de crecimiento del producto triplicado
+    valor: 0.0342
+    tipo: porcentaje
+    tolerancia: 0.001
+"10.1":
+  - etiqueta: Correlación
+    valor: 0.24
+    tipo: numero
+    tolerancia: 0.005
+"10.2":
+  - etiqueta: Correlación
+    valor: -1
+    tipo: numero
+    tolerancia: 0.005
+"11.1":
+  - etiqueta: Volatilidad de la cartera
+    valor: 0.1
+    tipo: porcentaje
+"11.2":
+  - etiqueta: Volatilidad con diez activos
+    valor: 0.136
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Mínimo alcanzable
+    valor: 0.126
+    tipo: porcentaje
+    tolerancia: 0.001
+"11.3":
+  - etiqueta: Número efectivo de activos
+    valor: 3.125
+    tipo: numero
+    tolerancia: 0.03
+"12.1":
+  - etiqueta: Peso en el primer activo
+    valor: 0.6
+    tipo: porcentaje
+  - etiqueta: Peso en el segundo activo
+    valor: 0.4
+    tipo: porcentaje
+"12.2":
+  - etiqueta: Rentabilidad de la cartera 50/50
+    valor: 0.065
+    tipo: porcentaje
+  - etiqueta: Volatilidad de la cartera 50/50
+    valor: 0.11
+    tipo: porcentaje
+  - etiqueta: Ratio de Sharpe de la cartera
+    valor: 0.41
+    tipo: numero
+    tolerancia: 0.005
+"13.1":
+  - etiqueta: Beta
+    valor: 1.05
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Variación media esperada de la acción
+    valor: -0.0315
+    tipo: porcentaje
+"13.2":
+  - etiqueta: Rentabilidad esperada
+    valor: 0.06
+    tipo: porcentaje
+"13.3":
+  - etiqueta: Alfa
+    valor: -0.002
+    tipo: porcentaje

@@ -48,28 +48,28 @@ capitulos:
     requisitos: [7]
   - numero: 9
     slug: 9-crecimiento-compuesto-lastre-volatilidad
-    publicado: false
-    descripcion: Crecimiento compuesto y lastre de la volatilidad.
+    publicado: true
+    descripcion: "Por qué la rentabilidad media engaña: el lastre de la volatilidad, la fórmula g ≈ μ − σ²/2 y 300 trayectorias simuladas de riqueza a 20 años."
     requisitos: [1, 7]
   - numero: 10
     slug: 10-covarianza-correlacion
-    publicado: false
-    descripcion: Covarianza y correlación entre activos.
+    publicado: true
+    descripcion: "Covarianza y correlación entre rentabilidades, con una nube de puntos interactiva y el efecto de la correlación sobre la volatilidad de una cartera."
     requisitos: [4]
   - numero: 11
     slug: 11-diversificacion
-    publicado: false
-    descripcion: Hasta dónde reduce el riesgo la diversificación.
+    publicado: true
+    descripcion: "Cómo y hasta dónde reduce el riesgo la diversificación: la fórmula de la varianza de una cartera y el suelo que fija la correlación común."
     requisitos: [10]
   - numero: 12
     slug: 12-frontera-eficiente
-    publicado: false
-    descripcion: Optimización de carteras y frontera eficiente.
+    publicado: true
+    descripcion: "La frontera eficiente de Markowitz: 5.000 carteras aleatorias, la cartera de mínima varianza y la de máximo ratio de Sharpe, con una tabla editable de tres activos."
     requisitos: [11]
   - numero: 13
     slug: 13-beta-capm-factores
-    publicado: false
-    descripcion: Beta, CAPM y factores de riesgo.
+    publicado: true
+    descripcion: "La beta, el CAPM y la línea del mercado de valores: por qué, según el modelo, solo el riesgo ligado al mercado tiene premio."
     requisitos: [12]
   - numero: 14
     slug: 14-criterio-de-kelly
