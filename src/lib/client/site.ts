@@ -200,3 +200,11 @@ initExercises();
 initIndex();
 initCharts();
 initPython();
+
+/* ---------- App instalable y lectura sin conexión (sw.js lo genera scripts/pwa.mjs) ---------- */
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(base + 'sw.js', { scope: base }).catch(() => { /* sin app: la web funciona igual */ });
+  });
+}

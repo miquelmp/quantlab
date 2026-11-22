@@ -11,6 +11,7 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Gráficos** (`src/charts/`): cada uno es un `ChartDef` (tipos en `types.ts`) con funciones puras que devuelven SVG como texto. Se usan en la compilación (imagen sin JavaScript) y en el navegador (`client/mount.ts`). Simulaciones con generador con semilla propio (`rng.ts`). Truco de rendimiento: los aleatorios dependen solo de semilla/tamaño; los parámetros solo los transforman.
 - **Python**: Pyodide 0.29.5 desde jsDelivr en un Web Worker (`src/python/`), cargado al pulsar «Ejecutar». Los bloques de una página comparten intérprete.
 - **Idiomas**: `src/i18n/config.ts` + `src/i18n/<idioma>.json` (textos de interfaz, también los de los gráficos) + `content/<idioma>/`. URLs `/<idioma>/…`; hreflang automático con más de un idioma.
+- **App instalable (PWA)**: `src/pages/manifest.webmanifest.ts` + `scripts/pwa.mjs` (integración que escribe `dist/sw.js` con todas las páginas para leer sin conexión; Pyodide se guarda al usarse). Iconos en `public/icons/` (`node scripts/make-icons.cjs` si cambia el logo).
 - Progreso y preferencias del lector: solo `localStorage` (clave `quantlab:v1`), siempre con try/catch.
 
 ## Tareas habituales
