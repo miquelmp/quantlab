@@ -7,6 +7,7 @@ import { recoveryGain, logReturn } from '../src/charts/ch01-perdidas';
 import { computeMC } from '../src/charts/ch06-montecarlo';
 import { computeKelly, growth, kellyFraction } from '../src/charts/ch14-kelly';
 import { chart01 } from '../src/charts/ch01-perdidas';
+import { chart03, computeDice, expectedGain, probAhead, PLAYERS } from '../src/charts/ch03-dados';
 import { chart02, futureValue, presentValue, simpleValue, annuityPayment, discountFactor } from '../src/charts/ch02-capitalizar';
 import { chart06 } from '../src/charts/ch06-montecarlo';
 import { chart14 } from '../src/charts/ch14-kelly';
@@ -35,6 +36,21 @@ describe('cap. 2 · capitalizar y descontar', () => {
   });
   it('con tipo negativo el factor de descuento supera la unidad', () => {
     expect(discountFactor(-0.01, 10)).toBeGreaterThan(1);
+  });
+});
+
+describe('cap. 3 · el juego de los dos dados', () => {
+  it('cifras del ejemplo resuelto', () => {
+    expect(expectedGain(4)).toBeCloseTo(-1 / 6, 10);
+    expect(expectedGain(5)).toBeCloseTo(0, 10);
+    expect(probAhead(10, 4)).toBeCloseTo(0.22, 2);
+    expect(probAhead(100, 4)).toBeCloseTo(0.15, 2);
+    expect(probAhead(1000, 4)).toBeCloseTo(0.0025, 3);
+  });
+  it('la media simulada se acerca al valor esperado', () => {
+    const d = computeDice({ n: 5000, prize: 4, seed: 3 });
+    expect(Math.abs(d.mean0 - d.E)).toBeLessThan(3 * d.sd / Math.sqrt(5000));
+    expect(d.ahead).toBeLessThanOrEqual(3 / PLAYERS);
   });
 });
 
@@ -88,7 +104,7 @@ describe('cap. 14 · Kelly', () => {
 
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart06, chart14] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart06, chart14] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {

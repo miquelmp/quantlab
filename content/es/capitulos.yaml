@@ -18,8 +18,8 @@ capitulos:
     requisitos: [1]
   - numero: 3
     slug: 3-esperanza-ley-grandes-numeros
-    publicado: false
-    descripcion: Valor esperado y ley de los grandes números.
+    publicado: true
+    descripcion: Qué es el valor esperado, qué significa y por qué la ley de los grandes números convierte una ventaja pequeña en un resultado casi seguro.
     requisitos: []
   - numero: 4
     slug: 4-paseos-aleatorios-raiz-del-tiempo

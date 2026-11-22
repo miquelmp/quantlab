@@ -51,6 +51,25 @@
     valor: 3464.62
     tipo: numero
     tolerancia: 0.01
+"3.1":
+  - etiqueta: Premio esperado de una papeleta (€)
+    valor: 1.25
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Ganancia neta esperada del comprador (€)
+    valor: -1.75
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Ingreso del organizador (€)
+    valor: 3500
+    tipo: numero
+"3.2":
+  - etiqueta: Pérdida esperada (€)
+    valor: 36
+    tipo: numero
+  - etiqueta: Recargo sobre la pérdida esperada
+    valor: 0.25
+    tipo: porcentaje
 "6.1":
   - etiqueta: Número de escenarios
     valor: 40000
