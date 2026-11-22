@@ -38,8 +38,8 @@ capitulos:
     requisitos: [1, 3, 5]
   - numero: 7
     slug: 7-volatilidad
-    publicado: false
-    descripcion: Qué es la volatilidad, cómo se estima y cómo se anualiza.
+    publicado: true
+    descripcion: Qué es la volatilidad, cómo se calcula a partir de rentabilidades y cómo se anualiza, con dos trayectorias de igual tendencia y distinto riesgo.
     requisitos: [4]
   - numero: 8
     slug: 8-ratio-de-sharpe
