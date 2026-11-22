@@ -7,6 +7,11 @@ import { recoveryGain, logReturn } from '../src/charts/ch01-perdidas';
 import { computeMC } from '../src/charts/ch06-montecarlo';
 import { computeKelly, growth, kellyFraction } from '../src/charts/ch14-kelly';
 import { chart01 } from '../src/charts/ch01-perdidas';
+import { chart03, computeDice, expectedGain, probAhead, PLAYERS } from '../src/charts/ch03-dados';
+import { chart04, computeWalk, probAbove, stepMean } from '../src/charts/ch04-paseo';
+import { chart05, computeBell, sumPmf, DISTS } from '../src/charts/ch05-campana';
+import { normCdf } from '../src/charts/rng';
+import { chart02, futureValue, presentValue, simpleValue, annuityPayment, discountFactor } from '../src/charts/ch02-capitalizar';
 import { chart06 } from '../src/charts/ch06-montecarlo';
 import { chart14 } from '../src/charts/ch14-kelly';
 import { ES } from '../src/lib/format';
@@ -18,6 +23,69 @@ describe('cap. 1 · asimetría de las pérdidas', () => {
     expect(recoveryGain(0.9)).toBeCloseTo(9, 10);
     expect(recoveryGain(0.2)).toBeCloseTo(0.25, 10);
     expect(logReturn(50 / 40 - 1)).toBeCloseTo(0.2231, 4);
+  });
+});
+
+describe('cap. 2 · capitalizar y descontar', () => {
+  it('cifras del ejemplo resuelto y de los ejercicios', () => {
+    expect(futureValue(10000, 0.04, 3)).toBeCloseTo(11248.64, 2);
+    expect(presentValue([0, 0, 11000], 0.04)).toBeCloseTo(9778.96, 2);
+    expect(presentValue([0, 0, 11000], 0.03)).toBeCloseTo(10066.56, 2);
+    expect(futureValue(10000, 0.04, 3) - simpleValue(10000, 0.04, 3)).toBeCloseTo(48.64, 2);
+    expect(futureValue(2500, 0.03, 5)).toBeCloseTo(2898.19, 2);
+    expect(20000 * discountFactor(0.06, 4)).toBeCloseTo(15841.87, 2);
+    expect(20000 * discountFactor(0.02, 4)).toBeCloseTo(18476.91, 2);
+    expect(annuityPayment(15000, 0.05, 5)).toBeCloseTo(3464.62, 2);
+  });
+  it('con tipo negativo el factor de descuento supera la unidad', () => {
+    expect(discountFactor(-0.01, 10)).toBeGreaterThan(1);
+  });
+});
+
+describe('cap. 3 · el juego de los dos dados', () => {
+  it('cifras del ejemplo resuelto', () => {
+    expect(expectedGain(4)).toBeCloseTo(-1 / 6, 10);
+    expect(expectedGain(5)).toBeCloseTo(0, 10);
+    expect(probAhead(10, 4)).toBeCloseTo(0.22, 2);
+    expect(probAhead(100, 4)).toBeCloseTo(0.15, 2);
+    expect(probAhead(1000, 4)).toBeCloseTo(0.0025, 3);
+  });
+  it('la media simulada se acerca al valor esperado', () => {
+    const d = computeDice({ n: 5000, prize: 4, seed: 3 });
+    expect(Math.abs(d.mean0 - d.E)).toBeLessThan(3 * d.sd / Math.sqrt(5000));
+    expect(d.ahead).toBeLessThanOrEqual(3 / PLAYERS);
+  });
+});
+
+describe('cap. 4 · el abanico del azar', () => {
+  it('cifras del ejemplo resuelto y del ejercicio 4.1', () => {
+    expect(probAbove(5, 0.6)).toBeCloseTo(0.6826, 4);
+    expect(20 + 5 * stepMean(0.6)).toBeCloseTo(21, 10);
+    expect(0.012 * Math.sqrt(252)).toBeCloseTo(0.1905, 4);
+  });
+  it('la dispersión simulada sigue la raíz del tiempo', () => {
+    const d = computeWalk({ p: 0.5, n: 256, m: 500, seed: 11 });
+    expect(Math.abs(d.finalSd / 16 - 1)).toBeLessThan(0.1);
+    const i16 = d.sdN.indexOf(16);
+    if (i16 >= 0) expect(Math.abs(d.sdObs[i16] / 4 - 1)).toBeLessThan(0.15);
+  });
+});
+
+describe('cap. 5 · nace una campana', () => {
+  it('cifras del ejemplo resuelto y de los ejercicios', () => {
+    expect(normCdf((-5 - 0.7) / 4.5)).toBeCloseTo(0.103, 3);
+    expect(normCdf(-0.4)).toBeCloseTo(0.345, 3);
+    const pmf = sumPmf(12, DISTS[0]);
+    let p50 = 0;
+    for (const [v, p] of pmf) if (v >= 50) p50 += p;
+    expect(p50).toBeCloseTo(0.104, 3);
+    expect(1 - normCdf((49.5 - 42) / Math.sqrt(35))).toBeCloseTo(0.102, 3);
+  });
+  it('el tablero de Galton reparte las bolas como una binomial', () => {
+    const d = computeBell({ rows: 10, k: 2, dist: 0, seed: 5 });
+    const mean = d.bin.reduce((a, b) => a + b, 0) / d.bin.length;
+    expect(Math.abs(mean - 5)).toBeLessThan(3 * Math.sqrt(2.5 / d.bin.length));
+    expect(d.mu).toBe(7);
   });
 });
 
@@ -71,7 +139,7 @@ describe('cap. 14 · Kelly', () => {
 
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart06, chart14] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {

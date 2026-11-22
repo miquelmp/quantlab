@@ -54,7 +54,7 @@ const table = def ? def.table(data, state, cctx) : null;
           )}
           <button type="button" class="btn" data-act="reset" disabled>{t(lang, 'chart.reset')}</button>
           <button type="button" class="btn" data-act="share" disabled>{t(lang, 'chart.copyLink')}</button>
-          {id === 'montecarlo' && <button type="button" class="btn" data-act="pause" hidden>{t(lang, 'chart.pause')}</button>}
+          {(id === 'montecarlo' || id === 'campana') && <button type="button" class="btn" data-act="pause" hidden>{t(lang, 'chart.pause')}</button>}
         </div>
       </div>
       <p class="chart-nojs no-js-only">{t(lang, 'chart.noJs')}</p>

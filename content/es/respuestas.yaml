@@ -28,6 +28,94 @@
   - etiqueta: Media aritmética
     valor: 0.05
     tipo: porcentaje
+"2.1":
+  - etiqueta: Saldo final
+    valor: 2898.19
+    tipo: numero
+    tolerancia: 0.01
+  - etiqueta: Intereses procedentes del interés compuesto
+    valor: 23.19
+    tipo: numero
+    tolerancia: 0.01
+"2.2":
+  - etiqueta: Valor hoy al 6 %
+    valor: 15841.87
+    tipo: numero
+    tolerancia: 0.01
+  - etiqueta: Valor hoy al 2 %
+    valor: 18476.91
+    tipo: numero
+    tolerancia: 0.01
+"2.3":
+  - etiqueta: Cuota anual
+    valor: 3464.62
+    tipo: numero
+    tolerancia: 0.01
+"3.1":
+  - etiqueta: Premio esperado de una papeleta (€)
+    valor: 1.25
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Ganancia neta esperada del comprador (€)
+    valor: -1.75
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Ingreso del organizador (€)
+    valor: 3500
+    tipo: numero
+"3.2":
+  - etiqueta: Pérdida esperada (€)
+    valor: 36
+    tipo: numero
+  - etiqueta: Recargo sobre la pérdida esperada
+    valor: 0.25
+    tipo: porcentaje
+"4.1":
+  - etiqueta: Precio esperado al final (€)
+    valor: 21
+    tipo: numero
+  - etiqueta: Probabilidad de terminar por encima de 20 €
+    valor: 0.6826
+    tipo: porcentaje
+    tolerancia: 0.001
+"4.2":
+  - etiqueta: Volatilidad mensual
+    valor: 0.0722
+    tipo: porcentaje
+  - etiqueta: Volatilidad diaria
+    valor: 0.0157
+    tipo: porcentaje
+"4.3":
+  - etiqueta: Número de sesiones
+    valor: 400
+    tipo: numero
+  - etiqueta: Probabilidad de un resultado negativo
+    valor: 0.159
+    tipo: porcentaje
+    tolerancia: 0.001
+"5.1":
+  - etiqueta: Proporción de años con rentabilidad negativa
+    valor: 0.345
+    tipo: porcentaje
+    tolerancia: 0.002
+"5.2":
+  - etiqueta: Probabilidad de un año peor que −15 %
+    valor: 0.081
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Extremo inferior del intervalo del 95 %
+    valor: -0.234
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Extremo superior del intervalo del 95 %
+    valor: 0.354
+    tipo: porcentaje
+    tolerancia: 0.001
+"5.3":
+  - etiqueta: Probabilidad de que la suma sea 50 o más
+    valor: 0.102
+    tipo: porcentaje
+    tolerancia: 0.003
 "6.1":
   - etiqueta: Número de escenarios
     valor: 40000

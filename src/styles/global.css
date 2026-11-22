@@ -364,6 +364,7 @@ pre { margin: 0; }
 .chart-svg .arc { fill: none; stroke: var(--text); stroke-width: 1.5; }
 .chart-svg .pt-in { fill: var(--series-1); }
 .chart-svg .pt-out { fill: var(--series-2); }
+.chart-svg .peg { fill: var(--muted); }
 
 /* ---------- Inicio e índices ---------- */
 .hero { padding: 2rem 0 1rem; max-width: 50rem; }

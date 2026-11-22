@@ -13,23 +13,23 @@ capitulos:
     requisitos: []
   - numero: 2
     slug: 2-valor-temporal-del-dinero
-    publicado: false
-    descripcion: Interés compuesto, descuento y valor presente de un flujo de pagos.
+    publicado: true
+    descripcion: Interés simple y compuesto, valor presente y factor de descuento, con un gráfico interactivo para capitalizar y descontar en el navegador.
     requisitos: [1]
   - numero: 3
     slug: 3-esperanza-ley-grandes-numeros
-    publicado: false
-    descripcion: Valor esperado y ley de los grandes números.
+    publicado: true
+    descripcion: Qué es el valor esperado, qué significa y por qué la ley de los grandes números convierte una ventaja pequeña en un resultado casi seguro.
     requisitos: []
   - numero: 4
     slug: 4-paseos-aleatorios-raiz-del-tiempo
-    publicado: false
-    descripcion: Paseos aleatorios y la regla de la raíz del tiempo.
+    publicado: true
+    descripcion: El paseo aleatorio y la regla de la raíz del tiempo, con un abanico de trayectorias simuladas para ver cómo crece la incertidumbre.
     requisitos: [3]
   - numero: 5
     slug: 5-distribucion-normal-teorema-central-limite
-    publicado: false
-    descripcion: La distribución normal y el teorema central del límite.
+    publicado: true
+    descripcion: La distribución normal y el teorema central del límite, con un tablero de Galton animado y la suma de dados convirtiéndose en campana.
     requisitos: [4]
   - numero: 6
     slug: 6-monte-carlo
