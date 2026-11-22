@@ -317,3 +317,11 @@ describe('los gráficos se dibujan sin errores con cualquier configuración extr
     });
   }
 });
+
+describe('casos límite señalados en revisión', () => {
+  it('cap. 12: con rentabilidades iguales y cortos, la frontera es horizontal y sin volatilidad cero falsa', () => {
+    const d = computeFrontier({ ...chart12.defaults, shorts: 1, m1: 0.04, m2: 0.04, m3: 0.04 });
+    expect(d.frontier.length).toBeGreaterThan(1);
+    for (const p of d.frontier) { expect(p.mu).toBeCloseTo(0.04, 10); expect(p.sigma).toBeGreaterThanOrEqual(d.gmv.sigma - 1e-12); }
+  });
+});

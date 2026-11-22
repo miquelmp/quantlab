@@ -124,12 +124,12 @@ export const chart08: ChartDef<S8, D8> = {
     const f = d.funds[Math.round(s.sel)];
     return [
       ...d.funds.map((x) => ({ label: ctx.tr('c8.statFund', { f: x.name, mu: pct(x.mu, ctx), s: pct(x.sigma, ctx) }), value: `SR ${num(x.sr, ctx)}` })),
-      { label: ctx.tr('c8.statCombo', { w: pct(s.w, ctx, 0), f: f.name }), value: `${pct(d.pt.mu, ctx)} · ${pct(d.pt.sigma, ctx)}`, note: ctx.tr('c8.comboNote', { sr: num(f.sr, ctx) }) },
+      { label: ctx.tr('c8.statCombo', { w: pct(s.w, ctx, 0), f: f.name }), value: `${pct(d.pt.mu, ctx)} · ${pct(d.pt.sigma, ctx)}`, note: s.w > 0 ? ctx.tr('c8.comboNote', { sr: num(f.sr, ctx) }) : ctx.tr('c8.comboNoteZero') },
     ];
   },
   describe: (d, s, ctx) => {
     const f = d.funds[Math.round(s.sel)];
-    return ctx.tr('c8.describe', {
+    return ctx.tr(s.w > 0 ? 'c8.describe' : 'c8.describeZero', {
       list: d.funds.map((x) => `${x.name} ${num(x.sr, ctx)}`).join(', '), rf: pct(s.rf, ctx, 2), b: d.funds[d.best].name,
       w: pct(s.w, ctx, 0), f: f.name, mu: pct(d.pt.mu, ctx), s: pct(d.pt.sigma, ctx), sr: num(f.sr, ctx),
     });

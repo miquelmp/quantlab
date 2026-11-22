@@ -109,9 +109,15 @@ export function computeFrontier(s: S12): D12 {
     gmv = { w: wg, ...portStats(wg, mu, cov) };
     const lo = Math.min(...mu) - 0.06;
     const hi = Math.max(...mu) + 0.06;
-    for (let k = 0; k <= 200; k++) {
-      const m = lo + ((hi - lo) * k) / 200;
-      frontier.push({ mu: m, sigma: Math.sqrt(Math.max(0, (C * m * m - 2 * A * m + B) / D)) });
+    if (Math.abs(D) <= 1e-9 * Math.abs(B * C)) {
+      // Todas las rentabilidades esperadas iguales: cualquier cartera rinde lo mismo, así que la
+      // «frontera» es una semirrecta horizontal que empieza en la de mínima varianza.
+      for (let k = 0; k <= 50; k++) frontier.push({ mu: gmv.mu, sigma: gmv.sigma + k * 0.02 });
+    } else {
+      for (let k = 0; k <= 200; k++) {
+        const m = lo + ((hi - lo) * k) / 200;
+        frontier.push({ mu: m, sigma: Math.sqrt(Math.max(0, (C * m * m - 2 * A * m + B) / D)) });
+      }
     }
     if (Math.round(s.riskfree) === 1) {
       const ex = mu.map((x) => x - s.rf);
