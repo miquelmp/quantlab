@@ -22,6 +22,7 @@ import { chart11, equalWeightVol, floorVol, twoAssetVol, effectiveN } from '../s
 import { chart12, computeFrontier, minVarWeight2, portStats, covMatrix } from '../src/charts/ch12-frontera';
 import { chart13, computeCapm, betaFrom, capm, totalVol } from '../src/charts/ch13-capm';
 import { chart15, computeTails, tTail, tailNormal, tailT } from '../src/charts/ch15-colas';
+import { chart16, computeVar, normalVaR, normalES, tVaR, tES, binomTail, kupiec } from '../src/charts/ch16-var';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -276,9 +277,31 @@ describe('cap. 15 · lo que la campana no ve', () => {
   });
 });
 
+describe('cap. 16 · el umbral y lo que hay detrás', () => {
+  it('cifras del libro', () => {
+    expect(normalVaR(0.95) * 3000).toBeCloseTo(4935, -1);
+    expect(normalVaR(0.99) * 3000).toBeCloseTo(6979, -1);
+    expect(normalES(0.975) * 3000).toBeCloseTo(7013, -1);
+    expect(normalES(0.99) * 3000).toBeCloseTo(7996, -1);
+    expect(tVaR(0.99, 4)).toBeCloseTo(2.65, 2);
+    expect(tES(0.99, 4)).toBeCloseTo(3.69, 2);
+    expect(normalVaR(0.99) * 0.008 * 2e6).toBeCloseTo(37222, -1);
+    expect(normalVaR(0.99) * 0.008 * 2e6 * Math.sqrt(10)).toBeCloseTo(117705, -2);
+    expect(normalES(0.99) * 0.008 * 2e6).toBeCloseTo(42643, -1);
+    expect(binomTail(7, 250, 0.01)).toBeCloseTo(0.0137, 3);
+  });
+  it('las colas gruesas dan más excepciones de las esperadas con el VaR normal al 99 %', () => {
+    const d = computeVar({ conf: 0.99, model: 0, nu: 4, seed: 16 });
+    expect(d.expected).toBeCloseTo(25.2, 5);
+    expect(d.exc).toBeGreaterThan(15);
+    expect(Number.isFinite(d.kup.pValue)).toBe(true);
+    expect(kupiec(25, 2520, 0.01).pValue).toBeGreaterThan(0.9);
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12, chart13, chart15] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12, chart13, chart15, chart16] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {

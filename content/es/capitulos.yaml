@@ -83,8 +83,8 @@ capitulos:
     requisitos: [5]
   - numero: 16
     slug: 16-valor-en-riesgo-deficit-esperado
-    publicado: false
-    descripcion: Valor en riesgo (VaR) y déficit esperado.
+    publicado: true
+    descripcion: "Valor en riesgo y déficit esperado: cuánto puede perder una cartera en un mal día, qué hay más allá del umbral y cómo se comprueba un modelo con sus excepciones."
     requisitos: [5, 15]
 
 temas:

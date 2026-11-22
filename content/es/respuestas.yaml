@@ -330,3 +330,22 @@
     valor: 76
     tipo: numero
     tolerancia: 2
+"16.1":
+  - etiqueta: VaR a un día (€)
+    valor: 37222
+    tipo: numero
+    tolerancia: 30
+  - etiqueta: VaR a diez días (€)
+    valor: 117705
+    tipo: numero
+    tolerancia: 100
+"16.2":
+  - etiqueta: Déficit esperado (€)
+    valor: 42643
+    tipo: numero
+    tolerancia: 40
+"16.3":
+  - etiqueta: Probabilidad de 7 o más excepciones
+    valor: 0.014
+    tipo: porcentaje
+    tolerancia: 0.001
