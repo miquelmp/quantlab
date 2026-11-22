@@ -269,3 +269,21 @@
     valor: 3.125
     tipo: numero
     tolerancia: 0.03
+"12.1":
+  - etiqueta: Peso en el primer activo
+    valor: 0.6
+    tipo: porcentaje
+  - etiqueta: Peso en el segundo activo
+    valor: 0.4
+    tipo: porcentaje
+"12.2":
+  - etiqueta: Rentabilidad de la cartera 50/50
+    valor: 0.065
+    tipo: porcentaje
+  - etiqueta: Volatilidad de la cartera 50/50
+    valor: 0.11
+    tipo: porcentaje
+  - etiqueta: Ratio de Sharpe de la cartera
+    valor: 0.41
+    tipo: numero
+    tolerancia: 0.005

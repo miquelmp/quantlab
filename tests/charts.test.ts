@@ -19,6 +19,7 @@ import { chart08, computeSharpe, sharpe, combo } from '../src/charts/ch08-sharpe
 import { chart09, computeDrag, growthRate, zeroGrowthVol } from '../src/charts/ch09-lastre';
 import { chart10, computeCorr, portVol, correlation } from '../src/charts/ch10-correlacion';
 import { chart11, equalWeightVol, floorVol, twoAssetVol, effectiveN } from '../src/charts/ch11-diversificacion';
+import { chart12, computeFrontier, minVarWeight2, portStats, covMatrix } from '../src/charts/ch12-frontera';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -214,9 +215,33 @@ describe('cap. 11 · hasta dónde llega la diversificación', () => {
   });
 });
 
+describe('cap. 12 · la nube y su borde', () => {
+  it('cifras del ejemplo resuelto y de los ejercicios', () => {
+    const w = minVarWeight2(0.06, 0.2, 0.2);
+    expect(w).toBeCloseTo(0.969, 3);
+    const s2 = { ...chart12.defaults, r13: 0, r23: 0 };
+    const p = portStats([w, 1 - w, 0], [0.04, 0.09, 0], covMatrix(s2));
+    expect(p.sigma).toBeCloseTo(0.0597, 4);
+    expect(p.mu).toBeCloseTo(0.0415, 4);
+    expect(minVarWeight2(0.12, 0.18, -1)).toBeCloseTo(0.6, 10);
+    const h = portStats([0.5, 0.5, 0], [0.04, 0.09, 0], covMatrix(s2));
+    expect(h.sigma).toBeCloseTo(0.11, 10);
+    expect((h.mu - 0.02) / h.sigma).toBeCloseTo(0.409, 3);
+  });
+  it('la cartera de mínima varianza no tiene más riesgo que ninguna cartera aleatoria', () => {
+    for (const shorts of [0, 1]) {
+      const d = computeFrontier({ ...chart12.defaults, shorts });
+      let min = Infinity;
+      for (let i = 0; i < d.cloud.length; i += 2) min = Math.min(min, d.cloud[i]);
+      expect(d.gmv.sigma).toBeLessThanOrEqual(min + 1e-4);
+      expect(d.tangent).not.toBeNull();
+    }
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {

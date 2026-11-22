@@ -63,8 +63,8 @@ capitulos:
     requisitos: [10]
   - numero: 12
     slug: 12-frontera-eficiente
-    publicado: false
-    descripcion: Optimización de carteras y frontera eficiente.
+    publicado: true
+    descripcion: "La frontera eficiente de Markowitz: 5.000 carteras aleatorias, la cartera de mínima varianza y la de máximo ratio de Sharpe, con una tabla editable de tres activos."
     requisitos: [11]
   - numero: 13
     slug: 13-beta-capm-factores
