@@ -132,7 +132,7 @@ export const chart16: ChartDef<S16, D16> = {
         ];
         const lh = legendHeight(items, w - M.left - M.right);
         const sd = VOL * VALUE;
-        const lim = 5.5 * sd;
+        const lim = Math.max(5.5 * sd, d.es * 1.3);   // que el VaR y el ES siempre quepan
         const xs: number[] = [];
         for (let i = 0; i <= 300; i++) xs.push(-lim + (2 * lim * i) / 300);
         const dens = (x: number) => (isT ? tPdf(x / (sd * tStd(nu)), nu) / (sd * tStd(nu)) : phi(x / sd) / sd);
@@ -157,7 +157,7 @@ export const chart16: ChartDef<S16, D16> = {
           `<text class="value-label" x="${r1(vx + 6)}" y="${r1(sy(ymax * 0.8) + 4)}">${esc(`VaR ${eur(d.var, ctx)}`)}</text>` +
           `<line class="neg" x1="${r1(ex)}" x2="${r1(ex)}" y1="${r1(sy(0))}" y2="${r1(ay)}"/>` +
           `<path class="neg line" d="M${r1(ex - 5)},${r1(ay + 8)}L${r1(ex)},${r1(ay)}L${r1(ex + 5)},${r1(ay + 8)}"/>` +
-          `<text class="value-label" x="${r1(ex - 6)}" y="${r1(ay - 6)}" text-anchor="end">${esc(`ES ${eur(d.es, ctx)}`)}</text>` +
+          `<text class="value-label" x="${r1(ex - M.left < 90 ? ex + 6 : ex - 6)}" y="${r1(ay - 6)}" text-anchor="${ex - M.left < 90 ? 'start' : 'end'}">${esc(`ES ${eur(d.es, ctx)}`)}</text>` +
           '</svg>';
       },
     },

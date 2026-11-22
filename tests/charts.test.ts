@@ -325,3 +325,16 @@ describe('casos límite señalados en revisión', () => {
     for (const p of d.frontier) { expect(p.mu).toBeCloseTo(0.04, 10); expect(p.sigma).toBeGreaterThanOrEqual(d.gmv.sigma - 1e-12); }
   });
 });
+
+describe('cap. 16 · ejes', () => {
+  it('con t de 3 g. l. al 99,9 % el ES sigue dentro del gráfico', () => {
+    const st = { conf: 0.999, model: 1, nu: 3, seed: 16 };
+    const d = computeVar(st);
+    const svg = chart16.panels[0].render(d, st, 400, { tr: (k: string) => k, fmt: { decimal: ',', group: '.' } } as never);
+    const xs = [...svg.matchAll(/<line class="neg" x1="([-\d.]+)"/g)].map((m) => Number(m[1]));
+    expect(xs.length).toBe(2);
+    for (const x of xs) { expect(x).toBeGreaterThan(0); expect(x).toBeLessThan(400); }
+    expect(svg).toContain('neg-zone');
+  });
+});
+
