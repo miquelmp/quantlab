@@ -21,6 +21,7 @@ import { chart10, computeCorr, portVol, correlation } from '../src/charts/ch10-c
 import { chart11, equalWeightVol, floorVol, twoAssetVol, effectiveN } from '../src/charts/ch11-diversificacion';
 import { chart12, computeFrontier, minVarWeight2, portStats, covMatrix } from '../src/charts/ch12-frontera';
 import { chart13, computeCapm, betaFrom, capm, totalVol } from '../src/charts/ch13-capm';
+import { chart15, computeTails, tTail, tailNormal, tailT } from '../src/charts/ch15-colas';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -257,9 +258,27 @@ describe('cap. 13 · lo que paga el mercado', () => {
   });
 });
 
+describe('cap. 15 · lo que la campana no ve', () => {
+  it('cifras del libro', () => {
+    expect(tailNormal(0.06) / 2).toBeCloseTo(9.9e-10, 11);
+    expect(tTail(6 * Math.SQRT2, 4)).toBeCloseTo(5.3e-4, 5);
+    expect(tailT(0.04, 4)).toBeCloseTo(0.0048, 4);
+    expect(252 / (tailNormal(0.04) / 2) / 252 / 252).toBeGreaterThan(0);
+    expect(1 / (252 * tailNormal(0.04) / 2)).toBeCloseTo(125, -1);
+    expect(tTail(0, 7)).toBeCloseTo(0.5, 10);
+  });
+  it('con 4 grados de libertad salen unos 60 días más allá de ±4 % en 50 años', () => {
+    const d = computeTails({ nu: 4, seed: 15 });
+    expect(d.countT).toBeGreaterThan(35);
+    expect(d.countT).toBeLessThan(90);
+    expect(d.countN).toBeLessThan(4);
+    expect(d.kurtT).toBeGreaterThan(d.kurtN);
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12, chart13] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11, chart12, chart13, chart15] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {
