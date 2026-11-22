@@ -1,0 +1,84 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { LANGS } from '../../../i18n/config';
+import { t } from '../../../i18n';
+import { loadBook } from '../../../lib/book';
+import { initRenderer, renderInline, glossaryUrl, url, type RenderCtx } from '../../../lib/render';
+import { refLabel, refHref, letterOf } from '../../../lib/glossary';
+import { SITE } from '../../../config';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book };
+const sorted = [...book.glossary].sort((a, b) => a.term.localeCompare(b.term, lang, { sensitivity: 'base' }));
+const groups = new Map<string, typeof sorted>();
+for (const g of sorted) { const l = letterOf(g.term); if (!groups.has(l)) groups.set(l, []); groups.get(l)!.push(g); }
+const alphabet = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  name: `${t(lang, 'glossary.title')} · ${book.title}`,
+  url: new URL(url(ctx, `${lang}/glosario/`), SITE.url).toString(),
+  hasDefinedTerm: sorted.map((g) => ({ '@type': 'DefinedTerm', name: g.term, description: g.definitionText, url: new URL(glossaryUrl(ctx, g.slug), SITE.url).toString() })),
+};
+---
+<Base lang={lang} title={t(lang, 'glossary.title')} description={`${t(lang, 'glossary.intro')} ${t(lang, 'glossary.count', { n: sorted.length })}.`} path="glosario/" current="glossary" jsonLd={jsonLd}>
+  <div class="prose">
+    <h1>{t(lang, 'glossary.title')}</h1>
+    <p>{book.glossaryIntro || t(lang, 'glossary.intro')} <span class="muted">({t(lang, 'glossary.count', { n: sorted.length })})</span></p>
+    <nav aria-label={t(lang, 'glossary.letters')}>
+      <ul class="letters">
+        {alphabet.map((l) => <li>{groups.has(l) ? <a href={`#letra-${l}`}>{l}</a> : <span aria-hidden="true">{l}</span>}</li>)}
+      </ul>
+    </nav>
+    <div class="glossary-filter js-only">
+      <label for="glossary-q">{t(lang, 'glossary.filter')}</label>
+      <input id="glossary-q" type="search" placeholder={t(lang, 'glossary.filterPlaceholder')} autocomplete="off" aria-controls="glossary-results" />
+      <p class="sr-only" role="status" aria-live="polite" id="glossary-status"></p>
+    </div>
+    <div id="glossary-results">
+      {[...groups.entries()].map(([l, items]) => (
+        <section class="glossary-letter" id={`letra-${l}`} data-letter>
+          <h2>{l}</h2>
+          <dl class="glossary-list">
+            {items.map((g) => (
+              <div data-term={`${g.term} ${g.definitionText}`}>
+                <dt id={g.slug}><a href={glossaryUrl(ctx, g.slug)}>{g.term}</a></dt>
+                <dd><Fragment set:html={renderInline(g.definition, ctx)} />{' '}
+                  <span class="ref">({t(lang, 'glossary.definedIn').toLowerCase()} {refHref(ctx, g.ref) ? <a href={refHref(ctx, g.ref)!}>{refLabel(lang, g.ref)}</a> : refLabel(lang, g.ref)})</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ))}
+    </div>
+    <p id="glossary-empty" hidden>{t(lang, 'glossary.noResults')}</p>
+  </div>
+  <script>
+    const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const input = document.getElementById('glossary-q') as HTMLInputElement | null;
+    const status = document.getElementById('glossary-status')!;
+    const empty = document.getElementById('glossary-empty')!;
+    input?.addEventListener('input', () => {
+      const q = norm(input.value.trim());
+      let shown = 0;
+      document.querySelectorAll<HTMLElement>('[data-term]').forEach((el) => {
+        const ok = !q || norm(el.dataset.term!).includes(q);
+        el.hidden = !ok;
+        if (ok) shown++;
+      });
+      document.querySelectorAll<HTMLElement>('[data-letter]').forEach((sec) => {
+        sec.hidden = !sec.querySelector('[data-term]:not([hidden])');
+      });
+      empty.hidden = shown > 0;
+      status.textContent = String(shown);
+    });
+  </script>
+</Base>

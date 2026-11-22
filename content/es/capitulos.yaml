@@ -1,0 +1,105 @@
+# Metadatos de la web para cada capítulo del libro (español).
+# El texto de los capítulos NO está aquí: sale siempre de libro.md (fuente única).
+# - slug: parte final de la URL. No cambiarlo una vez publicado (rompe enlaces).
+# - publicado: true si el capítulo ya está en la web; false = «próximamente».
+# - descripcion: resumen para buscadores y redes sociales (máx. ~160 caracteres).
+# - requisitos: capítulos que conviene leer antes.
+
+capitulos:
+  - numero: 1
+    slug: 1-medir-lo-que-gana-una-inversion
+    publicado: true
+    descripcion: Rentabilidad simple y logarítmica, cómo encadenar rentabilidades sin errores y por qué una pérdida exige después una ganancia mayor.
+    requisitos: []
+  - numero: 2
+    slug: 2-valor-temporal-del-dinero
+    publicado: false
+    descripcion: Interés compuesto, descuento y valor presente de un flujo de pagos.
+    requisitos: [1]
+  - numero: 3
+    slug: 3-esperanza-ley-grandes-numeros
+    publicado: false
+    descripcion: Valor esperado y ley de los grandes números.
+    requisitos: []
+  - numero: 4
+    slug: 4-paseos-aleatorios-raiz-del-tiempo
+    publicado: false
+    descripcion: Paseos aleatorios y la regla de la raíz del tiempo.
+    requisitos: [3]
+  - numero: 5
+    slug: 5-distribucion-normal-teorema-central-limite
+    publicado: false
+    descripcion: La distribución normal y el teorema central del límite.
+    requisitos: [4]
+  - numero: 6
+    slug: 6-monte-carlo
+    publicado: true
+    descripcion: Simulación de Monte Carlo explicada paso a paso, con error estándar, semillas y un plan de ahorro simulado en el navegador.
+    requisitos: [1, 3, 5]
+  - numero: 7
+    slug: 7-volatilidad
+    publicado: false
+    descripcion: Qué es la volatilidad, cómo se estima y cómo se anualiza.
+    requisitos: [4]
+  - numero: 8
+    slug: 8-ratio-de-sharpe
+    publicado: false
+    descripcion: Rentabilidad ajustada al riesgo con el ratio de Sharpe.
+    requisitos: [7]
+  - numero: 9
+    slug: 9-crecimiento-compuesto-lastre-volatilidad
+    publicado: false
+    descripcion: Crecimiento compuesto y lastre de la volatilidad.
+    requisitos: [1, 7]
+  - numero: 10
+    slug: 10-covarianza-correlacion
+    publicado: false
+    descripcion: Covarianza y correlación entre activos.
+    requisitos: [4]
+  - numero: 11
+    slug: 11-diversificacion
+    publicado: false
+    descripcion: Hasta dónde reduce el riesgo la diversificación.
+    requisitos: [10]
+  - numero: 12
+    slug: 12-frontera-eficiente
+    publicado: false
+    descripcion: Optimización de carteras y frontera eficiente.
+    requisitos: [11]
+  - numero: 13
+    slug: 13-beta-capm-factores
+    publicado: false
+    descripcion: Beta, CAPM y factores de riesgo.
+    requisitos: [12]
+  - numero: 14
+    slug: 14-criterio-de-kelly
+    publicado: true
+    descripcion: "El criterio de Kelly con simulaciones de 1.000 jugadores: cuánto arriesgar con una ventaja y por qué apostar de más arruina."
+    requisitos: [3, 6, 9]
+  - numero: 15
+    slug: 15-colas-gruesas
+    publicado: false
+    descripcion: Colas gruesas y extremos que la normal no ve.
+    requisitos: [5]
+  - numero: 16
+    slug: 16-valor-en-riesgo-deficit-esperado
+    publicado: false
+    descripcion: Valor en riesgo (VaR) y déficit esperado.
+    requisitos: [5, 15]
+
+temas:
+  - letra: A
+    slug: tema-a-backtesting-sobreajuste
+    publicado: false
+  - letra: B
+    slug: tema-b-costes-de-transaccion
+    publicado: false
+  - letra: C
+    slug: tema-c-arbol-binomial
+    publicado: false
+  - letra: D
+    slug: tema-d-estacionariedad-cointegracion
+    publicado: false
+  - letra: E
+    slug: tema-e-caidas-maximas
+    publicado: false

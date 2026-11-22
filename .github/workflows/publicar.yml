@@ -1,0 +1,60 @@
+# Publica la web en GitHub Pages cada vez que cambia la rama main.
+# En las pull requests solo comprueba (fórmulas, Python, pruebas, enlaces) sin publicar.
+name: Comprobar y publicar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar dependencias
+        run: |
+          npm ci
+          python -m pip install --quiet numpy
+      - name: Validar el contenido (estructura, fórmulas, glosario, respuestas)
+        run: npm run check:content
+      - name: Ejecutar los fragmentos de Python del libro
+        run: npm run check:python
+      - name: Pruebas de los gráficos y de la comprobación de ejercicios
+        run: npm test
+      - name: Generar la web
+        run: npm run build
+      - name: Comprobar enlaces internos
+        run: npm run check:links
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

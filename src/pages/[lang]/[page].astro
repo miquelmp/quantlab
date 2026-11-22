@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { loadBook } from '../../lib/book';
+import { loadPage, STATIC_PAGES } from '../../lib/pages';
+import { initRenderer, renderBlocks, type RenderCtx } from '../../lib/render';
+
+export function getStaticPaths() {
+  return LANGS.flatMap((l) => STATIC_PAGES.map((p) => ({ params: { lang: l.code, page: p } })));
+}
+
+await initRenderer();
+const { lang, page } = Astro.params as { lang: string; page: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book, linkTerms: false, usedIds: new Set() };
+const p = loadPage(lang, page);
+const html = renderBlocks(p.nodes, ctx);
+---
+<Base lang={lang} title={p.title} description={p.summary} path={`${page}/`}>
+  <article class="prose">
+    <h1>{p.title}</h1>
+    <Fragment set:html={html} />
+  </article>
+</Base>

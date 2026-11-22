@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { t } from '../../i18n';
+import { loadBook } from '../../lib/book';
+import { initRenderer, renderInline, renderBlocks, chapterUrl, type RenderCtx } from '../../lib/render';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book, linkTerms: false };
+const chapters = [...new Set(book.formulas.map((f) => f.chapter))];
+---
+<Base lang={lang} title={t(lang, 'formulas.title')} description={t(lang, 'formulas.intro')} path="formulas/" current="formulas">
+  <div class="prose" style="max-width:56rem">
+    <h1>{t(lang, 'formulas.title')}</h1>
+    <p>{t(lang, 'formulas.intro')}</p>
+    <div class="glossary-filter js-only">
+      <label for="f-ch">{t(lang, 'formulas.filter')}</label>
+      <select id="f-ch" style="min-height:44px;padding:.3rem .6rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit">
+        <option value="">{t(lang, 'formulas.all')}</option>
+        {chapters.map((c) => <option value={c}>{t(lang, 'nav.chapter')} {c} · {book.chapters.find((x) => x.number === c)?.title}</option>)}
+      </select>
+    </div>
+    <div class="table-wrap" tabindex="0" role="region" aria-label={t(lang, 'formulas.title')}>
+      <table>
+        <thead><tr><th scope="col">{t(lang, 'formulas.concept')}</th><th scope="col">{t(lang, 'formulas.formula')}</th><th scope="col">{t(lang, 'formulas.chapter')}</th></tr></thead>
+        <tbody>
+          {book.formulas.map((f) => {
+            const href = chapterUrl(ctx, f.chapter);
+            return (
+              <tr data-ch={f.chapter}>
+                <th scope="row" set:html={renderInline(f.concept, ctx)} />
+                <td set:html={renderInline(f.formula, ctx)} />
+                <td>{href ? <a href={href + '#formalizacion'}>{f.chapter}</a> : <span title={t(lang, 'nav.comingSoon')}>{f.chapter}</span>}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+    <Fragment set:html={renderBlocks(book.formulasNote, ctx)} />
+  </div>
+  <script>
+    const sel = document.getElementById('f-ch') as HTMLSelectElement | null;
+    sel?.addEventListener('change', () => {
+      document.querySelectorAll<HTMLElement>('tr[data-ch]').forEach((tr) => { tr.hidden = !!sel.value && tr.dataset.ch !== sel.value; });
+    });
+  </script>
+</Base>

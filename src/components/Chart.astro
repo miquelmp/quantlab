@@ -1,0 +1,103 @@
+---
+/**
+ * Gráfico interactivo de un capítulo. En la compilación se genera la imagen con los
+ * valores por defecto (legible sin JavaScript y para buscadores); en el navegador,
+ * src/charts/client/mount.ts le añade los controles y la interacción.
+ */
+import { CHART_BY_CHAPTER, I18N_PREFIX, loadChart } from '../charts/registry';
+import type { ChartCtx } from '../charts/types';
+import type { ChartSpec } from '../lib/book';
+import { renderInline, type RenderCtx } from '../lib/render';
+import { t, tPrefix, numberFormat } from '../i18n';
+
+interface Props { chapter: number; spec: ChartSpec; ctx: RenderCtx }
+const { chapter, spec, ctx } = Astro.props;
+const lang = ctx.lang;
+const id = CHART_BY_CHAPTER[chapter];
+const def = id ? await loadChart(id) : null;
+const strings = id ? { ...tPrefix(lang, I18N_PREFIX[id], 'chart.') } : {};
+const fmt = numberFormat(lang);
+const cctx: ChartCtx = {
+  fmt,
+  tr: (k, vars = {}) => { let s = strings[k] ?? t(lang, k); for (const [a, b] of Object.entries(vars)) s = s.replaceAll(`{${a}}`, String(b)); return s; },
+};
+const state = def ? { ...def.defaults } : {};
+const data = def ? def.compute(state) : null;
+const W = 600;
+const cols = def && def.panels.filter((p) => !p.wide).length >= 2 ? 'cols-2' : '';
+const domId = `grafico-${id ?? chapter}`;
+const table = def ? def.table(data, state, cctx) : null;
+---
+<figure class="chart" id={domId} data-chart={id} data-fmt={JSON.stringify(fmt)} aria-labelledby={`${domId}-title`}>
+  <div class="chart-head">
+    <h3 id={`${domId}-title`}>{spec.title}</h3>
+    <p class="chart-desc" set:html={renderInline(spec.description, ctx)} />
+  </div>
+  {def ? (
+    <>
+      <div class="chart-controls js-only" role="group" aria-label={t(lang, 'chart.controls')}>
+        {def.sliders.map((sl) => (
+          <div class="control">
+            <label for={`${domId}-${sl.key}`}>
+              <span>{cctx.tr(sl.label)}</span>
+              <output data-for={sl.key} for={`${domId}-${sl.key}`}>{sl.format(state[sl.key], cctx)}</output>
+            </label>
+            <input type="range" id={`${domId}-${sl.key}`} data-key={sl.key} min={sl.min} max={sl.max} step={sl.step} value={state[sl.key]} aria-valuetext={sl.format(state[sl.key], cctx)} disabled />
+          </div>
+        ))}
+        <div class="control-seed">
+          {def.simulated && (
+            <>
+              <label>{t(lang, 'chart.seed')}<input type="number" min="0" step="1" inputmode="numeric" data-seed value={state.seed} disabled /></label>
+              <button type="button" class="btn" data-act="reseed" disabled>{t(lang, 'chart.resimulate')}</button>
+            </>
+          )}
+          <button type="button" class="btn" data-act="reset" disabled>{t(lang, 'chart.reset')}</button>
+          <button type="button" class="btn" data-act="share" disabled>{t(lang, 'chart.copyLink')}</button>
+          {id === 'montecarlo' && <button type="button" class="btn" data-act="pause" hidden>{t(lang, 'chart.pause')}</button>}
+        </div>
+      </div>
+      <p class="chart-nojs no-js-only">{t(lang, 'chart.noJs')}</p>
+      <div class={`chart-panels ${cols}`}>
+        {def.panels.map((p) => (
+          <div class={`panel${p.wide ? ' wide' : ''}`} data-panel={p.id}>
+            <p class="panel-title" aria-hidden="true">{p.title(cctx)}</p>
+            <div class="panel-svg" set:html={p.render(data, state, p.wide ? 2 * W - 120 : W - 120, cctx)} />
+            <div class="crosshair" hidden></div>
+            <div class="tooltip" hidden></div>
+          </div>
+        ))}
+      </div>
+      <dl class="chart-stats" data-stats>
+        {def.stats(data, state, cctx).map((s) => (
+          <div class="stat"><dt>{s.label}</dt><dd>{s.value}{s.note && <span class="stat-note">{s.note}</span>}</dd></div>
+        ))}
+      </dl>
+      {def.simulated && <p class="chart-sim-note">{t(lang, 'chart.simNote')}</p>}
+    </>
+  ) : (
+    <p class="notice">{t(lang, 'chapter.chartPending')}</p>
+  )}
+  <aside class="observe" aria-label={t(lang, 'chart.observe')}>
+    <strong>{t(lang, 'chart.observe')}</strong>
+    <p set:html={renderInline(spec.observe, ctx)} />
+  </aside>
+  {def && (
+    <>
+      <p class="chart-describe" data-describe aria-live="polite" data-label={t(lang, 'chart.description')}>{def.describe(data, state, cctx)}</p>
+      <details class="chart-table" data-table open={false}>
+        <summary>{t(lang, 'chart.dataTable')}</summary>
+        <div class="table-body">
+          <div class="table-wrap" tabindex="0" role="region" aria-label={table!.caption}>
+            <table>
+              <caption>{table!.caption}</caption>
+              <thead><tr>{table!.head.map((h) => <th scope="col">{h}</th>)}</tr></thead>
+              <tbody>{table!.rows.map((r) => <tr>{r.map((c, i) => (i === 0 ? <th scope="row">{c}</th> : <td>{c}</td>))}</tr>)}</tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+      <script type="application/json" data-i18n set:html={JSON.stringify(strings)} />
+    </>
+  )}
+</figure>
