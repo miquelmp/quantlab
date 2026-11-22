@@ -58,8 +58,8 @@ capitulos:
     requisitos: [4]
   - numero: 11
     slug: 11-diversificacion
-    publicado: false
-    descripcion: Hasta dónde reduce el riesgo la diversificación.
+    publicado: true
+    descripcion: "Cómo y hasta dónde reduce el riesgo la diversificación: la fórmula de la varianza de una cartera y el suelo que fija la correlación común."
     requisitos: [10]
   - numero: 12
     slug: 12-frontera-eficiente

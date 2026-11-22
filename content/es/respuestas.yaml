@@ -251,3 +251,21 @@
     valor: -1
     tipo: numero
     tolerancia: 0.005
+"11.1":
+  - etiqueta: Volatilidad de la cartera
+    valor: 0.1
+    tipo: porcentaje
+"11.2":
+  - etiqueta: Volatilidad con diez activos
+    valor: 0.136
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Mínimo alcanzable
+    valor: 0.126
+    tipo: porcentaje
+    tolerancia: 0.001
+"11.3":
+  - etiqueta: Número efectivo de activos
+    valor: 3.125
+    tipo: numero
+    tolerancia: 0.03

@@ -18,6 +18,7 @@ import { chart07, computeVol, probLoss, sampleVol } from '../src/charts/ch07-vol
 import { chart08, computeSharpe, sharpe, combo } from '../src/charts/ch08-sharpe';
 import { chart09, computeDrag, growthRate, zeroGrowthVol } from '../src/charts/ch09-lastre';
 import { chart10, computeCorr, portVol, correlation } from '../src/charts/ch10-correlacion';
+import { chart11, equalWeightVol, floorVol, twoAssetVol, effectiveN } from '../src/charts/ch11-diversificacion';
 import { ES } from '../src/lib/format';
 
 describe('cap. 1 · asimetría de las pérdidas', () => {
@@ -201,9 +202,21 @@ describe('cap. 10 · moverse juntos', () => {
   });
 });
 
+describe('cap. 11 · hasta dónde llega la diversificación', () => {
+  it('cifras del libro', () => {
+    expect(twoAssetVol(0.6, 0.18, 0.06, 0.1) ** 2).toBeCloseTo(0.012758, 6);
+    expect(twoAssetVol(0.6, 0.18, 0.06, 0.1)).toBeCloseTo(0.113, 3);
+    expect([1, 5, 20, 50].map((n) => +equalWeightVol(n, 0.25, 0.2).toFixed(3))).toEqual([0.25, 0.15, 0.122, 0.116]);
+    expect(floorVol(0.25, 0.2)).toBeCloseTo(0.112, 3);
+    expect(equalWeightVol(9, 0.3, 0)).toBeCloseTo(0.1, 10);
+    expect(equalWeightVol(10, 0.2, 0.4)).toBeCloseTo(0.136, 3);
+    expect(effectiveN([0.5, 0.2, 0.1, 0.1, 0.1])).toBeCloseTo(3.125, 10);
+  });
+});
+
 describe('los gráficos se dibujan sin errores con cualquier configuración extrema', () => {
   const ctx = { tr: (k: string) => k, fmt: ES };
-  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10] as any[]) {
+  for (const def of [chart01, chart02, chart03, chart04, chart05, chart06, chart14, chart07, chart08, chart09, chart10, chart11] as any[]) {
     it(def.id, () => {
       const corners = [Object.fromEntries(def.sliders.map((s: any) => [s.key, s.min])), Object.fromEntries(def.sliders.map((s: any) => [s.key, s.max]))];
       for (const c of corners) {
