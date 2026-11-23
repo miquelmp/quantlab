@@ -1,0 +1,52 @@
+---
+/** Temas complementarios A–E (RF-TEM-01): páginas breves, sin gráfico propio por ahora. */
+import Base from '../../../layouts/Base.astro';
+import { LANGS } from '../../../i18n/config';
+import { t } from '../../../i18n';
+import { loadBook, type Topic } from '../../../lib/book';
+import { initRenderer, renderBlocks, topicUrl, url, type RenderCtx } from '../../../lib/render';
+import { SITE } from '../../../config';
+
+export function getStaticPaths() {
+  return LANGS.flatMap((l) => loadBook(l.code).topics.filter((tp) => tp.published).map((tp) => ({ params: { lang: l.code, slug: tp.slug }, props: { letter: tp.letter } })));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const { letter } = Astro.props as { letter: string };
+const book = loadBook(lang);
+const tp = book.topics.find((x) => x.letter === letter) as Topic;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book, topic: letter, headingShift: -1, usedTerms: new Set(), usedIds: new Set(), pyCounter: { n: 0 } };
+const html = renderBlocks(tp.nodes, ctx);
+const pub = book.topics.filter((x) => x.published);
+const idx = pub.findIndex((x) => x.letter === letter);
+const prev = idx > 0 ? pub[idx - 1] : null;
+const next = idx < pub.length - 1 ? pub[idx + 1] : null;
+const pageTitle = `${t(lang, 'nav.topic')} ${letter} · ${tp.title.replace(/\*/g, '')}`;
+const pageUrl = new URL(url(ctx, `${lang}/temas/${tp.slug}/`), SITE.url).toString();
+const issueUrl = `${SITE.repo}/issues/new?` + new URLSearchParams({
+  title: `[Errata] ${t(lang, 'nav.topic')} ${letter}: `,
+  body: `${pageTitle}\n${pageUrl}\n\nSección:\n\nQué está mal:\n\nQué debería decir:\n`,
+}).toString();
+const label = (x: Topic) => `${t(lang, 'nav.topic')} ${x.letter} · ${x.title.replace(/\*/g, '')}`;
+---
+<Base lang={lang} title={pageTitle} description={tp.description} path={`temas/${tp.slug}/`} ogType="article">
+  <article class="prose">
+    <nav class="breadcrumbs" aria-label={t(lang, 'nav.breadcrumb')}>
+      <ol>
+        <li><a href={url(ctx, `${lang}/`)}>{t(lang, 'nav.home')}</a></li>
+        <li><a href={url(ctx, `${lang}/indice/#temas`)}>{t(lang, 'index.topics')}</a></li>
+        <li aria-current="page">{t(lang, 'nav.topic')} {letter}</li>
+      </ol>
+    </nav>
+    <p class="chapter-kicker">{t(lang, 'nav.topic')} {letter}</p>
+    <h1>{tp.title.replace(/\*/g, '')}</h1>
+    <Fragment set:html={html} />
+    <nav class="chapter-nav" aria-label={`${t(lang, 'nav.prev')} / ${t(lang, 'nav.next')}`}>
+      {prev ? <a class="prev" href={topicUrl(ctx, prev.letter)!} rel="prev"><small>← {t(lang, 'nav.prev')}</small>{label(prev)}</a> : <a class="prev" href={url(ctx, `${lang}/indice/#temas`)}><small>← {t(lang, 'topic.back')}</small>{t(lang, 'index.topics')}</a>}
+      {next ? <a class="next" href={topicUrl(ctx, next.letter)!} rel="next"><small>{t(lang, 'nav.next')} →</small>{label(next)}</a> : <a class="next" href={url(ctx, `${lang}/proyecto/`)}><small>{t(lang, 'nav.next')} →</small>{book.extras.find((e) => e.key === 'proyecto')?.title}</a>}
+    </nav>
+    <p class="report"><a href={issueUrl} rel="noopener" data-report>{t(lang, 'chapter.reportError')}</a> · {t(lang, 'chapter.reportHint')}</p>
+  </article>
+</Base>

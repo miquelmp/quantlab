@@ -244,7 +244,32 @@ function initHeaderAutoHide() {
   header.addEventListener('focusin', () => header.classList.remove('away'));
 }
 
+/** Fórmulas destacadas más anchas que la pantalla: se pueden desplazar también con el teclado. */
+function initWideFormulas() {
+  const els = [...document.querySelectorAll<HTMLElement>('.katex-display')];
+  if (!els.length) return;
+  const update = () => {
+    for (const el of els) {
+      if (el.scrollWidth > el.clientWidth + 1) {
+        el.tabIndex = 0;
+        el.setAttribute('role', 'region');
+        el.setAttribute('aria-label', tr('chapter.wideFormula'));
+      } else {
+        el.removeAttribute('tabindex');
+        el.removeAttribute('role');
+        el.removeAttribute('aria-label');
+      }
+    }
+  };
+  update();
+  document.fonts?.ready.then(update).catch(() => {});
+  window.addEventListener('load', update);
+  let raf = 0;
+  window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); });
+}
+
 initSettings();
+initWideFormulas();
 initHeaderAutoHide();
 initSearchShortcut();
 initChapter();
