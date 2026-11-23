@@ -563,3 +563,19 @@ pre { margin: 0; }
 .lab-observe a { position: relative; z-index: 1; }
 
 .code-download { font-size: 0.93rem; margin: 0.75rem 0; }
+
+/* Modo presentación de los gráficos (RF-GRA-08): pantalla completa, textos y mandos grandes. */
+.chart.presenting { position: fixed; inset: 0; z-index: 1000; margin: 0; max-width: none; border-radius: 0; overflow: auto; background: var(--bg); padding: 1.25rem 2rem 2rem; font-size: 1.15rem; }
+.chart.presenting:fullscreen { padding: 1.25rem 2rem 2rem; }
+html.chart-presenting { overflow: hidden; }
+.chart.presenting .chart-head h3 { font-size: 1.6rem; }
+.chart.presenting .chart-svg { font-size: 15px; }
+.chart.presenting .chart-svg .line { stroke-width: 3; }
+.chart.presenting .chart-controls { gap: 1rem 1.5rem; }
+.chart.presenting .control label { font-size: 1.05rem; }
+.chart.presenting input[type="range"] { height: 2.25rem; }
+.chart.presenting .btn { min-height: 52px; font-size: 1.05rem; padding: 0.5rem 1rem; }
+.chart.presenting .chart-stats .stat dd { font-size: 1.5rem; }
+.chart.presenting .chart-stats .stat dt { font-size: 1rem; }
+.chart.presenting .chart-table, .chart.presenting .chart-describe, .chart.presenting .chart-desc { display: none; }
+@media (max-width: 759px) { .present-btn { display: none; } }
