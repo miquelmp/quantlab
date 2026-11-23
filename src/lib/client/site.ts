@@ -115,6 +115,17 @@ function initChapter() {
   sections.forEach((s) => spy.observe(s));
   refreshToc();
 
+  // «Avisar de un error» precarga la sección que se estaba leyendo (CU-12)
+  const report = document.querySelector<HTMLAnchorElement>('[data-report]');
+  report?.addEventListener('click', () => {
+    let sec = document.getElementById(current)?.dataset.title;
+    if (!sec) { const s = load(); sec = s.last?.url.startsWith(location.pathname) ? s.last.section : undefined; }
+    if (!sec) return;
+    const u = new URL(report.href);
+    u.searchParams.set('body', (u.searchParams.get('body') ?? '').replace(/^(Sección:)\n/m, `$1 ${sec}\n`));
+    report.href = u.toString();
+  });
+
   // Ampliación: plegada por defecto; se recuerda la preferencia (RF-NAV-08, D-12)
   const adv = document.querySelector<HTMLDetailsElement>('details.advanced');
   if (adv) {

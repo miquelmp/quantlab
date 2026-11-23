@@ -482,3 +482,10 @@ pre { margin: 0; }
 .btn.danger { color: var(--neg); border-color: var(--neg); }
 .progress-nostore { background: var(--neg-soft); padding: 0.75rem 1rem; border-radius: 10px; }
 .resume-btn { display: inline-block; text-align: left; line-height: 1.4; padding-top: 0.55rem; padding-bottom: 0.55rem; }
+
+/* ---------- Bibliografía ---------- */
+.biblio ul { padding-left: 1.1rem; }
+.biblio li { margin: 0.45rem 0; scroll-margin-top: 5rem; }
+.biblio li:target { background: var(--accent-soft, rgba(30, 110, 230, 0.12)); border-radius: 6px; }
+.biblio .star { color: #b7791f; }
+.biblio-count { color: var(--text-2); }
