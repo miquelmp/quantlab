@@ -15,6 +15,7 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Búsqueda**: `scripts/search.mjs` (integración que crea el índice Pagefind en `dist/pagefind/` antes de la PWA) + página `src/pages/[lang]/buscar.astro` + `src/lib/client/search.ts` (interfaz propia, sinónimos, agrupación por tipo). Se indexa el `<main data-pagefind-body>` de `Base.astro`; `searchable={false}` lo excluye. Atajo «/».
 - Progreso y preferencias del lector: solo `localStorage` (clave `quantlab:v1`), siempre con try/catch. Página «Mi progreso» en `src/pages/[lang]/progreso.astro` + `src/lib/client/progress.ts` (resumen, exportar/importar fichero, borrar).
 
+- **Imágenes para compartir** (`src/pages/[lang]/vista-previa/[name].png.ts` + `src/lib/og.ts`, con sharp): 1200×630 por capítulo, tema, Laboratorio y portada; `Base.astro` elige la de la página. No se guardan para uso sin conexión.
 - **Modo presentación** de los gráficos (botón «Presentación», oculto en el móvil): pantalla completa, `setPresent()` de `svg.ts` (paneles ×1,35) y estilos `.chart.presenting`.
 - **Descargas del código** (`src/pages/[lang]/codigo/[file].ts` + `src/lib/download.ts`): `.py` y `.ipynb` de cada capítulo, del tema E y del proyecto.
 - **Laboratorio** (`src/pages/[lang]/laboratorio.astro`): galería con la miniatura del primer panel de cada gráfico publicado.
@@ -39,4 +40,4 @@ npm run preview & npm run check:a11y   # axe-core, temas claro y oscuro (no est�
 
 ## Pendiente (fases siguientes del análisis funcional)
 
-Retos, imágenes de vista previa por capítulo, analítica (GoatCounter: poner la URL en `src/config.ts` cuando el autor cree la cuenta).
+Retos, analítica (GoatCounter: poner la URL en `src/config.ts` cuando el autor cree la cuenta).

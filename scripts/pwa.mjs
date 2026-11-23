@@ -32,7 +32,7 @@ export default function pwa({ base, pyodide }) {
         const root = fileURLToPath(dir);
         const files = walk(root)
           .map((p) => relative(root, p).split(sep).join('/'))
-          .filter((f) => !/^(sw\.js|\.nojekyll|robots\.txt|sitemap.*\.xml)$/.test(f))
+          .filter((f) => !/^(sw\.js|\.nojekyll|robots\.txt|sitemap.*\.xml)$/.test(f) && !/\/vista-previa\//.test(f)) // las imágenes para compartir no hacen falta sin conexión
           .sort();
         const hash = createHash('sha256');
         for (const f of files) hash.update(f).update(readFileSync(join(root, f)));
