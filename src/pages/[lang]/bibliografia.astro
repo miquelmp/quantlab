@@ -1,0 +1,33 @@
+---
+/**
+ * Bibliografía (RF-BIB-01): los cuatro bloques del libro, con ★ en los manuales recomendados y un
+ * ancla estable por referencia («#bailey-2014») para poder enlazar las citas.
+ */
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { t } from '../../i18n';
+import { loadBook } from '../../lib/book';
+import { initRenderer, renderBlocks, type RenderCtx } from '../../lib/render';
+import { annotateReferences } from '../../lib/biblio';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book, linkTerms: false, headingShift: -1, usedIds: new Set() };
+const extra = book.extras.find((e) => e.key === 'bibliografia');
+if (!extra?.nodes) throw new Error('El libro no tiene sección «Bibliografía».');
+const { nodes, count, starred } = annotateReferences(extra.nodes, t(lang, 'biblio.recommended'));
+const html = renderBlocks(nodes, ctx);
+---
+<Base lang={lang} title={extra.title} description={t(lang, 'biblio.description', { n: count })} path="bibliografia/">
+  <article class="prose biblio">
+    <h1>{extra.title}</h1>
+    <p class="biblio-count">{t(lang, 'biblio.count', { n: count, s: starred })}</p>
+    <Fragment set:html={html} />
+  </article>
+</Base>

@@ -135,7 +135,7 @@ const jsonLd = [
           ? <a class="next" href={chapterUrl(ctx, next.number)!} rel="next"><small>{t(lang, 'nav.next')} →</small>{t(lang, 'nav.chapter')} {next.number} · {next.title}</a>
           : nextUnpublished && <span class="next"><small>{t(lang, 'nav.comingSoon')}</small>{t(lang, 'nav.chapter')} {nextUnpublished.number} · {nextUnpublished.title}</span>}
       </nav>
-      <p class="report"><a href={issueUrl} rel="noopener">{t(lang, 'chapter.reportError')}</a> · {t(lang, 'chapter.reportHint')}</p>
+      <p class="report"><a href={issueUrl} rel="noopener" data-report>{t(lang, 'chapter.reportError')}</a> · {t(lang, 'chapter.reportHint')}</p>
     </article>
 
     <aside class="toc toc-side" aria-label={t(lang, 'nav.onThisPage')}>

@@ -582,5 +582,9 @@
   "progress.cleared": "Progreso borrado.",
   "progress.exported": "Fichero descargado.",
   "progress.imported": "Progreso importado.",
-  "progress.importBad": "Ese fichero no es un progreso de quantlab."
+  "progress.importBad": "Ese fichero no es un progreso de quantlab.",
+  "biblio.recommended": "Manual recomendado",
+  "biblio.description": "Las {n} obras citadas en el libro, en cuatro bloques, con los manuales recomendados para profundizar.",
+  "biblio.count": "{n} referencias; las {s} marcadas con ★ son manuales recomendados para profundizar.",
+  "epilogue.description": "Las tres ideas que conviene llevarse del libro y por dónde seguir aprendiendo."
 }

@@ -17,6 +17,8 @@ const ctx: RenderCtx = { lang, base, book, linkTerms: false };
 const extraLink: Record<string, string> = {
   formulas: url(ctx, `${lang}/formulas/`),
   glossary: url(ctx, `${lang}/glosario/`),
+  epilogo: url(ctx, `${lang}/epilogo/`),
+  bibliografia: url(ctx, `${lang}/bibliografia/`),
 };
 ---
 <Base lang={lang} title={t(lang, 'index.title')} description={t(lang, 'index.intro')} path="indice/" current="index">

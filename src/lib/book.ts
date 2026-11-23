@@ -102,7 +102,7 @@ export interface Book {
   parts: Part[];
   chapters: Chapter[];
   topics: Topic[];
-  extras: { title: string; key: string }[];
+  extras: { title: string; key: string; nodes?: Node[] }[];
   glossary: GlossaryTerm[];
   glossaryIntro: string;
   formulas: FormulaRow[];
@@ -343,7 +343,7 @@ export function loadBook(lang: string): Book {
   const parts: Part[] = [];
   const chapters: Chapter[] = [];
   const topics: Topic[] = [];
-  const extras: { title: string; key: string }[] = [];
+  const extras: { title: string; key: string; nodes?: Node[] }[] = [];
   let glossary: GlossaryTerm[] = [];
   let glossaryIntro = '';
   let formulas: FormulaRow[] = [];
@@ -412,10 +412,10 @@ export function loadBook(lang: string): Book {
       // Último párrafo en cursiva = aviso legal del libro.
       const last = [...g.nodes].reverse().find((n) => n.type === 'paragraph' && (n as Paragraph).children[0]?.type === 'emphasis') as Paragraph | undefined;
       if (last) disclaimer = (last.children[0] as any).children;
-      extras.push({ title: ht, key: 'epilogo' });
+      extras.push({ title: ht, key: 'epilogo', nodes: g.nodes.filter((n) => n !== last) });
       continue;
     }
-    extras.push({ title: ht, key: slugify(ht) });
+    extras.push({ title: ht, key: slugify(ht), nodes: g.nodes });
   }
 
   // Une ejercicios, soluciones y respuestas numéricas.
