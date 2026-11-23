@@ -22,3 +22,14 @@ describe('descargas del código', () => {
     expect(nb.cells[1].outputs).toEqual([]);
   });
 });
+
+import { wrap, ogSvg } from '../src/lib/og';
+describe('imágenes de vista previa', () => {
+  it('parte el título en líneas sin cortar palabras y con puntos suspensivos si sobra', () => {
+    expect(wrap('Crecimiento compuesto y lastre de la volatilidad', 28, 3)).toEqual(['Crecimiento compuesto y', 'lastre de la volatilidad']);
+    expect(wrap('uno dos tres cuatro cinco seis', 9, 2)).toEqual(['uno dos', 'tres…']);
+  });
+  it('escapa el texto en el SVG', () => {
+    expect(ogSvg({ site: 'q', kicker: 'k', title: 'A & B <c>', footer: 'f' })).toContain('A &amp; B &lt;c&gt;');
+  });
+});

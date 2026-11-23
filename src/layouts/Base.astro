@@ -30,6 +30,9 @@ const u = (p: string) => base + p.replace(/^\//, '');
 const canonical = new URL(u(`${lang}/${path}`), SITE.url).toString();
 const book = loadBook(lang);
 const ctx = { lang, base, book };
+// Imagen para compartir (src/pages/[lang]/vista-previa/): la del capítulo, tema o Laboratorio, o la de portada.
+const ogName = path.match(/^(?:capitulos|temas)\/([^/]+)\//)?.[1] ?? (path === 'laboratorio/' ? 'laboratorio' : 'portada');
+const ogImage = new URL(u(`${lang}/vista-previa/${ogName}.png`), SITE.url).toString();
 const fullTitle = title === t(lang, 'site.bookTitle') ? `${title} · ${t(lang, 'site.name')}` : `${title} · ${t(lang, 'site.bookTitle')}`;
 const uiStrings = tPrefix(lang, 'chapter.', 'ex.', 'py.', 'index.', 'chart.');
 const nav = [
@@ -60,7 +63,11 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   <meta property="og:url" content={canonical} />
   <meta property="og:site_name" content={t(lang, 'site.bookTitle')} />
   <meta property="og:locale" content={L.locale.replace('-', '_')} />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={title} />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)" />
