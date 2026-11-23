@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import LearningMap from '../../components/LearningMap.astro';
 import { LANGS } from '../../i18n/config';
 import { t } from '../../i18n';
 import { loadBook } from '../../lib/book';
@@ -26,6 +27,7 @@ const extraLink: Record<string, string> = {
   <div class="prose">
     <h1>{t(lang, 'index.title')}</h1>
     <p>{t(lang, 'index.intro')}</p>
+    <LearningMap book={book} ctx={ctx} />
     <ol class="book-index">
       {book.parts.map((p) => (
         <li id={`parte-${p.number}`}>

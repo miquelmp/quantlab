@@ -739,5 +739,12 @@
   "tE.statCalmar": "Ratio de Calmar",
   "tE.statLongest": "Mayor tiempo bajo el máximo",
   "tE.describe": "En {n} años con volatilidad del {sig}, la peor caída es del {m} (recuperarla exige subir un {r}). El crecimiento anual compuesto es del {g}, y el periodo más largo por debajo del máximo dura {l} años.",
-  "tE.tableCaption": "Valor, máximo anterior y caída de la cartera simulada"
+  "tE.tableCaption": "Valor, máximo anterior y caída de la cartera simulada",
+  "chart.download": "Descargar",
+  "chart.dlPng": "Imagen (PNG)",
+  "chart.dlSvg": "Imagen (SVG)",
+  "chart.dlCsv": "Datos (CSV)",
+  "map.title": "Mapa de aprendizaje",
+  "map.intro": "Cada flecha va de un capítulo a otro que conviene leer después. Las columnas son las cinco partes del libro; pulsa un capítulo para abrirlo.",
+  "map.after": "conviene leer antes los capítulos"
 }

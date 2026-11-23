@@ -236,6 +236,13 @@ export async function mountChart(root: HTMLElement): Promise<void> {
     if (ev.key === 'Escape' && root.classList.contains('presenting') && !document.fullscreenElement) setPresenting(false);
   });
 
+  // Descargar imagen o datos (RF-GRA-09): el código se carga solo al usarlo.
+  const exportMenu = root.querySelector<HTMLDetailsElement>('[data-export-menu]');
+  root.querySelectorAll<HTMLButtonElement>('[data-export]').forEach((b) => b.addEventListener('click', async () => {
+    const m = await import('./export');
+    await m.exportChart(api, b.dataset.export as 'svg' | 'png' | 'csv');
+    if (exportMenu) exportMenu.open = false;
+  }));
   root.querySelectorAll<HTMLButtonElement>('.chart-controls button').forEach((b) => (b.disabled = false));
   // «Más ajustes»: abierto en pantallas anchas; plegado en el móvil para que todo quepa.
   const more = root.querySelector<HTMLDetailsElement>('[data-more]');
