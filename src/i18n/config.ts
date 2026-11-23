@@ -16,6 +16,7 @@ export interface LangConfig {
 
 export const LANGS: LangConfig[] = [
   { code: 'es', htmlLang: 'es', locale: 'es-ES', decimal: ',', group: '.', name: 'Español' },
+  { code: 'en', htmlLang: 'en', locale: 'en-GB', decimal: '.', group: ',', name: 'English' },
 ];
 
 export const DEFAULT_LANG = 'es';

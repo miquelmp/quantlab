@@ -123,7 +123,7 @@ function initChapter() {
     if (!sec) { const s = load(); sec = s.last?.url.startsWith(location.pathname) ? s.last.section : undefined; }
     if (!sec) return;
     const u = new URL(report.href);
-    u.searchParams.set('body', (u.searchParams.get('body') ?? '').replace(/^(Sección:)\n/m, `$1 ${sec}\n`));
+    u.searchParams.set('body', (u.searchParams.get('body') ?? '').replace(/^(Sección:|Section:)\n/m, `$1 ${sec}\n`));
     report.href = u.toString();
   });
 

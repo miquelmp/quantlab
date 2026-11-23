@@ -1,0 +1,167 @@
+# Graduated hints for the exercises (RF-EJ-05): one or two per exercise, from the most general to the
+# most specific. They are shown before the answer. Markdown and formulas between $…$ are allowed.
+"1.1":
+  - 'The simple return is (final price − initial price) / initial price; the log return, $\ln(P_1/P_0)$.'
+  - 'To get back to €125 from €110 you must calculate the relative rise *from 110*, not from 125.'
+"1.2":
+  - 'Returns are chained by multiplying factors $(1 + R)$, not by adding percentages.'
+  - 'The constant annual return $g$ satisfies $(1 + g)^3$ = cumulative factor of the three years.'
+"1.3":
+  - 'Think in euros: how much is each half of the portfolio worth at the end of the year?'
+  - 'The euros of each part add up. Which kind of return combines well when adding euros and which when chaining periods?'
+"2.1":
+  - 'With reinvested interest, the final capital is $C_0 (1 + i)^n$.'
+  - 'Compare the total interest with what simple interest would give, $C_0 \cdot i \cdot n$; the difference is the compounding effect.'
+"2.2":
+  - 'Discounting is the reverse of compounding: divide by $(1 + i)^n$.'
+  - 'Repeat the calculation with $i = 0.06$ and with $i = 0.02$, with $n = 4$ years.'
+"2.3":
+  - 'Set the sum of the present values of the five instalments $C/(1.05)^k$, for $k = 1, \dots, 5$, equal to €15,000.'
+  - 'The closed formula of the level annuity is $C = PV \cdot i / \bigl(1 - (1 + i)^{-n}\bigr)$.'
+"3.1":
+  - 'The expected value of the prize is the total paid out in prizes divided by the number of tickets.'
+  - 'The net gain subtracts the price of the ticket. The organizer takes in the money collected minus the prizes.'
+"3.2":
+  - 'Expected loss = probability × cost.'
+  - 'The loading is the difference between the premium and the expected loss, in euros or as a percentage. For the «anyway», think about how much a large loss you cannot spread would affect you.'
+"3.3":
+  - 'Calculate the expected value of one play and the probability of not losing everything in ten plays in a row.'
+  - 'Compare what happens to the average of many players with what happens to one particular player (chapter 3 and, later, chapter 14).'
+"4.1":
+  - 'Each day the price goes up or down €1: the expected gain per day is $p \cdot 1 + (1 - p) \cdot (-1)$.'
+  - 'To end above €20 in five days you need at least three up moves. Add the binomial probabilities of 3, 4 and 5 up moves.'
+"4.2":
+  - 'Volatility grows with the square root of time: $\sigma_T = \sigma_{\text{annual}} \sqrt{T}$, with $T$ in years.'
+  - 'A month is $21/252$ years and a day $1/252$.'
+"4.3":
+  - 'After $n$ sessions, the cumulative mean is $n\mu$ and the cumulative standard deviation, $\sigma\sqrt{n}$.'
+  - 'Set $n\mu = \sigma\sqrt{n}$. At that point the result is one standard deviation above zero: use the normal for the probability of ending below.'
+"4.4":
+  - 'For a walk without drift, intuition says the time above the initial level is around 50%, but the arcsine law says something else.'
+  - 'According to that law, proportions close to 0 and to 1 are the *most* likely. Calculate the probability of exceeding 95% with the formula in the Going further section.'
+"5.1":
+  - 'Standardize: $z = (0 - \mu)/\sigma$.'
+  - 'Look up $\Phi(z)$ in the normal table or use the 68-95-99.7 rule as a rough check.'
+"5.2":
+  - 'Standardize −15% just as in the previous exercise.'
+  - 'The 95% interval centred on the mean is $\mu \pm 1.96\,\sigma$.'
+"5.3":
+  - 'The sum of 12 dice has mean $12 \times 3.5$ and variance $12 \times 35/12$.'
+  - 'With the continuity correction, «50 or more» is approximated by $P(S > 49.5)$ with the normal of that mean and variance.'
+"5.4":
+  - 'What conditions does the central limit theorem require? Are they met for a single daily return?'
+  - 'Think about the tails: the risk of loss depends above all on extreme events (chapter 15).'
+"6.1":
+  - 'The Monte Carlo standard error is proportional to $1/\sqrt{M}$.'
+  - 'Dividing the error by 4 requires multiplying the scenarios by $4^2$.'
+"6.2":
+  - 'The estimate is $4\hat p$, with $\hat p$ the proportion of points inside. Its standard error is $4\sqrt{p(1 - p)/M}$.'
+  - 'For the second part, solve $4\sqrt{p(1 - p)/M} = 0.001$ for $M$.'
+"6.3":
+  - 'Fixing the seed makes the result reproducible. What is that useful for when fixing errors or comparing variants?'
+  - 'A single seed is a single sample. How would you know whether a result depends on the luck of that sample?'
+"6.4":
+  - 'The standard error of an estimated proportion is $\sqrt{\hat p(1 - \hat p)/M}$.'
+  - 'The 95% interval is $\hat p \pm 1.96$ standard errors. Check whether 6.80% falls inside.'
+"7.1":
+  - 'First the mean of the five figures; then add up the squares of the deviations from that mean and divide by $N - 1 = 4$.'
+  - 'The daily volatility is the square root of that variance; to annualize, multiply by $\sqrt{252}$.'
+"7.2":
+  - 'Annualize with the square root of time: $\sigma_{\text{annual}} = \sigma_{\text{monthly}}\sqrt{12}$.'
+  - 'Look up in the risk class table of the Going further section the band in which that volatility falls.'
+"7.3":
+  - 'Does volatility stay constant over time? Remember volatility clustering.'
+  - 'Think about what happens to a low estimate when a turbulent period arrives, and about the error of estimating with little data.'
+"8.1":
+  - 'Sharpe ratio = (return − risk-free rate) / volatility.'
+  - 'Calculate it for each fund with $r_f = 2.5\%$ and compare.'
+"8.2":
+  - 'To get F1''s volatility with F2 you must invest in F2 a fraction $w = 14\%/5\%$ of capital, borrowing the rest.'
+  - 'Expected return $= r_f + w\,(\mu_{F2} - r_f)$. Compare it with F1''s 8%.'
+"8.3":
+  - 'Excess return grows with time and volatility with its square root, so the Sharpe ratio is multiplied by $\sqrt{T}$.'
+  - 'From monthly to annual, $T = 12$.'
+"8.4":
+  - 'The standard error of the Sharpe ratio is approximately $\sqrt{(1 + SR^2/2)/T}$, with $T$ the number of years.'
+  - 'Divide the Sharpe ratio by its standard error and compare with 2 (roughly the 5% threshold).'
+"9.1":
+  - 'The arithmetic mean is the mean of +60% and −40%.'
+  - 'The cumulative return multiplies the factors: $1.6 \times 0.6$.'
+"9.2":
+  - 'The compound growth rate is approximately $\mu - \sigma^2/2$.'
+  - 'Watch the units: with $\sigma = 0.15$, $\sigma^2/2 = 0.01125$.'
+"9.3":
+  - 'For the index, apply $g \approx \mu - \sigma^2/2$.'
+  - 'The leveraged product has mean $3\mu$ and volatility $3\sigma$: its drag is $(3\sigma)^2/2$, nine times that of the index.'
+"10.1":
+  - 'The correlation is the covariance divided by the product of the volatilities.'
+  - '$\rho = 0.009 / (0.15 \times 0.25)$.'
+"10.2":
+  - 'Look at what Y does in each month in which X goes up or down relative to its mean.'
+  - 'Calculate the deviations from each mean, multiply them month by month and normalize: $\rho = \sum (x - \bar x)(y - \bar y) / \sqrt{\sum (x - \bar x)^2 \sum (y - \bar y)^2}$.'
+"10.3":
+  - 'Does diversification depend on how prices move or on how returns move?'
+  - 'Two trending series have highly correlated prices even if their daily changes are independent (chapter 10).'
+"11.1":
+  - 'With $N$ independent assets of equal weight and volatility, the volatility of the portfolio is $\sigma/\sqrt{N}$.'
+  - 'Here $N = 9$.'
+"11.2":
+  - 'With equal weights, the variance is $\sigma^2\,[\,1/N + (1 - 1/N)\,\rho\,]$.'
+  - 'With very many assets, $1/N \to 0$ and $\sigma^2\rho$ remains: the risk that cannot be diversified away.'
+"11.3":
+  - 'The effective number of assets is $1 / \sum w_i^2$.'
+  - 'For equal weights among five assets, that number is exactly 5.'
+"12.1":
+  - 'With correlation −1, the two volatilities offset each other when $w\sigma_1 = (1 - w)\sigma_2$.'
+  - 'Solve for $w = \sigma_2 / (\sigma_1 + \sigma_2)$.'
+"12.2":
+  - 'The return of the portfolio is the weighted average; the volatility, $\sqrt{w_A^2\sigma_A^2 + w_B^2\sigma_B^2 + 2w_Aw_B\rho\,\sigma_A\sigma_B}$.'
+  - 'Take the figures of A and B from the worked example and calculate the three Sharpe ratios with $r_f = 2\%$.'
+"12.3":
+  - 'How precisely is a mean return estimated with five years of data? Remember the standard error of the mean (chapter 7).'
+  - 'The optimizer treats those means as exact and bets heavily on the one that looks best, even if only by chance.'
+"13.1":
+  - 'Beta $= \rho\,\sigma_{\text{stock}} / \sigma_{\text{market}}$.'
+  - 'The expected average change in the stock is beta times the change in the market.'
+"13.2":
+  - 'CAPM: $E[R] = r_f + \beta\,(E[R_m] - r_f)$.'
+  - 'The market premium is $7\% - 2\% = 5\%$.'
+"13.3":
+  - 'First calculate the return the CAPM predicts with beta 1.2 in that year.'
+  - 'Alpha is the return obtained minus the predicted one.'
+"13.4":
+  - 'In the CAPM, which part of risk can a diversified investor remove?'
+  - 'If the stock''s risk disappears when diversifying, why would the market pay a premium for bearing it?'
+"14.1":
+  - 'In an even-odds bet ($b = 1$), the Kelly fraction is $f^* = p - q$.'
+  - 'Here $q = 1 - 0.58$.'
+"14.2":
+  - 'The general formula is $f^* = (bp - q)/b$.'
+  - 'The growth rate is $g(f) = p\ln(1 + bf) + q\ln(1 - f)$. Evaluate it at $f^*$ and at $f^*/2$ and compare.'
+"14.3":
+  - 'In the continuous version, $f^* = \mu/\sigma^2$, with $\mu$ the excess return.'
+  - 'The excess growth rate is $g(f) = f\mu - f^2\sigma^2/2$. Evaluate it at $f^*$ and at $f^*/2$.'
+"15.1":
+  - 'Under normality, $P(Z < -4) \approx 3.2 \times 10^{-5}$.'
+  - 'Multiply by 252 sessions to get the annual frequency, and work out how many years apart one can be expected.'
+"15.2":
+  - 'The mean is zero by symmetry. The variance is $\sum p_i x_i^2$.'
+  - 'The kurtosis is $E[X^4]/\sigma^4$; compare it with 3, the value for the normal.'
+"15.3":
+  - 'Expected sessions per year = $0.0048 \times 252$.'
+  - 'For the normal, the probability of exceeding four standard deviations in either direction is $2 \times 3.2 \times 10^{-5}$.'
+"15.4":
+  - 'How many standard deviations is 7% with $\sigma = 1\%$? What probability does the normal give it?'
+  - 'If the model says something should never happen and it happens, what is more likely: very bad luck or a wrong model?'
+"16.1":
+  - 'The 99% VaR of a zero-mean normal is $2.326\,\sigma$ times the value of the portfolio.'
+  - 'Over ten days, multiply by $\sqrt{10}$.'
+"16.2":
+  - 'Under normality, expected shortfall is $\sigma\,\varphi(z_\alpha)/(1 - \alpha)$, with $\varphi$ the normal density.'
+  - 'At 99%, $z = 2.326$, $\varphi(2.326) \approx 0.0267$ and $1 - \alpha = 0.01$.'
+"16.3":
+  - 'Check the limits of the green, yellow and red zones for 250 days in the Going further section.'
+  - 'The number of exceptions of a correct model follows a binomial with $n = 250$ and $p = 0.01$. Add up the tail from 7.'
+"16.4":
+  - 'What does VaR say about what happens *beyond* the threshold? And expected shortfall?'
+  - 'Think about portfolios with fat tails, about subadditivity and about the possibility of hiding risk in the tail.'

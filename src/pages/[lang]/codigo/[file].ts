@@ -24,16 +24,16 @@ export function codeBundles(lang: string): (CodeBundle & { name: string })[] {
   const abs = (p: string) => new URL(base + p, SITE.url).toString();
   const list: (CodeBundle & { name: string })[] = [];
   for (const c of publishedChapters(book)) {
-    if (c.python.length) list.push({ name: c.slug, title: `${t(lang, 'nav.chapter')} ${c.number} · ${c.title}`, url: abs(`${lang}/capitulos/${c.slug}/`), blocks: c.python, license: LICENSE });
+    if (c.python.length) list.push({ name: c.slug, title: `${t(lang, 'nav.chapter')} ${c.number} · ${c.title}`, url: abs(`${lang}/capitulos/${c.slug}/`), blocks: c.python, license: LICENSE, lang });
   }
   for (const tp of book.topics.filter((x) => x.published)) {
     const blocks = pyBlocks(tp.nodes);
-    if (blocks.length) list.push({ name: tp.slug, title: `${t(lang, 'nav.topic')} ${tp.letter} · ${tp.title}`, url: abs(`${lang}/temas/${tp.slug}/`), blocks, license: LICENSE });
+    if (blocks.length) list.push({ name: tp.slug, title: `${t(lang, 'nav.topic')} ${tp.letter} · ${tp.title}`, url: abs(`${lang}/temas/${tp.slug}/`), blocks, license: LICENSE, lang });
   }
   const proj = book.extras.find((e) => e.key === 'proyecto');
   if (proj?.nodes) {
     const blocks = pyBlocks(proj.nodes);
-    if (blocks.length) list.push({ name: 'proyecto', title: proj.title, url: abs(`${lang}/proyecto/`), blocks, license: LICENSE });
+    if (blocks.length) list.push({ name: 'proyecto', title: proj.title, url: abs(`${lang}/proyecto/`), blocks, license: LICENSE, lang });
   }
   return list;
 }

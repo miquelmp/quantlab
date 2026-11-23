@@ -1,0 +1,351 @@
+# Numerical answers to the calculation exercises (automatic checking).
+# Taken from the «Solutions to the exercises» of the book.
+#
+# Each exercise has one or more parts:
+#   etiqueta:   what is asked, as the reader will see it next to the field.
+#   valor:      the answer, as a fraction if tipo = porcentaje (−12% → -0.12).
+#   tipo:       porcentaje | numero
+#   tolerancia: allowed margin, in the same units as «valor».
+#               If omitted: 0.0005 for percentages and 0.5% relative for numbers.
+
+"1.1":
+  - etiqueta: Simple return
+    valor: -0.12
+    tipo: porcentaje
+  - etiqueta: Log return
+    valor: -0.1278
+    tipo: porcentaje
+  - etiqueta: Return needed to get back to €125
+    valor: 0.1364
+    tipo: porcentaje
+"1.2":
+  - etiqueta: Cumulative return
+    valor: 0.1491
+    tipo: porcentaje
+  - etiqueta: Equivalent constant annual return
+    valor: 0.0474
+    tipo: porcentaje
+  - etiqueta: Arithmetic mean
+    valor: 0.05
+    tipo: porcentaje
+"2.1":
+  - etiqueta: Final balance
+    valor: 2898.19
+    tipo: numero
+    tolerancia: 0.01
+  - etiqueta: Interest coming from compound interest
+    valor: 23.19
+    tipo: numero
+    tolerancia: 0.01
+"2.2":
+  - etiqueta: Value today at 6%
+    valor: 15841.87
+    tipo: numero
+    tolerancia: 0.01
+  - etiqueta: Value today at 2%
+    valor: 18476.91
+    tipo: numero
+    tolerancia: 0.01
+"2.3":
+  - etiqueta: Annual instalment
+    valor: 3464.62
+    tipo: numero
+    tolerancia: 0.01
+"3.1":
+  - etiqueta: Expected prize of a ticket (€)
+    valor: 1.25
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Buyer's expected net gain (€)
+    valor: -1.75
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Organizer's income (€)
+    valor: 3500
+    tipo: numero
+"3.2":
+  - etiqueta: Expected loss (€)
+    valor: 36
+    tipo: numero
+  - etiqueta: Loading over the expected loss
+    valor: 0.25
+    tipo: porcentaje
+"4.1":
+  - etiqueta: Expected final price (€)
+    valor: 21
+    tipo: numero
+  - etiqueta: Probability of ending above €20
+    valor: 0.6826
+    tipo: porcentaje
+    tolerancia: 0.001
+"4.2":
+  - etiqueta: Monthly volatility
+    valor: 0.0722
+    tipo: porcentaje
+  - etiqueta: Daily volatility
+    valor: 0.0157
+    tipo: porcentaje
+"4.3":
+  - etiqueta: Number of sessions
+    valor: 400
+    tipo: numero
+  - etiqueta: Probability of a negative result
+    valor: 0.159
+    tipo: porcentaje
+    tolerancia: 0.001
+"5.1":
+  - etiqueta: Proportion of years with a negative return
+    valor: 0.345
+    tipo: porcentaje
+    tolerancia: 0.002
+"5.2":
+  - etiqueta: Probability of a year worse than −15%
+    valor: 0.081
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Lower end of the 95% interval
+    valor: -0.234
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Upper end of the 95% interval
+    valor: 0.354
+    tipo: porcentaje
+    tolerancia: 0.001
+"5.3":
+  - etiqueta: Probability that the sum is 50 or more
+    valor: 0.102
+    tipo: porcentaje
+    tolerancia: 0.003
+"6.1":
+  - etiqueta: Number of scenarios
+    valor: 40000
+    tipo: numero
+    tolerancia: 0
+"6.2":
+  - etiqueta: Standard error with 10,000 points
+    valor: 0.0164
+    tipo: numero
+    tolerancia: 0.0006
+  - etiqueta: Points needed for an error of 0.001
+    valor: 2700000
+    tipo: numero
+    tolerancia: 50000
+"6.4":
+  - etiqueta: Lower end of the interval
+    valor: 0.0651
+    tipo: porcentaje
+    tolerancia: 0.0002
+  - etiqueta: Upper end of the interval
+    valor: 0.0751
+    tipo: porcentaje
+    tolerancia: 0.0002
+"14.1":
+  - etiqueta: Kelly fraction
+    valor: 0.16
+    tipo: porcentaje
+"14.2":
+  - etiqueta: Kelly fraction
+    valor: 0.0667
+    tipo: porcentaje
+  - etiqueta: Growth per bet with full Kelly
+    valor: 0.0064
+    tipo: numero
+    tolerancia: 0.00005
+  - etiqueta: Growth per bet with half Kelly
+    valor: 0.00486
+    tipo: numero
+    tolerancia: 0.00005
+  - etiqueta: Proportion of growth kept by half Kelly
+    valor: 0.76
+    tipo: porcentaje
+    tolerancia: 0.006
+"14.3":
+  - etiqueta: Fraction of capital
+    valor: 1.25
+    tipo: porcentaje
+  - etiqueta: Excess growth with full Kelly
+    valor: 0.03125
+    tipo: porcentaje
+    tolerancia: 0.0007
+  - etiqueta: Excess growth with half Kelly
+    valor: 0.0234
+    tipo: porcentaje
+    tolerancia: 0.0007
+"7.1":
+  - etiqueta: Daily mean
+    valor: 0
+    tipo: porcentaje
+  - etiqueta: Daily volatility
+    valor: 0.0126
+    tipo: porcentaje
+  - etiqueta: Annualized volatility
+    valor: 0.201
+    tipo: porcentaje
+    tolerancia: 0.001
+"7.2":
+  - etiqueta: Annual volatility
+    valor: 0.104
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Market risk class (1 to 7)
+    valor: 3
+    tipo: numero
+"8.1":
+  - etiqueta: Sharpe ratio of F1
+    valor: 0.39
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Sharpe ratio of F2
+    valor: 0.5
+    tipo: numero
+    tolerancia: 0.005
+"8.2":
+  - etiqueta: Fraction of capital invested in F2
+    valor: 2.8
+    tipo: porcentaje
+    tolerancia: 0.005
+  - etiqueta: Expected return
+    valor: 0.095
+    tipo: porcentaje
+"8.3":
+  - etiqueta: Annual Sharpe ratio
+    valor: 0.87
+    tipo: numero
+    tolerancia: 0.005
+"8.4":
+  - etiqueta: "t statistic"
+    valor: 1.56
+    tipo: numero
+    tolerancia: 0.01
+"9.1":
+  - etiqueta: Arithmetic mean return
+    valor: 0.1
+    tipo: porcentaje
+  - etiqueta: Cumulative return over the two years
+    valor: -0.04
+    tipo: porcentaje
+"9.2":
+  - etiqueta: Growth rate with 15% volatility
+    valor: 0.05875
+    tipo: porcentaje
+    tolerancia: 0.0015
+  - etiqueta: Growth rate with 30% volatility
+    valor: 0.025
+    tipo: porcentaje
+"9.3":
+  - etiqueta: Growth rate of the index
+    valor: 0.0438
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Growth rate of the tripled product
+    valor: 0.0342
+    tipo: porcentaje
+    tolerancia: 0.001
+"10.1":
+  - etiqueta: Correlation
+    valor: 0.24
+    tipo: numero
+    tolerancia: 0.005
+"10.2":
+  - etiqueta: Correlation
+    valor: -1
+    tipo: numero
+    tolerancia: 0.005
+"11.1":
+  - etiqueta: Portfolio volatility
+    valor: 0.1
+    tipo: porcentaje
+"11.2":
+  - etiqueta: Volatility with ten assets
+    valor: 0.136
+    tipo: porcentaje
+    tolerancia: 0.001
+  - etiqueta: Minimum attainable
+    valor: 0.126
+    tipo: porcentaje
+    tolerancia: 0.001
+"11.3":
+  - etiqueta: Effective number of assets
+    valor: 3.125
+    tipo: numero
+    tolerancia: 0.03
+"12.1":
+  - etiqueta: Weight in the first asset
+    valor: 0.6
+    tipo: porcentaje
+  - etiqueta: Weight in the second asset
+    valor: 0.4
+    tipo: porcentaje
+"12.2":
+  - etiqueta: Return of the 50/50 portfolio
+    valor: 0.065
+    tipo: porcentaje
+  - etiqueta: Volatility of the 50/50 portfolio
+    valor: 0.11
+    tipo: porcentaje
+  - etiqueta: Sharpe ratio of the portfolio
+    valor: 0.41
+    tipo: numero
+    tolerancia: 0.005
+"13.1":
+  - etiqueta: Beta
+    valor: 1.05
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Expected average change in the stock
+    valor: -0.0315
+    tipo: porcentaje
+"13.2":
+  - etiqueta: Expected return
+    valor: 0.06
+    tipo: porcentaje
+"13.3":
+  - etiqueta: Alpha
+    valor: -0.002
+    tipo: porcentaje
+"15.1":
+  - etiqueta: Once every… (years)
+    valor: 125
+    tipo: numero
+    tolerancia: 3
+"15.2":
+  - etiqueta: Mean (%)
+    valor: 0
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Variance (%²)
+    valor: 2.5
+    tipo: numero
+    tolerancia: 0.005
+  - etiqueta: Kurtosis
+    valor: 4.24
+    tipo: numero
+    tolerancia: 0.005
+"15.3":
+  - etiqueta: Sessions per year
+    valor: 1.21
+    tipo: numero
+    tolerancia: 0.02
+  - etiqueta: Times more than with the normal
+    valor: 76
+    tipo: numero
+    tolerancia: 2
+"16.1":
+  - etiqueta: One-day VaR (€)
+    valor: 37222
+    tipo: numero
+    tolerancia: 30
+  - etiqueta: Ten-day VaR (€)
+    valor: 117705
+    tipo: numero
+    tolerancia: 100
+"16.2":
+  - etiqueta: Expected shortfall (€)
+    valor: 42643
+    tipo: numero
+    tolerancia: 40
+"16.3":
+  - etiqueta: Probability of 7 or more exceptions
+    valor: 0.014
+    tipo: porcentaje
+    tolerancia: 0.001

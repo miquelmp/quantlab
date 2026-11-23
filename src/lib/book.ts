@@ -466,7 +466,7 @@ export function loadBook(lang: string): Book {
         return {
           term, slug: slugify(term), definition: r[1],
           definitionText: text({ type: 'paragraph', children: r[1] } as Paragraph),
-          ref: text({ type: 'paragraph', children: r[2] } as Paragraph),
+          ref: text({ type: 'paragraph', children: r[2] } as Paragraph).replace(/^Preface$/i, 'Prefacio'),
           english: glossEn[slugify(term)],
         };
       });

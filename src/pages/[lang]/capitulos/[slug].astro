@@ -40,10 +40,10 @@ const pageUrl = new URL(url(ctx, `${lang}/capitulos/${ch.slug}/`), SITE.url).toS
 const chKey = `${lang}/${num}`;
 const issueUrl = `${SITE.repo}/issues/new?` + new URLSearchParams({
   title: `[Errata] ${t(lang, 'nav.chapter')} ${num}: `,
-  body: `${pageTitle}\n${pageUrl}\n\nSección:\n\nQué está mal:\n\nQué debería decir:\n`,
+  body: `${pageTitle}\n${pageUrl}\n\n${t(lang, 'chapter.reportBody')}`,
 }).toString();
 const hasPython = ch.python.length > 0;
-const tocItems = ch.sections.map((s) => ({ id: s.id, title: s.type === 'ampliacion' ? 'Ampliación' : s.title }));
+const tocItems = ch.sections.map((s) => ({ id: s.id, title: s.type === 'ampliacion' ? t(lang, 'chapter.advanced') : s.title }));
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -118,7 +118,7 @@ const jsonLd = [
       ))}
 
       {advanced && (
-        <section id={advanced.id} data-section data-title="Ampliación">
+        <section id={advanced.id} data-section data-title={t(lang, 'chapter.advanced')}>
           <details class="advanced">
             <summary>
               <h2 class="adv-title" id={`${advanced.id}-h`}>{advanced.title} <span class="badge">{t(lang, 'chapter.advancedBadge')}</span></h2>

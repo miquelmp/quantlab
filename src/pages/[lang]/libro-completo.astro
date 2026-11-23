@@ -204,7 +204,7 @@ const today = new Date().toLocaleDateString(lang, { year: 'numeric', month: 'lon
     <section id="glosario" class="pb-block">
       <h1>{t(lang, 'full.glossary')}</h1>
       <dl class="pb-glossary">
-        {book.glossary.map((g) => <><dt>{g.term}{g.english && <span class="pb-en"> ({g.english})</span>}</dt><dd set:html={renderInline(g.definition, ctx)} /></>)}
+        {[...book.glossary].sort((a, b) => a.term.localeCompare(b.term, lang, { sensitivity: 'base' })).map((g) => <><dt>{g.term}{g.english && <span class="pb-en"> ({g.english})</span>}</dt><dd set:html={renderInline(g.definition, ctx)} /></>)}
       </dl>
     </section>
 

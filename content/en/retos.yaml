@@ -1,0 +1,50 @@
+# Challenges for the interactive charts (RF-GRA-03): 1 to 3 per chapter, short and achievable with
+# the chart's controls. Same order as content/es/retos.yaml (tests/retos.test.ts checks the Spanish ones).
+1:
+  - Find the loss that forces you to gain exactly 100% to recover.
+  - Make the log return more than 10 points below the simple return.
+2:
+  - Find an interest rate with which €1,000 grows beyond €2,000 in 20 years.
+  - With a negative rate and a long horizon, make the present value of €1,000 in the future exceed €1,000.
+3:
+  - Find the prize with which the game is fair, that is, with zero expected value.
+  - With the €4 prize, get at least a quarter of the players ahead by changing only the number of plays.
+4:
+  - With p = 0.50, make the theoretical spread reach €30.
+  - With p = 0.55, get at least 95% of the paths to end above the starting point.
+5:
+  - With one die (k = 1) no result exceeds mean + 2σ. Raise k until that probability is between 2% and 3%, close to the normal's 2.3%.
+  - With the skewed distribution, find how many terms are needed for the probability of exceeding mean + 2σ to fall below 3%.
+6:
+  - With a volatility of 15%, find a mean return with which the probability of ending with less than €10,000 falls below 1%.
+  - Raise the volatility without touching the mean until more than 20% of the scenarios end below €10,000.
+7:
+  - Find a volatility with which at least 2 years in 5 (40%) have losses.
+  - Lower the volatility until the probability of a losing year matches that of the reference portfolio.
+8:
+  - Raise the risk-free rate until fund B no longer has the highest Sharpe ratio.
+  - Combine fund B with the risk-free asset to get a volatility of 6%.
+9:
+  - With a volatility of 30%, find the mean return with which the growth rate is zero.
+  - With a mean of 8%, raise the volatility until more than half of the paths end below €100.
+10:
+  - Build a two-asset portfolio with zero volatility.
+  - Find the correlation with which the portfolio halves the risk compared with a single asset.
+11:
+  - With the other default values, find how many assets are needed to get within half a point or less of the risk floor.
+  - Make the risk floor with infinitely many assets fall below 5%.
+12:
+  - Raise the risk-free rate until the maximum Sharpe portfolio has more than 10% volatility.
+  - Remove the risk-free asset and check which portfolio disappears from the results.
+13:
+  - Make asset 1 have the same expected return as the market.
+  - Use asset 3 to check what return the CAPM predicts for an asset with β = 0.
+14:
+  - Make the median fall below €100 without changing the probability or the payoff.
+  - With p = 0.60 and b = 1, set the fraction bet exactly to Kelly's.
+15:
+  - Raise the degrees of freedom until the kurtosis of the t falls below 4.
+  - With 3 degrees of freedom, get more than 90 days beyond ±4%.
+16:
+  - With the normal model, find a confidence level at which the Kupiec test does not reject the VaR (p-value greater than 0.05).
+  - Switch to the t model and make the expected shortfall exceed €10,000.
