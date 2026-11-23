@@ -8,7 +8,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
-import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S9 extends Record<string, number> { mu: number; sigma: number; seed: number }
@@ -106,7 +106,7 @@ export const chart09: ChartDef<S9, D9> = {
           { cls: 's2', label: ctx.tr('c9.legendMean') },
           { cls: 's1', label: ctx.tr('c9.legendMedian') },
         ];
-        const h = 340;
+        const h = panelH(w, 340);
         const lh = legendHeight(items, w - M.left - M.right);
         const L = Math.log10;
         let lo = Infinity;
@@ -149,7 +149,7 @@ export const chart09: ChartDef<S9, D9> = {
           { cls: 's1', label: ctx.tr('c9.legendG', { mu: pct(s.mu, ctx) }) },
           { cls: 'neg', label: ctx.tr('c9.legendNeg'), box: true },
         ];
-        const h = 340;
+        const h = panelH(w, 340);
         const lh = legendHeight(items, w - M.left - M.right);
         const xs: number[] = [];
         for (let i = 0; i <= 120; i++) xs.push((0.6 * i) / 120);

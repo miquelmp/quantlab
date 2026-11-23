@@ -2,6 +2,7 @@
  * Animación de la estimación de π (capítulo 6): los puntos van apareciendo sobre el
  * cuadrado. Se puede pausar y respeta la preferencia «reducir movimiento» (RF-GRA-13).
  */
+import { panelH } from '../svg';
 import type { ChartExt, ChartApi } from './mount';
 
 const DURATION = 3500; // ms para dibujar todos los puntos
@@ -20,7 +21,7 @@ function reducedMotion(): boolean {
 }
 
 function geometry(w: number) {
-  const size = Math.min(w, 340);
+  const size = Math.min(w, panelH(w, 340) < 340 ? 250 : 340);   // igual que scatterPanel (ch06)
   const ox = (w - size) / 2 + 30;
   const inner = size - 52;
   return { size, ox, inner, top: 10 };

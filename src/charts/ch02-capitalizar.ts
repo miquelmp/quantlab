@@ -4,7 +4,7 @@
  * Derecha: factor de descuento 1/(1+i)^t para el tipo elegido y para ±2 puntos.
  */
 import type { ChartDef, ChartCtx } from './types';
-import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S2 extends Record<string, number> { i: number; T: number }
@@ -72,7 +72,7 @@ export const chart02: ChartDef<S2, D2> = {
           { cls: 's2', label: ctx.tr('c2.legendSimple'), dash: true },
           { cls: 'band', label: ctx.tr('c2.legendInterest'), box: true },
         ];
-        const h = 300;
+        const h = panelH(w, 300);
         const lh = legendHeight(items, w - M.left - M.right);
         const all = [...d.simple, ...d.compound];
         const lo = Math.min(P0, ...all);
@@ -115,7 +115,7 @@ export const chart02: ChartDef<S2, D2> = {
           { cls: 's1', label: ctx.tr('c2.legendDisc', { i: pct(s.i, ctx) }) },
           { cls: 'muted', label: ctx.tr('c2.legendPm'), dash: true },
         ];
-        const h = 300;
+        const h = panelH(w, 300);
         const lh = legendHeight(items, w - M.left - M.right);
         const hi = Math.max(1.05, ...d.discLo) * 1.02;
         const sx = linear([0, s.T], [M.left, w - M.right]);

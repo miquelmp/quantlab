@@ -10,7 +10,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng, normCdf } from './rng';
-import { linear, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, pathFrom } from './svg';
+import { linear, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, pathFrom, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S5 extends Record<string, number> { rows: number; k: number; dist: number; seed: number }
@@ -128,7 +128,7 @@ export const chart05: ChartDef<S5, D5> = {
           { cls: 'hist', label: ctx.tr('c5.legendBalls'), box: true },
           { cls: 's2', label: ctx.tr('c5.legendNormal') },
         ];
-        const h = 340;
+        const h = panelH(w, 340);
         const lh = legendHeight(items, w - M.left - M.right);
         const n = d.rows;
         const counts = new Array(n + 1).fill(0);
@@ -189,7 +189,7 @@ export const chart05: ChartDef<S5, D5> = {
           { cls: 'hist', label: ctx.tr(Math.round(s.dist) === 1 ? 'c5.legendSumSkew' : 'c5.legendSum', { k: Math.round(s.k) }), box: true },
           { cls: 's2', label: ctx.tr('c5.legendNormal') },
         ];
-        const h = 340;
+        const h = panelH(w, 340);
         const lh = legendHeight(items, w - M.left - M.right);
         // Se muestran los valores con probabilidad apreciable.
         const vis = d.pmf.filter(([, p]) => p > 1e-5);

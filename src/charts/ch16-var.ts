@@ -7,7 +7,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng, normCdf, normInv } from './rng';
-import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 import { tTail } from './ch15-colas';
 
@@ -122,7 +122,7 @@ export const chart16: ChartDef<S16, D16> = {
       title: (c) => c.tr('c16.panelTop'),
       height: () => 320,
       render(d, s, w, ctx) {
-        const h = 320;
+        const h = panelH(w, 320);
         const nu = Math.round(s.nu);
         const isT = Math.round(s.model) === 1;
         const items = [
@@ -167,7 +167,7 @@ export const chart16: ChartDef<S16, D16> = {
       title: (c) => c.tr('c16.panelBottom'),
       height: () => 300,
       render(d, s, w, ctx) {
-        const h = 300;
+        const h = panelH(w, 300);
         const items = [
           { cls: 'path', label: ctx.tr('c16.legendPnl', { nu: Math.round(s.nu) }) },
           { cls: 's1', label: ctx.tr('c16.legendVarN', { c: pct(s.conf, ctx) }), dash: true },

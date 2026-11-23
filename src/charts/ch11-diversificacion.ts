@@ -5,7 +5,7 @@
  * 6 %, como en el ejemplo): volatilidad frente al peso en acciones para varias correlaciones.
  */
 import type { ChartDef, ChartCtx } from './types';
-import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S11 extends Record<string, number> { sigma: number; rho: number; nmax: number }
@@ -58,7 +58,7 @@ export const chart11: ChartDef<S11, D11> = {
           { cls: 'muted', label: ctx.tr('c11.legendFloor'), dash: true },
           { cls: 'band', label: ctx.tr('c11.legendSpecific'), box: true },
         ];
-        const h = 320;
+        const h = panelH(w, 320);
         const lh = legendHeight(items, w - M.left - M.right);
         const nmax = d.ns.length;
         const sx = linear([1, nmax], [M.left, w - M.right]);
@@ -97,7 +97,7 @@ export const chart11: ChartDef<S11, D11> = {
           { cls: 's1', label: ctx.tr('c11.legendRho', { r: num(s.rho, ctx) }) },
           { cls: 'muted', label: ctx.tr('c11.legendRefs'), dash: true },
         ];
-        const h = 320;
+        const h = panelH(w, 320);
         const lh = legendHeight(items, w - M.left - M.right);
         const ws: number[] = [];
         for (let i = 0; i <= 100; i++) ws.push(i / 100);

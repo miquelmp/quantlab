@@ -6,7 +6,7 @@
  * la fracción invertida.
  */
 import type { ChartDef, ChartCtx } from './types';
-import { linear, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S8 extends Record<string, number> {
@@ -58,6 +58,8 @@ export function legendItems(ctx: ChartCtx) {
 const pct = (v: number, ctx: ChartCtx, d = 1) => fmtPct(v, d, ctx.fmt);
 const num = (v: number, ctx: ChartCtx, d = 2) => fmtNum(v, d, ctx.fmt);
 export const H = 400;
+/** Alto del plano según el ancho (más bajo en el móvil). */
+export const plotH = (w: number) => panelH(w, H);
 
 export const chart08: ChartDef<S8, D8> = {
   id: 'sharpe',
@@ -75,11 +77,11 @@ export const chart08: ChartDef<S8, D8> = {
       id: 'plano',
       wide: true,
       title: (c) => c.tr('c8.panel'),
-      height: () => H,
+      height: (w) => plotH(w),
       render(d, s, w, ctx) {
         const items = legendItems(ctx);
         const lh = legendHeight(items, w - MARGIN.left - MARGIN.right);
-        const { sx, sy } = planeScales(w, H, lh);
+        const { sx, sy } = planeScales(w, plotH(w), lh);
         const sel = Math.round(s.sel);
         let lines = '';
         let pts = '';
@@ -105,10 +107,10 @@ export const chart08: ChartDef<S8, D8> = {
         const py = sy(Math.max(Y_MIN, Math.min(Y_MAX, p.mu)));
         const inside = p.sigma <= X_MAX && p.mu <= Y_MAX && p.mu >= Y_MIN;
         const lab = ctx.tr('c8.comboLabel', { w: pct(s.w, ctx, 0), mu: pct(p.mu, ctx), s: pct(p.sigma, ctx) });
-        return svgOpen(w, H, ctx.tr('c8.panel'), ctx.tr('c8.desc', { b: d.funds[d.best].name, sr: num(d.funds[d.best].sr, ctx), rf: pct(s.rf, ctx, 2) }), 'c8a') +
+        return svgOpen(w, plotH(w), ctx.tr('c8.panel'), ctx.tr('c8.desc', { b: d.funds[d.best].name, sr: num(d.funds[d.best].sr, ctx), rf: pct(s.rf, ctx, 2) }), 'c8a') +
           legend(items, MARGIN.left, MARGIN.top + 10, w - MARGIN.left - MARGIN.right) +
           axisY(sy, MARGIN.left, w - MARGIN.right, { fmt: ctx.fmt, format: (v) => pct(v, ctx, 0) }) +
-          axisX(sx, H - MARGIN.bottom, MARGIN.top, { fmt: ctx.fmt, format: (v) => pct(v, ctx, 0), label: ctx.tr('c8.axisSigma') }) +
+          axisX(sx, plotH(w) - MARGIN.bottom, MARGIN.top, { fmt: ctx.fmt, format: (v) => pct(v, ctx, 0), label: ctx.tr('c8.axisSigma') }) +
           `<line class="zero" x1="${MARGIN.left}" x2="${w - MARGIN.right}" y1="${r1(sy(0))}" y2="${r1(sy(0))}"/>` +
           lines +
           `<circle class="muted dot" cx="${r1(sx(0))}" cy="${r1(sy(s.rf))}" r="6"/>` +

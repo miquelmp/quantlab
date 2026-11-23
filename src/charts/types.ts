@@ -14,9 +14,15 @@ export interface SliderDef {
   max: number;
   step: number;
   format: (v: number, ctx: ChartCtx) => string;
+  /** Mando secundario: en el móvil va dentro de «Más ajustes», plegado, para que todo quepa. */
+  more?: boolean;
 }
 
-export interface Stat { label: string; value: string; note?: string }
+export interface Stat {
+  label: string; value: string; note?: string;
+  /** Paneles a los que se refiere; en el móvil, con pestañas, solo se muestra con esos paneles. */
+  panels?: string[];
+}
 
 export interface HoverInfo { x: number; lines: string[] }
 

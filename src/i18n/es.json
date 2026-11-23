@@ -586,5 +586,8 @@
   "biblio.recommended": "Manual recomendado",
   "biblio.description": "Las {n} obras citadas en el libro, en cuatro bloques, con los manuales recomendados para profundizar.",
   "biblio.count": "{n} referencias; las {s} marcadas con ★ son manuales recomendados para profundizar.",
-  "epilogue.description": "Las tres ideas que conviene llevarse del libro y por dónde seguir aprendiendo."
+  "epilogue.description": "Las tres ideas que conviene llevarse del libro y por dónde seguir aprendiendo.",
+  "chart.panels": "Paneles del gráfico",
+  "chart.copyLinkShort": "Copiar enlace",
+  "chart.moreControls": "Más ajustes"
 }

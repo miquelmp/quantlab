@@ -9,7 +9,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
-import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S4 extends Record<string, number> { p: number; n: number; m: number; seed: number }
@@ -121,7 +121,7 @@ export const chart04: ChartDef<S4, D4> = {
           { cls: 's1', label: ctx.tr('c4.legendDrift') },
           { cls: 'band', label: ctx.tr('c4.legendBands'), box: true },
         ];
-        const h = 320;
+        const h = panelH(w, 320);
         const lh = legendHeight(items, w - M.left - M.right);
         const ts = d.ts;
         const drift = ts.map((t) => S0 + t * d.mu);
@@ -164,7 +164,7 @@ export const chart04: ChartDef<S4, D4> = {
           { cls: 's2', label: ctx.tr('c4.legendObs') },
           { cls: 's1', label: ctx.tr('c4.legendSqrt'), dash: true },
         ];
-        const h = 320;
+        const h = panelH(w, 320);
         const lh = legendHeight(items, w - M.left - M.right);
         const L = Math.log10;
         const xs = d.sdN.map(L);

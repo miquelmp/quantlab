@@ -10,7 +10,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng, normCdf } from './rng';
-import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S15 extends Record<string, number> { nu: number; seed: number }
@@ -151,7 +151,7 @@ export const chart15: ChartDef<S15, D15> = {
       title: (c) => c.tr('c15.panelTop'),
       height: () => 360,
       render(d, s, w, ctx) {
-        const h = 360;
+        const h = panelH(w, 360);
         const items = [
           { cls: 's1', label: ctx.tr('c15.legendNormal') },
           { cls: 's2', label: ctx.tr('c15.legendT', { nu: Math.round(s.nu) }) },
@@ -188,7 +188,7 @@ export const chart15: ChartDef<S15, D15> = {
       title: (c) => c.tr('c15.panelBottom'),
       height: () => 320,
       render(d, s, w, ctx) {
-        const h = 320;
+        const h = panelH(w, 320);
         const nu = Math.round(s.nu);
         const items = [
           { cls: 's1', label: ctx.tr('c15.legendNormal') },

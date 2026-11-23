@@ -131,3 +131,14 @@ export function svgOpen(w: number, h: number, title: string, desc: string, id: s
   return `<svg class="chart-svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-labelledby="${id}-t ${id}-d" xmlns="http://www.w3.org/2000/svg">` +
     `<title id="${id}-t">${esc(title)}</title><desc id="${id}-d">${esc(desc)}</desc>`;
 }
+
+/**
+ * Modo compacto (pantallas de móvil): los paneles son más bajos para que mandos, gráfico y
+ * resultados quepan a la vez en la pantalla. Lo activa client/mount.ts según el ancho de la
+ * ventana; en la compilación (imagen estática) siempre es falso.
+ */
+let compact = false;
+export function setCompact(v: boolean): void { compact = v; }
+export function panelH(_w: number, base: number): number {
+  return compact ? Math.round(base * 0.72) : base;
+}

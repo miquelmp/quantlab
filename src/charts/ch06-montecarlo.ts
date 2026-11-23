@@ -9,7 +9,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng, normCdf, quantileSorted } from './rng';
-import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtEur, fmtNum } from '../lib/format';
 
 export interface S6 extends Record<string, number> { mu: number; sigma: number; years: number; M: number; seed: number }
@@ -126,7 +126,7 @@ function compactEur(v: number, c: ChartCtx): string {
 const MS = { top: 10, right: 12, bottom: 40, left: 40 };
 
 function scatterPanel(d: D6, s: S6, w: number, ctx: ChartCtx): string {
-  const size = Math.min(w, 340);
+  const size = Math.min(w, panelH(w, 340) < 340 ? 250 : 340);
   const h = size;
   const ox = (w - size) / 2 + 30;
   const inner = size - 52;
@@ -155,7 +155,7 @@ function scatterPanel(d: D6, s: S6, w: number, ctx: ChartCtx): string {
 }
 
 function piPanel(d: D6, s: S6, w: number, ctx: ChartCtx): string {
-  const h = 300;
+  const h = panelH(w, 300);
   const M = d.base.M;
   const shown = Math.min(d.piShown ?? M, M);
   const items = [
@@ -188,7 +188,7 @@ function piPanel(d: D6, s: S6, w: number, ctx: ChartCtx): string {
 }
 
 function savingsPanel(d: D6, s: S6, w: number, ctx: ChartCtx): string {
-  const h = Math.max(320, Math.min(400, w * 0.55));
+  const h = panelH(w, 400) < 400 ? 240 : Math.max(320, Math.min(400, w * 0.55));
   const T = d.base.T;
   const M = d.base.M;
   const items = [
@@ -290,12 +290,12 @@ export const chart06: ChartDef<S6, D6> = {
     },
   ],
   stats: (d, s, ctx) => [
-    { label: ctx.tr('c6.statPi', { n: fmtNum(d.base.M, 0, ctx.fmt) }), value: `${fmtNum(d.piHat, 3, ctx.fmt)} ± ${fmtNum(d.piSe, 3, ctx.fmt)}`, note: ctx.tr('c6.noteSe') },
-    { label: ctx.tr('c6.median'), value: eur(d.q50[d.base.T], ctx), note: ctx.tr('c6.theory', { v: eur(d.theory.median, ctx) }) },
-    { label: ctx.tr('c6.p10'), value: eur(d.q10[d.base.T], ctx), note: ctx.tr('c6.theory', { v: eur(d.theory.p10, ctx) }) },
-    { label: ctx.tr('c6.p90'), value: eur(d.q90[d.base.T], ctx), note: ctx.tr('c6.theory', { v: eur(d.theory.p90, ctx) }) },
-    { label: ctx.tr('c6.statLoss'), value: `${pct(d.probLoss, ctx, 2)} ± ${pct(d.seLoss, ctx, 2)}`, note: ctx.tr('c6.theory', { v: pct(d.theory.probLoss, ctx, 2) }) },
-    { label: ctx.tr('c6.mean'), value: eur(d.meanFinal, ctx), note: ctx.tr('c6.theory', { v: eur(d.theory.mean, ctx) }) },
+    { label: ctx.tr('c6.statPi', { n: fmtNum(d.base.M, 0, ctx.fmt) }), value: `${fmtNum(d.piHat, 3, ctx.fmt)} ± ${fmtNum(d.piSe, 3, ctx.fmt)}`, note: ctx.tr('c6.noteSe'), panels: ['pi', 'pi-est'] },
+    { label: ctx.tr('c6.median'), value: eur(d.q50[d.base.T], ctx), note: ctx.tr('c6.theory', { v: eur(d.theory.median, ctx) }), panels: ['ahorro'] },
+    { label: ctx.tr('c6.p10'), value: eur(d.q10[d.base.T], ctx), note: ctx.tr('c6.theory', { v: eur(d.theory.p10, ctx) }), panels: ['ahorro'] },
+    { label: ctx.tr('c6.p90'), value: eur(d.q90[d.base.T], ctx), note: ctx.tr('c6.theory', { v: eur(d.theory.p90, ctx) }), panels: ['ahorro'] },
+    { label: ctx.tr('c6.statLoss'), value: `${pct(d.probLoss, ctx, 2)} ± ${pct(d.seLoss, ctx, 2)}`, note: ctx.tr('c6.theory', { v: pct(d.theory.probLoss, ctx, 2) }), panels: ['ahorro'] },
+    { label: ctx.tr('c6.mean'), value: eur(d.meanFinal, ctx), note: ctx.tr('c6.theory', { v: eur(d.theory.mean, ctx) }), panels: ['ahorro'] },
   ],
   describe: (d, s, ctx) => ctx.tr('c6.describe', {
     M: fmtNum(d.base.M, 0, ctx.fmt), seed: s.seed, mu: pct(s.mu, ctx, 1), sigma: pct(s.sigma, ctx, 0), T: d.base.T,
