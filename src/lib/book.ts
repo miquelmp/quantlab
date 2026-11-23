@@ -51,6 +51,7 @@ export interface Exercise {
   answer: PhrasingContent[];   // respuesta destacada (negrita de la solución)
   solution: Node[];            // desarrollo
   checks?: AnswerPart[];       // comprobación automática (respuestas.yaml)
+  hints?: PhrasingContent[][]; // pistas graduadas (pistas.yaml, RF-EJ-05)
 }
 
 export interface Chapter {
@@ -88,6 +89,7 @@ export interface GlossaryTerm {
   definition: PhrasingContent[];
   definitionText: string;
   ref: string;                 // «13», «A» o «Prefacio»
+  english?: string;            // equivalente en inglés (glosario-en.yaml, RF-GLO-05)
 }
 
 export interface FormulaRow { concept: PhrasingContent[]; conceptText: string; formula: PhrasingContent[]; chapter: number }
@@ -318,6 +320,15 @@ export function loadBook(lang: string): Book {
   const answers: Record<string, AnswerPart[]> = YAML.parse(fs.readFileSync(path.join(dir, 'respuestas.yaml'), 'utf8')) ?? {};
   const retosFile = path.join(dir, 'retos.yaml');
   const retos: Record<string, string[]> = fs.existsSync(retosFile) ? YAML.parse(fs.readFileSync(retosFile, 'utf8')) ?? {} : {};
+  const enFile = path.join(dir, 'glosario-en.yaml');
+  const glossEn: Record<string, string> = fs.existsSync(enFile) ? YAML.parse(fs.readFileSync(enFile, 'utf8')) ?? {} : {};
+  const hintsFile = path.join(dir, 'pistas.yaml');
+  const hintsSrc: Record<string, string[]> = fs.existsSync(hintsFile) ? YAML.parse(fs.readFileSync(hintsFile, 'utf8')) ?? {} : {};
+  const inlineMd = (md: string): PhrasingContent[] => {
+    const r = unified().use(remarkParse).use(remarkGfm).use(remarkMath).parse(md) as Root;
+    const p = r.children[0];
+    return p && p.type === 'paragraph' ? p.children : [];
+  };
   const tree = unified().use(remarkParse).use(remarkGfm).use(remarkMath).parse(src) as Root;
 
   const top = splitBy(tree.children, 1);
@@ -411,6 +422,7 @@ export function loadBook(lang: string): Book {
           term, slug: slugify(term), definition: r[1],
           definitionText: text({ type: 'paragraph', children: r[1] } as Paragraph),
           ref: text({ type: 'paragraph', children: r[2] } as Paragraph),
+          english: glossEn[slugify(term)],
         };
       });
       extras.push({ title: ht, key: 'glossary' });
@@ -436,6 +448,7 @@ export function loadBook(lang: string): Book {
       ex.answer = s.answer;
       ex.solution = s.solution;
       if (answers[ex.id]) ex.checks = answers[ex.id];
+      if (hintsSrc[ex.id]?.length) ex.hints = hintsSrc[ex.id].map(inlineMd);
     }
   }
   if (!disclaimer.length) {

@@ -32,6 +32,18 @@ const domId = (id: string) => `ejercicio-${id.replace('.', '-')}`;
           <p class="help" id={`${domId(ex.id)}-help`}>{t(lang, 'ex.inputHelp')}</p>
         </div>
       )}
+      {ex.hints && ex.hints.length > 0 && (
+        <details class="hint">
+          <summary>{t(lang, 'ex.hint', { n: 1 })}</summary>
+          <p set:html={renderInline(ex.hints[0], ctx)} />
+          {ex.hints[1] && (
+            <details class="hint">
+              <summary>{t(lang, 'ex.hint', { n: 2 })}</summary>
+              <p set:html={renderInline(ex.hints[1], ctx)} />
+            </details>
+          )}
+        </details>
+      )}
       <details class="solution">
         <summary>{t(lang, 'ex.showAnswer')}</summary>
         <div class="answer"><span class="answer-label">{t(lang, 'ex.answer')}</span><Fragment set:html={renderInline(ex.answer, ctx)} /></div>

@@ -2010,6 +2010,28 @@ $$\Delta = \frac{V_u - V_d}{(u - d)\,S_0}, \qquad q = \frac{1 + r - d}{u - d}, \
 
 Lo sorprendente es que la probabilidad real de subida no aparece: el precio sale de la réplica, no de las preferencias. $q$ es la medida neutral al riesgo $Q$ del capítulo 3. Encadenando muchos periodos con $u = e^{\sigma\sqrt{\Delta t}}$ y $d = 1/u$, el árbol converge a la fórmula de Black y Scholes (capítulo 6). Una relación útil que no depende de ningún modelo es la **paridad put-call**: $C - P = S_0 - K e^{-rT}$.
 
+**La fórmula de Black y Scholes.** Si el precio de la acción sigue el movimiento browniano geométrico del capítulo 4, con volatilidad constante $\sigma$, y se puede negociar sin costes y pedir prestado al tipo $r$, el límite del árbol da el precio de una opción europea de compra (Black y Scholes, 1973):
+
+$$C = S_0\,N(d_1) - K e^{-rT}\,N(d_2), \qquad d_1 = \frac{\ln(S_0/K) + \left(r + \tfrac12\sigma^2\right)T}{\sigma\sqrt{T}}, \qquad d_2 = d_1 - \sigma\sqrt{T}.$$
+
+| Símbolo | Significado |
+|---|---|
+| $C$ | el precio de la opción de compra hoy |
+| $S_0$ | el precio de la acción hoy |
+| $K$ | el precio de ejercicio |
+| $T$ | el plazo hasta el vencimiento, en años |
+| $r$ | el tipo libre de riesgo, en capitalización continua |
+| $\sigma$ | la volatilidad anual de la acción |
+| $N(\cdot)$ | la función de distribución de la normal estándar (capítulo 5) |
+
+El precio de la opción de venta sale de la paridad put-call: $P = K e^{-rT}\,N(-d_2) - S_0\,N(-d_1)$.
+
+*Ejemplo:* con $S_0 = K = 100$ €, $r = 3\,\%$, $\sigma = 20\,\%$ y $T = 1$ año, $d_1 = (0 + 0{,}05)/0{,}2 = 0{,}25$ y $d_2 = 0{,}05$. Entonces $N(d_1) = 0{,}5987$, $N(d_2) = 0{,}5199$ y $C = 100 \times 0{,}5987 - 97{,}04 \times 0{,}5199 = 59{,}87 - 50{,}46 = 9{,}41$ €, el mismo valor que aproximaba la simulación del capítulo 6. La venta vale $P = 9{,}413 - 100 + 97{,}045 = 6{,}46$ €.
+
+La fórmula se lee como la réplica del árbol: $N(d_1)$ es la **delta**, el número de acciones de la cartera que replica la opción (0,60 en el ejemplo), y $K e^{-rT} N(d_2)$ es lo que se pide prestado. $N(d_2)$ es la probabilidad, bajo la medida neutral al riesgo, de que la opción acabe dentro del dinero. Como en el árbol, la rentabilidad esperada de la acción no aparece: solo importa la volatilidad.
+
+Las hipótesis son fuertes. La volatilidad no es constante (capítulo 7) y los rendimientos tienen colas gruesas y saltos (capítulo 15), así que el mercado usa la fórmula al revés: cotiza cada opción por la volatilidad que reproduce su precio, la volatilidad implícita, y la «sonrisa» de esas volatilidades resume en qué se equivoca el modelo.
+
 ## Tema D · Estacionariedad y cointegración
 
 Una serie es **estacionaria** si su distribución no cambia con el tiempo. Los precios no lo son (su varianza crece con el tiempo, capítulo 4), pero las rentabilidades lo son aproximadamente; por eso la estadística se hace con rentabilidades (capítulo 10). El contraste de Dickey y Fuller (1979) comprueba si una serie tiene una **raíz unitaria**, es decir, si se comporta como un paseo aleatorio.
@@ -2399,6 +2421,7 @@ Términos ordenados alfabéticamente, con el capítulo o tema donde se definen.
 | **covarianza** | valor esperado del producto de las desviaciones de dos variables respecto a sus medias | 10 |
 | **curtosis** | cuarto momento tipificado; mide el peso de las colas (3 en la normal) | 15 |
 | **déficit esperado** | pérdida media en los casos que superan el valor en riesgo | 16 |
+| **delta** | número de acciones que replica una opción; en Black-Scholes, $N(d_1)$ para la compra | C |
 | **deriva** | tendencia media por paso de un paseo aleatorio | 4 |
 | **descontar** | calcular el valor actual de un pago futuro | 2 |
 | **desviación típica** | raíz cuadrada de la varianza; dispersión típica alrededor de la media | 4 |

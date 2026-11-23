@@ -24,6 +24,9 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Gráficos de los temas**: `CHART_BY_TOPIC` en `src/charts/registry.ts` (`temaA-sobreajuste.ts`, `temaB-costes.ts`, `temaC-blackscholes.ts`, `temaD-cointegracion.ts`, `temaE-caidas.ts`); textos `tX.*` en `es.json` (título, `chartDesc`, `observe`, `heading`). Salen al final de la página del tema y en el Laboratorio.
 - **Exportar gráficos** (RF-GRA-09): menú «Descargar» de cada gráfico → `src/charts/client/export.ts` (PNG/SVG con todos los paneles y estilos del tema copiados en línea; CSV de la tabla con «;»).
 - **Mapa de aprendizaje** (RF-NAV-09): `src/components/LearningMap.astro` en el índice, a partir de `requisitos` de `capitulos.yaml`.
+- **Términos en inglés** (RF-GLO-05): `content/es/glosario-en.yaml` (clave = slug del término); `check:content` exige uno por término.
+- **Símbolos interactivos** (RF-FOR-04): `initFormulaSymbols()` en `src/lib/client/site.ts`; funciona con las tablas «Símbolo | Significado» que siguen a una fórmula destacada.
+- **Pistas** (RF-EJ-05): `content/es/pistas.yaml`, 1–2 por ejercicio publicado (lo exige `check:content`), Markdown con `$…$` entre comillas simples; se muestran antes de la respuesta.
 - **Analítica**: GoatCounter (anónima, sin cookies), `ANALYTICS_GOATCOUNTER` en `src/config.ts`; panel del autor en https://miquelmp.goatcounter.com/. Explicada en `content/es/paginas/privacidad.md`.
 
 ## Tareas habituales
@@ -45,4 +48,4 @@ npm run preview & npm run check:a11y   # axe-core, temas claro y oscuro (no est�
 
 ## Pendiente
 
-Hecho todo lo imprescindible (M) y recomendable (S). Quedan funciones opcionales (C) y de la fase 5, a decidir por el autor: pistas y preguntas rápidas (RF-EJ-05/07), símbolos interactivos (RF-FOR-04), términos en inglés (RF-GLO-05), versión en inglés y PDF.
+Hecho todo lo imprescindible (M) y recomendable (S). Quedan funciones opcionales (C) y de la fase 5, a decidir por el autor: preguntas rápidas (RF-EJ-07), versión en inglés y PDF.

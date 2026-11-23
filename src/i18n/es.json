@@ -746,5 +746,7 @@
   "chart.dlCsv": "Datos (CSV)",
   "map.title": "Mapa de aprendizaje",
   "map.intro": "Cada flecha va de un capítulo a otro que conviene leer después. Las columnas son las cinco partes del libro; pulsa un capítulo para abrirlo.",
-  "map.after": "conviene leer antes los capítulos"
+  "map.after": "conviene leer antes los capítulos",
+  "glossary.english": "En inglés",
+  "ex.hint": "Pista {n}"
 }

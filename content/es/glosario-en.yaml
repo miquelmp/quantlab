@@ -1,0 +1,65 @@
+# Equivalente en inglés de cada término del glosario (RF-GLO-05), por su identificador
+# (el final de la dirección de su página: /glosario/<identificador>/). check:content exige uno por término.
+alfa: alpha
+anualizar: annualize
+asimetria: skewness
+backtest: backtest
+beta: beta
+caida-maxima: maximum drawdown
+capm: CAPM (capital asset pricing model)
+cartera: portfolio
+cartera-de-mercado: market portfolio
+cartera-de-minima-varianza: minimum-variance portfolio
+cointegracion: cointegration
+colas: tails
+colas-gruesas: fat tails (heavy tails)
+correlacion: correlation
+covarianza: covariance
+curtosis: kurtosis
+deficit-esperado: expected shortfall
+deriva: drift
+descontar: discount
+desviacion-tipica: standard deviation
+distribucion-normal: normal distribution
+diversificacion: diversification
+error-estandar: standard error
+factor-de-descuento: discount factor
+finanzas-cuantitativas: quantitative finance
+frontera-eficiente: efficient frontier
+independientes: independent
+interes-compuesto: compound interest
+ley-de-los-grandes-numeros: law of large numbers
+linea-del-mercado-de-valores: security market line
+lastre-de-la-volatilidad: volatility drag
+mediano-resultado: median (outcome)
+nivel-de-confianza: confidence level
+paseo-aleatorio: random walk
+percentil: percentile
+peso: weight
+prima-de-riesgo-del-mercado: market risk premium (equity risk premium)
+ratio-de-sharpe: Sharpe ratio
+regla-de-la-raiz-del-tiempo: square-root-of-time rule
+rentabilidad: return
+rentabilidad-en-exceso: excess return
+rentabilidad-logaritmica: log return
+riesgo-especifico: specific (idiosyncratic) risk
+riesgo-sistematico: systematic risk
+semilla: seed
+sesion: trading session
+simulacion-de-monte-carlo: Monte Carlo simulation
+sobreajuste: overfitting
+tasa-anual-equivalente-tae: annual percentage yield (APY)
+tasa-de-crecimiento-compuesto: compound growth rate (CAGR)
+teorema-central-del-limite: central limit theorem
+tipificar: standardize
+tipo-de-interes: interest rate
+tipo-libre-de-riesgo: risk-free rate
+trayectoria: path
+valor-en-riesgo-var: value at risk (VaR)
+valor-esperado: expected value
+valor-presente: present value
+valor-temporal-del-dinero: time value of money
+varianza: variance
+venta-en-corto: short selling
+volatilidad: volatility
+delta: delta

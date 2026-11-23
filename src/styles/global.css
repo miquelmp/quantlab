@@ -289,6 +289,9 @@ pre { margin: 0; }
 .check-result.bad::before { content: "✗ "; }
 .checks .help { font-size: 0.8rem; color: var(--muted); margin: 0; }
 .solution { margin-top: 0.5rem; }
+.hint { margin-top: 0.5rem; }
+.hint > summary { cursor: pointer; color: var(--muted); font-weight: 600; min-height: 32px; padding: 0.25rem 0; }
+.hint > p { padding: 0.5rem 0.8rem; border-left: 3px solid var(--border); background: var(--surface-2); border-radius: 0 8px 8px 0; margin: 0.35rem 0; }
 .solution > summary { cursor: pointer; color: var(--accent); font-weight: 600; min-height: 32px; padding: 0.25rem 0; }
 .solution .answer { padding: 0.6rem 0.8rem; border-left: 3px solid var(--ok); background: var(--surface-2); border-radius: 0 8px 8px 0; margin: 0.5rem 0; }
 .solution .answer-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); display: block; }
@@ -438,6 +441,11 @@ pre { margin: 0; }
 .glossary-list { margin: 0 0 1.5rem; }
 .glossary-list dt { font-weight: 700; margin-top: 0.85rem; }
 .glossary-list dd { margin: 0.1rem 0 0; color: var(--text-2); }
+.sym-hint { cursor: help; border-radius: 3px; }
+.sym-hint:hover { background: var(--band); }
+.sym-tip { position: absolute; z-index: 50; padding: 0.4rem 0.6rem; background: var(--text); color: var(--surface); border-radius: 6px; font-size: 0.85rem; line-height: 1.35; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+.term-en { color: var(--text-2); margin: -0.4rem 0 0.8rem; }
+.term-en-inline { font-weight: 400; color: var(--text-2); }
 .glossary-list .ref { font-size: 0.85rem; color: var(--muted); }
 .term-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; background: var(--surface); margin: 1rem 0; font-size: 1.1rem; }
 

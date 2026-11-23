@@ -48,8 +48,8 @@ const jsonLd = {
           <h2>{l}</h2>
           <dl class="glossary-list">
             {items.map((g) => (
-              <div data-term={`${g.term} ${g.definitionText}`}>
-                <dt id={g.slug}><a href={glossaryUrl(ctx, g.slug)}>{g.term}</a></dt>
+              <div data-term={`${g.term} ${g.english ?? ''} ${g.definitionText}`}>
+                <dt id={g.slug}><a href={glossaryUrl(ctx, g.slug)}>{g.term}</a>{g.english && <span class="term-en-inline"> · <i lang="en">{g.english}</i></span>}</dt>
                 <dd><Fragment set:html={renderInline(g.definition, ctx)} />{' '}
                   <span class="ref">({t(lang, 'glossary.definedIn').toLowerCase()} {refHref(ctx, g.ref) ? <a href={refHref(ctx, g.ref)!}>{refLabel(lang, g.ref)}</a> : refLabel(lang, g.ref)})</span>
                 </dd>

@@ -1,0 +1,167 @@
+# Pistas graduales de los ejercicios (RF-EJ-05): una o dos por ejercicio, de la más general a la
+# más concreta. Se muestran antes de la respuesta. Admiten Markdown y fórmulas entre $…$.
+"1.1":
+  - 'La rentabilidad simple es (precio final − precio inicial) / precio inicial; la logarítmica, $\ln(P_1/P_0)$.'
+  - 'Para volver a 125 € desde 110 € hay que calcular la subida relativa *desde 110*, no desde 125.'
+"1.2":
+  - 'Las rentabilidades se encadenan multiplicando factores $(1 + R)$, no sumando porcentajes.'
+  - 'La rentabilidad anual constante $g$ cumple $(1 + g)^3$ = factor acumulado de los tres años.'
+"1.3":
+  - 'Piensa en euros: ¿cuánto vale cada mitad de la cartera al final del año?'
+  - 'Los euros de cada parte se suman. ¿Qué tipo de rentabilidad se combina bien al sumar euros y cuál al encadenar periodos?'
+"2.1":
+  - 'Con intereses reinvertidos, el capital final es $C_0 (1 + i)^n$.'
+  - 'Compara los intereses totales con los que se obtendrían con interés simple, $C_0 \cdot i \cdot n$; la diferencia es el efecto compuesto.'
+"2.2":
+  - 'Descontar es el camino inverso de capitalizar: divide por $(1 + i)^n$.'
+  - 'Repite el cálculo con $i = 0{,}06$ y con $i = 0{,}02$, con $n = 4$ años.'
+"2.3":
+  - 'Plantea que la suma de los valores presentes de las cinco cuotas $C/(1{,}05)^k$, para $k = 1, \dots, 5$, vale 15.000 €.'
+  - 'La fórmula cerrada de la renta constante es $C = VP \cdot i / \bigl(1 - (1 + i)^{-n}\bigr)$.'
+"3.1":
+  - 'El valor esperado del premio es el total repartido en premios dividido entre el número de papeletas.'
+  - 'La ganancia neta resta el precio de la papeleta. El organizador ingresa la recaudación menos los premios.'
+"3.2":
+  - 'Pérdida esperada = probabilidad × coste.'
+  - 'El recargo es la diferencia entre la prima y la pérdida esperada, en euros o en porcentaje. Para el «de todos modos», piensa en cuánto te afectaría una pérdida grande que no puedes repartir.'
+"3.3":
+  - 'Calcula el valor esperado de una jugada y la probabilidad de no perderlo todo en diez jugadas seguidas.'
+  - 'Compara lo que pasa con la media de muchos jugadores con lo que le pasa a un jugador concreto (capítulo 3 y, más adelante, capítulo 14).'
+"4.1":
+  - 'Cada día el precio sube o baja 1 €: la ganancia esperada por día es $p \cdot 1 + (1 - p) \cdot (-1)$.'
+  - 'Para acabar por encima de 20 € en cinco días hacen falta al menos tres subidas. Suma las probabilidades binomiales de 3, 4 y 5 subidas.'
+"4.2":
+  - 'La volatilidad crece con la raíz del tiempo: $\sigma_T = \sigma_{\text{anual}} \sqrt{T}$, con $T$ en años.'
+  - 'Un mes son $21/252$ años y un día $1/252$.'
+"4.3":
+  - 'Tras $n$ sesiones, la media acumulada es $n\mu$ y la desviación típica acumulada, $\sigma\sqrt{n}$.'
+  - 'Iguala $n\mu = \sigma\sqrt{n}$. En ese punto el resultado está a una desviación típica por encima de cero: usa la normal para la probabilidad de quedar por debajo.'
+"4.4":
+  - 'Para un paseo sin tendencia, la intuición dice que el tiempo por encima del nivel inicial ronda el 50 %, pero la ley del arcoseno dice otra cosa.'
+  - 'Según esa ley, las proporciones cercanas a 0 y a 1 son las *más* probables. Calcula la probabilidad de superar el 95 % con la fórmula de la Ampliación.'
+"5.1":
+  - 'Tipifica: $z = (0 - \mu)/\sigma$.'
+  - 'Busca $\Phi(z)$ en la tabla de la normal o con la regla 68-95-99,7 como comprobación aproximada.'
+"5.2":
+  - 'Tipifica −15 % igual que en el ejercicio anterior.'
+  - 'El intervalo del 95 % centrado en la media es $\mu \pm 1{,}96\,\sigma$.'
+"5.3":
+  - 'La suma de 12 dados tiene media $12 \times 3{,}5$ y varianza $12 \times 35/12$.'
+  - 'Con corrección de continuidad, «50 o más» se aproxima por $P(S > 49{,}5)$ con la normal de esa media y esa varianza.'
+"5.4":
+  - '¿Qué condiciones exige el teorema central del límite? ¿Se cumplen para una sola rentabilidad diaria?'
+  - 'Piensa en las colas: el riesgo de pérdida depende sobre todo de los sucesos extremos (capítulo 15).'
+"6.1":
+  - 'El error estándar de Monte Carlo es proporcional a $1/\sqrt{M}$.'
+  - 'Dividir el error entre 4 exige multiplicar los escenarios por $4^2$.'
+"6.2":
+  - 'La estimación es $4\hat p$, con $\hat p$ la proporción de puntos dentro. Su error estándar es $4\sqrt{p(1 - p)/M}$.'
+  - 'Para el segundo apartado, despeja $M$ de $4\sqrt{p(1 - p)/M} = 0{,}001$.'
+"6.3":
+  - 'Fijar la semilla hace que el resultado sea reproducible. ¿Para qué sirve eso al corregir errores o comparar variantes?'
+  - 'Una sola semilla es una sola muestra. ¿Cómo sabrías si un resultado depende del azar de esa muestra?'
+"6.4":
+  - 'El error estándar de una proporción estimada es $\sqrt{\hat p(1 - \hat p)/M}$.'
+  - 'El intervalo del 95 % es $\hat p \pm 1{,}96$ errores estándar. Comprueba si 6,80 % cae dentro.'
+"7.1":
+  - 'Primero la media de las cinco cifras; después suma los cuadrados de las desviaciones respecto a esa media y divide entre $N - 1 = 4$.'
+  - 'La volatilidad diaria es la raíz de esa varianza; para anualizar, multiplica por $\sqrt{252}$.'
+"7.2":
+  - 'Anualiza con la raíz del tiempo: $\sigma_{\text{anual}} = \sigma_{\text{mensual}}\sqrt{12}$.'
+  - 'Busca en la tabla de clases de riesgo de la Ampliación el tramo en el que cae esa volatilidad.'
+"7.3":
+  - '¿Se mantiene la volatilidad constante en el tiempo? Recuerda los agrupamientos de volatilidad.'
+  - 'Piensa en qué pasa con una estimación baja cuando llega un periodo agitado, y en el error de estimar con pocos datos.'
+"8.1":
+  - 'Ratio de Sharpe = (rentabilidad − tipo libre de riesgo) / volatilidad.'
+  - 'Calcúlalo para cada fondo con $r_f = 2{,}5\,\%$ y compara.'
+"8.2":
+  - 'Para tener la volatilidad de F1 con F2 hay que invertir en F2 una fracción $w = 14\,\%/5\,\%$ del capital, pidiendo prestado el resto.'
+  - 'Rentabilidad esperada $= r_f + w\,(\mu_{F2} - r_f)$. Compárala con el 8 % de F1.'
+"8.3":
+  - 'El exceso de rentabilidad crece con el tiempo y la volatilidad con su raíz, así que el Sharpe se multiplica por $\sqrt{T}$.'
+  - 'De mensual a anual, $T = 12$.'
+"8.4":
+  - 'El error estándar del ratio de Sharpe es aproximadamente $\sqrt{(1 + SR^2/2)/T}$, con $T$ el número de años.'
+  - 'Divide el Sharpe entre su error estándar y compara con 2 (aproximadamente el umbral del 5 %).'
+"9.1":
+  - 'La media aritmética es la media de +60 % y −40 %.'
+  - 'La rentabilidad acumulada multiplica los factores: $1{,}6 \times 0{,}6$.'
+"9.2":
+  - 'La tasa de crecimiento compuesto es aproximadamente $\mu - \sigma^2/2$.'
+  - 'Ojo con las unidades: con $\sigma = 0{,}15$, $\sigma^2/2 = 0{,}01125$.'
+"9.3":
+  - 'Para el índice, aplica $g \approx \mu - \sigma^2/2$.'
+  - 'El producto apalancado tiene media $3\mu$ y volatilidad $3\sigma$: su lastre es $(3\sigma)^2/2$, nueve veces el del índice.'
+"10.1":
+  - 'La correlación es la covarianza dividida entre el producto de las volatilidades.'
+  - '$\rho = 0{,}009 / (0{,}15 \times 0{,}25)$.'
+"10.2":
+  - 'Fíjate en qué hace Y cada mes en que X sube o baja respecto a su media.'
+  - 'Calcula las desviaciones respecto a cada media, multiplícalas mes a mes y normaliza: $\rho = \sum (x - \bar x)(y - \bar y) / \sqrt{\sum (x - \bar x)^2 \sum (y - \bar y)^2}$.'
+"10.3":
+  - '¿La diversificación depende de cómo se mueven los precios o de cómo se mueven las rentabilidades?'
+  - 'Dos series con tendencia tienen precios muy correlacionados aunque sus variaciones diarias sean independientes (capítulo 10).'
+"11.1":
+  - 'Con $N$ activos independientes de igual peso y volatilidad, la volatilidad de la cartera es $\sigma/\sqrt{N}$.'
+  - 'Aquí $N = 9$.'
+"11.2":
+  - 'Con pesos iguales, la varianza es $\sigma^2\,[\,1/N + (1 - 1/N)\,\rho\,]$.'
+  - 'Con muchísimos activos, $1/N \to 0$ y queda $\sigma^2\rho$: el riesgo que no se diversifica.'
+"11.3":
+  - 'El número efectivo de activos es $1 / \sum w_i^2$.'
+  - 'Para pesos iguales entre cinco activos, ese número es exactamente 5.'
+"12.1":
+  - 'Con correlación −1, las dos volatilidades se compensan cuando $w\sigma_1 = (1 - w)\sigma_2$.'
+  - 'Despeja $w = \sigma_2 / (\sigma_1 + \sigma_2)$.'
+"12.2":
+  - 'La rentabilidad de la cartera es la media ponderada; la volatilidad, $\sqrt{w_A^2\sigma_A^2 + w_B^2\sigma_B^2 + 2w_Aw_B\rho\,\sigma_A\sigma_B}$.'
+  - 'Toma las cifras de A y B del ejemplo resuelto y calcula los tres ratios de Sharpe con $r_f = 2\,\%$.'
+"12.3":
+  - '¿Con qué precisión se estima una rentabilidad media con cinco años de datos? Recuerda el error estándar de la media (capítulo 7).'
+  - 'El optimizador trata esas medias como exactas y apuesta fuerte por la que parece mejor, aunque sea por azar.'
+"13.1":
+  - 'Beta $= \rho\,\sigma_{\text{acción}} / \sigma_{\text{mercado}}$.'
+  - 'La variación media esperada de la acción es beta por la variación del mercado.'
+"13.2":
+  - 'CAPM: $E[R] = r_f + \beta\,(E[R_m] - r_f)$.'
+  - 'La prima de mercado es $7\,\% - 2\,\% = 5\,\%$.'
+"13.3":
+  - 'Calcula primero la rentabilidad que el CAPM predice con beta 1,2 en ese año.'
+  - 'El alfa es la rentabilidad obtenida menos la predicha.'
+"13.4":
+  - 'En el CAPM, ¿qué parte del riesgo puede eliminar un inversor diversificado?'
+  - 'Si el riesgo de la acción desaparece al diversificar, ¿por qué iba el mercado a pagar una prima por soportarlo?'
+"14.1":
+  - 'En una apuesta a la par ($b = 1$), la fracción de Kelly es $f^* = p - q$.'
+  - 'Aquí $q = 1 - 0{,}58$.'
+"14.2":
+  - 'La fórmula general es $f^* = (bp - q)/b$.'
+  - 'La tasa de crecimiento es $g(f) = p\ln(1 + bf) + q\ln(1 - f)$. Evalúala en $f^*$ y en $f^*/2$ y compara.'
+"14.3":
+  - 'En la versión continua, $f^* = \mu/\sigma^2$, con $\mu$ la rentabilidad en exceso.'
+  - 'La tasa de crecimiento en exceso es $g(f) = f\mu - f^2\sigma^2/2$. Evalúala en $f^*$ y en $f^*/2$.'
+"15.1":
+  - 'Bajo normalidad, $P(Z < -4) \approx 3{,}2 \times 10^{-5}$.'
+  - 'Multiplica por 252 sesiones para tener la frecuencia anual, y calcula cada cuántos años cabe esperar una.'
+"15.2":
+  - 'La media es cero por simetría. La varianza es $\sum p_i x_i^2$.'
+  - 'La curtosis es $E[X^4]/\sigma^4$; compárala con 3, el valor de la normal.'
+"15.3":
+  - 'Sesiones esperadas al año = $0{,}0048 \times 252$.'
+  - 'Para la normal, la probabilidad de superar cuatro desviaciones típicas en cualquier sentido es $2 \times 3{,}2 \times 10^{-5}$.'
+"15.4":
+  - '¿Cuántas desviaciones típicas son un 7 % con $\sigma = 1\,\%$? ¿Qué probabilidad le da la normal?'
+  - 'Si el modelo dice que algo no debería pasar nunca y pasa, ¿qué es más probable: muy mala suerte o un modelo equivocado?'
+"16.1":
+  - 'El VaR al 99 % de una normal de media cero es $2{,}326\,\sigma$ veces el valor de la cartera.'
+  - 'A diez días, multiplica por $\sqrt{10}$.'
+"16.2":
+  - 'Bajo normalidad, el déficit esperado es $\sigma\,\varphi(z_\alpha)/(1 - \alpha)$, con $\varphi$ la densidad normal.'
+  - 'Al 99 %, $z = 2{,}326$, $\varphi(2{,}326) \approx 0{,}0267$ y $1 - \alpha = 0{,}01$.'
+"16.3":
+  - 'Revisa en la Ampliación los límites de las zonas verde, amarilla y roja para 250 días.'
+  - 'El número de excepciones de un modelo correcto sigue una binomial con $n = 250$ y $p = 0{,}01$. Suma la cola desde 7.'
+"16.4":
+  - '¿Qué dice el VaR sobre lo que pasa *más allá* del umbral? ¿Y el déficit esperado?'
+  - 'Piensa en carteras con colas gruesas, en la subaditividad y en la posibilidad de esconder riesgo en la cola.'
