@@ -545,3 +545,19 @@ pre { margin: 0; }
   .site-header.away { transform: translateY(-100%); }
 }
 @media (prefers-reduced-motion: reduce) { .site-header { transition: none; } }
+
+/* Laboratorio: galería de gráficos */
+.lab-part { max-width: 76rem; margin: 1.5rem auto 0; }
+.lab-part h2 { font-size: 1.2rem; margin: 0 0 0.75rem; }
+.lab-grid { list-style: none; margin: 0 0 1.5rem; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; }
+.lab-card { position: relative; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1rem 1rem; background: var(--surface); display: flex; flex-direction: column; gap: 0.35rem; }
+.lab-card:hover { border-color: var(--accent); }
+.lab-card h3 { margin: 0; font-size: 1.02rem; }
+.lab-card h3 a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.lab-card h3 a:focus-visible { outline: none; }
+.lab-card:has(h3 a:focus-visible) { outline: 3px solid var(--focus, var(--accent)); outline-offset: 2px; }
+.lab-card .kicker { margin: 0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); font-weight: 700; }
+.lab-thumb { border-radius: 6px; overflow: hidden; background: var(--bg); }
+.lab-thumb svg { display: block; width: 100%; height: auto; }
+.lab-observe { margin: 0; font-size: 0.88rem; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.lab-observe a { position: relative; z-index: 1; }

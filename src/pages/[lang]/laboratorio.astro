@@ -1,0 +1,72 @@
+---
+/** Laboratorio (RF-GRA-14): galería con todos los gráficos interactivos, cada uno con enlace a su capítulo. */
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { t, tPrefix, numberFormat } from '../../i18n';
+import { loadBook, publishedChapters } from '../../lib/book';
+import { initRenderer, renderInline, chapterUrl, url, type RenderCtx } from '../../lib/render';
+import { CHART_BY_CHAPTER, I18N_PREFIX, loadChart } from '../../charts/registry';
+import type { ChartCtx } from '../../charts/types';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book, linkTerms: false, linkCitations: false };
+const fmt = numberFormat(lang);
+
+// Miniatura: el primer panel con los valores por defecto, como imagen decorativa (el título y
+// el enlace de la tarjeta ya dicen qué es).
+async function preview(num: number): Promise<string | null> {
+  const id = CHART_BY_CHAPTER[num];
+  if (!id) return null;
+  const def = await loadChart(id);
+  const strings = tPrefix(lang, I18N_PREFIX[id], 'chart.');
+  const cctx: ChartCtx = {
+    fmt,
+    tr: (k, vars = {}) => { let s = strings[k] ?? t(lang, k); for (const [a, b] of Object.entries(vars)) s = s.replaceAll(`{${a}}`, String(b)); return s; },
+  };
+  const state = { ...def.defaults };
+  const data = def.compute(state);
+  const p = def.panels[0];
+  return p.render(data, state, 480, cctx)
+    .replace(/\srole="img"\saria-labelledby="[^"]*"/, ' aria-hidden="true" focusable="false"')
+    .replace(/<title[^>]*>[\s\S]*?<\/title>|<desc[^>]*>[\s\S]*?<\/desc>/g, '')
+    .replace(/\sid="[^"]*"/g, '');
+}
+
+const pub = publishedChapters(book);
+const groups = await Promise.all(book.parts.map(async (p) => ({
+  part: p,
+  items: await Promise.all(pub.filter((c) => c.part === p.number && c.chart).map(async (c) => ({
+    ch: c, svg: await preview(c.number), href: chapterUrl(ctx, c.number)! + '#grafico-interactivo',
+    observe: renderInline(c.chart!.observe, ctx),
+  }))),
+})));
+const total = groups.reduce((n, g) => n + g.items.length, 0);
+---
+<Base lang={lang} title={t(lang, 'lab.title')} description={t(lang, 'lab.description')} path="laboratorio/" current="lab">
+  <div class="prose">
+    <h1>{t(lang, 'lab.title')}</h1>
+    <p>{t(lang, 'lab.intro', { n: total })}</p>
+  </div>
+  {groups.filter((g) => g.items.length).map((g) => (
+    <section class="lab-part" aria-labelledby={`lab-parte-${g.part.number}`}>
+      <h2 id={`lab-parte-${g.part.number}`}>Parte {g.part.roman} · {g.part.title}</h2>
+      <ul class="lab-grid">
+        {g.items.map((it) => (
+          <li class="lab-card">
+            {it.svg && <div class="lab-thumb" set:html={it.svg} />}
+            <p class="kicker">{t(lang, 'nav.chapter')} {it.ch.number} · {it.ch.title}</p>
+            <h3><a href={it.href}>{it.ch.chart!.title}</a></h3>
+            <p class="lab-observe"><strong>{t(lang, 'chart.observe')}</strong> <span set:html={it.observe} /></p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</Base>
