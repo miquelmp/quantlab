@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import { LANGS } from '../../i18n/config';
 import { t } from '../../i18n';
 import { loadBook, publishedChapters } from '../../lib/book';
-import { initRenderer, renderInline, chapterUrl, url, plain, type RenderCtx } from '../../lib/render';
+import { initRenderer, renderInline, chapterUrl, topicUrl, url, plain, type RenderCtx } from '../../lib/render';
 import { SITE } from '../../config';
 
 export function getStaticPaths() {
@@ -29,6 +29,8 @@ const jsonLd = {
   url: new URL(url(ctx, `${lang}/`), SITE.url).toString(),
   hasPart: pub.map((c) => ({ '@type': 'Chapter', name: c.title, position: c.number, url: new URL(chapterUrl(ctx, c.number)!, SITE.url).toString() })),
 };
+const topics = book.topics.filter((tp) => tp.published);
+const project = book.extras.find((e) => e.key === 'proyecto');
 const introText = plain((book.prefaceIntro.find((n) => n.type === 'paragraph') as any)?.children ?? []);
 ---
 <Base lang={lang} title={t(lang, 'site.bookTitle')} description={t(lang, 'site.tagline') + ' ' + book.subtitle} path="" jsonLd={jsonLd}>
@@ -58,6 +60,20 @@ const introText = plain((book.prefaceIntro.find((n) => n.type === 'paragraph') a
         {c.chart && <p style="margin-top:.6rem"><a href={chapterUrl(ctx, c.number)! + '#grafico-interactivo'}>{t(lang, 'home.chartLink')}: {c.chart.title}</a></p>}
       </article>
     ))}
+    {topics.map((tp) => (
+      <article class="card">
+        <p class="kicker">{t(lang, 'nav.topic')} {tp.letter}</p>
+        <h3><a href={topicUrl(ctx, tp.letter)!}>{tp.title.replace(/\*/g, '')}</a></h3>
+        <p>{tp.description}</p>
+      </article>
+    ))}
+    {project && (
+      <article class="card">
+        <p class="kicker">{t(lang, 'index.extra')}</p>
+        <h3><a href={url(ctx, `${lang}/proyecto/`)}>{project.title}</a></h3>
+        <p>{t(lang, 'project.description')}</p>
+      </article>
+    )}
     <article class="card">
       <p class="kicker">{t(lang, 'index.extra')}</p>
       <h3><a href={url(ctx, `${lang}/glosario/`)}>{t(lang, 'glossary.title')}</a></h3>
