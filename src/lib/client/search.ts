@@ -73,7 +73,7 @@ export function initSearch() {
     await m.options({ baseUrl: cfg.base, excerptLength: 22 });
     await m.init();
     return m;
-  })());
+  })().catch((err) => { pf = null; throw err; }));   // si falla (sin conexión), se reintenta en la siguiente búsqueda
   let seq = 0;
 
   async function run(q: string) {
