@@ -11,3 +11,12 @@ describe('Mi progreso: importar', () => {
     expect(normalize('hola')).toBeNull();
   });
 });
+
+describe('Mi progreso: enlace «Seguir donde lo dejé»', () => {
+  it('solo acepta rutas de esta web', async () => {
+    const { isLocalPath } = await import('../src/lib/client/progress');
+    expect(isLocalPath('/quantlab/es/capitulos/2-valor-temporal-del-dinero/#formalizacion')).toBe(true);
+    for (const bad of ['//attacker.example/login', '/\\attacker.example', 'https://x.y/', 'javascript:alert(1)', '/a b']) expect(isLocalPath(bad)).toBe(false);
+  });
+});
+

@@ -16,6 +16,9 @@ function load(): Store {
 }
 function save(s: Store): boolean { try { localStorage.setItem(KEY, JSON.stringify(s)); return true; } catch { return false; } }
 
+/** Solo rutas de esta misma web («/quantlab/es/…#seccion»): nada de «//otro-sitio» ni «javascript:». */
+export const isLocalPath = (u: unknown): u is string => typeof u === 'string' && /^\/(?![/\\])[\w\-./%]*(#[\w\-]*)?$/.test(u);
+
 /** Valida y limpia un progreso leído de un fichero o del almacenamiento; null si no lo es. */
 export function normalize(x: unknown): Store | null {
   if (!x || typeof x !== 'object') return null;
@@ -31,7 +34,7 @@ export function normalize(x: unknown): Store | null {
   for (const [k, v] of Object.entries(r.ex as Record<string, unknown>)) if (/^\d+\.\d+$/.test(k) && v === 'ok') ex[k] = 'ok';
   const out: Store = { read, ex };
   const last = r.last as Store['last'];
-  if (last && typeof last.url === 'string' && last.url.startsWith('/') && typeof last.title === 'string') {
+  if (last && isLocalPath(last.url) && typeof last.title === 'string') {
     out.last = { url: last.url, title: last.title.slice(0, 200), section: typeof last.section === 'string' ? last.section.slice(0, 200) : undefined, ts: Number(last.ts) || 0 };
   }
   if (typeof r.advancedOpen === 'boolean') out.advancedOpen = r.advancedOpen;

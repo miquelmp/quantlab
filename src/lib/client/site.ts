@@ -4,6 +4,7 @@
  * Todo funciona aunque el navegador no permita guardar datos (RF-PRO-06).
  */
 import { checkAnswer } from '../format';
+import { isLocalPath } from './progress';
 
 const KEY = 'quantlab:v1';
 
@@ -168,7 +169,7 @@ function initIndex() {
     el.hidden = false;
   });
   const resume = document.querySelector<HTMLAnchorElement>('[data-resume]');
-  if (resume && store.last) {
+  if (resume && store.last && isLocalPath(store.last.url)) {
     resume.href = store.last.url;
     resume.hidden = false;
     const label = resume.querySelector('[data-resume-label]');
