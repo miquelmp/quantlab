@@ -1,6 +1,7 @@
 ---
 /** Temas complementarios A–E (RF-TEM-01): páginas breves, sin gráfico propio por ahora. */
 import Base from '../../../layouts/Base.astro';
+import CodeDownload from '../../../components/CodeDownload.astro';
 import { LANGS } from '../../../i18n/config';
 import { t } from '../../../i18n';
 import { loadBook, type Topic } from '../../../lib/book';
@@ -43,6 +44,7 @@ const label = (x: Topic) => `${t(lang, 'nav.topic')} ${x.letter} · ${x.title.re
     <p class="chapter-kicker">{t(lang, 'nav.topic')} {letter}</p>
     <h1>{tp.title.replace(/\*/g, '')}</h1>
     <Fragment set:html={html} />
+    {html.includes('data-py') && <CodeDownload lang={lang} base={base} name={tp.slug} />}
     <nav class="chapter-nav" aria-label={`${t(lang, 'nav.prev')} / ${t(lang, 'nav.next')}`}>
       {prev ? <a class="prev" href={topicUrl(ctx, prev.letter)!} rel="prev"><small>← {t(lang, 'nav.prev')}</small>{label(prev)}</a> : <a class="prev" href={url(ctx, `${lang}/indice/#temas`)}><small>← {t(lang, 'topic.back')}</small>{t(lang, 'index.topics')}</a>}
       {next ? <a class="next" href={topicUrl(ctx, next.letter)!} rel="next"><small>{t(lang, 'nav.next')} →</small>{label(next)}</a> : <a class="next" href={url(ctx, `${lang}/proyecto/`)}><small>{t(lang, 'nav.next')} →</small>{book.extras.find((e) => e.key === 'proyecto')?.title}</a>}

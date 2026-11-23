@@ -1,0 +1,10 @@
+---
+/** Enlaces para descargar el código de la página como .py y .ipynb (RF-PY-08). */
+import { t } from '../i18n';
+interface Props { lang: string; base: string; name: string }
+const { lang, base, name } = Astro.props;
+const href = (ext: string) => `${base}${lang}/codigo/${name}.${ext}`;
+---
+<p class="code-download">{t(lang, 'py.download')}{' '}
+  <a href={href('py')} download>{t(lang, 'py.downloadPy')}</a>{' · '}<a href={href('ipynb')} download>{t(lang, 'py.downloadIpynb')}</a>
+</p>
