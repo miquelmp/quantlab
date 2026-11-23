@@ -95,7 +95,7 @@ Esa es la ventaja práctica de los logaritmos: la rentabilidad logarítmica de u
 
 ### Gráfico interactivo
 
-> **Gráfico interactivo · La asimetría de las pérdidas.** Panel izquierdo: el lector elige con un deslizador una pérdida entre el 0 % y el 90 %, y una curva muestra la ganancia necesaria para recuperarla, $L/(1-L)$, con el punto elegido resaltado y su valor numérico. Panel derecho: la rentabilidad logarítmica $\ln(1+R)$ frente a la simple $R$ para $R$ entre −60 % y +100 %, junto a la diagonal $r = R$; al pasar el cursor se muestra la diferencia entre ambas. Lo que el lector debe observar: cerca de cero las dos medidas casi coinciden, pero la logarítmica queda siempre por debajo de la simple y se separa mucho en movimientos grandes, sobre todo en las caídas.
+> **Gráfico interactivo · La asimetría de las pérdidas.** Panel izquierdo: el lector elige con un deslizador una pérdida entre el 0 % y el 90 %, y una curva muestra la ganancia necesaria para recuperarla, $L/(1-L)$, con el punto elegido resaltado y su valor numérico. Panel derecho: la rentabilidad logarítmica $\ln(1+R)$ frente a la simple $R$ para $R$ entre −60 % y +100 %, junto a la diagonal $r = R$; al pasar el cursor se muestra la diferencia entre ambas. Lo que el lector debe observar: cerca de cero las dos medidas casi coinciden, pero la logarítmica queda siempre por debajo de la simple (salvo en $R = 0$) y se separa mucho en movimientos grandes, sobre todo en las caídas.
 
 ### En Python
 
@@ -150,7 +150,7 @@ Dos consecuencias importantes:
 1. Para movimientos pequeños ($|R| \lesssim 5\,\%$) ambas medidas son casi iguales; la diferencia es de segundo orden, $\approx R^2/2$.
 2. Como $\ln(1+x) \le x$ para todo $x > -1$, siempre se cumple $r \le R$, con igualdad solo si $R = 0$.
 
-Además, la rentabilidad simple está acotada inferiormente ($R \ge -1$: no se puede perder más del 100 % sin apalancamiento), mientras que la logarítmica toma valores en toda la recta real ($r \to -\infty$ cuando $R \to -1$). Por eso es coherente modelar $r$ con distribuciones definidas en $\mathbb{R}$, como la normal: si $r \sim \mathcal{N}(\mu, \sigma^2)$, entonces el precio $P_t = P_{t-1}e^{r}$ sigue una distribución **lognormal** y nunca es negativo.
+Además, la rentabilidad simple está acotada inferiormente ($R \ge -1$: no se puede perder más del 100 % sin apalancamiento ni posiciones cortas), mientras que la logarítmica toma valores en toda la recta real ($r \to -\infty$ cuando $R \to -1$). Por eso es coherente modelar $r$ con distribuciones definidas en $\mathbb{R}$, como la normal: si $r \sim \mathcal{N}(\mu, \sigma^2)$, entonces el precio $P_t = P_{t-1}e^{r}$ sigue una distribución **lognormal** y nunca es negativo.
 
 #### Agregación temporal y agregación entre activos
 
@@ -169,7 +169,7 @@ Dada una serie $R_1, \dots, R_T$, la **media aritmética** es $\bar{R} = \frac{1
 
 $$G = \left(\prod_{t=1}^{T}(1+R_t)\right)^{1/T} - 1 = \exp\!\left(\frac{1}{T}\sum_t r_t\right) - 1.$$
 
-Por la desigualdad entre medias aritmética y geométrica, $G \le \bar{R}$, con igualdad solo si todas las rentabilidades son iguales. La media geométrica es la tasa constante que habría producido la misma riqueza final; la aritmética es el mejor estimador de la rentabilidad esperada de *un* periodo. La diferencia entre ambas es precisamente el lastre de la volatilidad (capítulo 9), y confundirlas lleva a sobrestimar la riqueza final. En el ejemplo resuelto del capítulo, +25 % y −20 % tienen media aritmética +2,5 % y media geométrica $\sqrt{1{,}25 \times 0{,}80} - 1 = 0\,\%$.
+Por la desigualdad entre medias aritmética y geométrica, $G \le \bar{R}$, con igualdad solo si todas las rentabilidades son iguales. La media geométrica es la tasa constante que habría producido la misma riqueza final; la aritmética es un estimador insesgado de la rentabilidad esperada de *un* periodo. La diferencia entre ambas es, aproximadamente, el lastre de la volatilidad (capítulo 9), y confundirlas lleva a sobrestimar la riqueza final. En el ejemplo resuelto del capítulo, +25 % y −20 % tienen media aritmética +2,5 % y media geométrica $\sqrt{1{,}25 \times 0{,}80} - 1 = 0\,\%$.
 
 #### Anualización
 
@@ -281,14 +281,14 @@ El **tipo anual efectivo** equivalente es $(1 + i/m)^m - 1$ (es la base de la TA
 
 #### Valor presente de una corriente de flujos
 
-Para flujos $CF_1, \dots, CF_T$ con un tipo de descuento constante $i$:
+Para flujos $C_1, \dots, C_T$ con un tipo de descuento constante $i$:
 
 $$VP = \sum_{t=1}^{T} \frac{C_t}{(1+i)^t}.$$
 
 Usando la suma de una progresión geométrica se obtienen fórmulas cerradas muy usadas:
 
 - **Renta constante (anualidad)** de $C$ durante $T$ periodos: $VP = C\,\dfrac{1 - (1+i)^{-T}}{i}$ (si $i = 0$, simplemente $VP = C\,T$). Ejemplo: 100 € anuales durante 10 años al 5 % valen hoy 772,17 €.
-- **Renta perpetua**: $VP = C/i$ (límite $T \to \infty$).
+- **Renta perpetua**: $VP = C/i$ (límite $T \to \infty$, si $i > 0$).
 - **Renta perpetua creciente** a una tasa $g < i$: $VP = \dfrac{C_1}{i - g}$, base del modelo de dividendos de Gordon para valorar acciones.
 
 #### VAN y TIR
@@ -320,7 +320,7 @@ En general, cada plazo tiene su propio tipo de contado $z_t$ y su **factor de de
 
 #### Observación histórica
 
-Entre junio de 2014 y julio de 2022, el tipo de la facilidad de depósito del BCE fue negativo (llegó al −0,50 %), aunque el tipo principal de financiación se quedó en el 0 %, y muchos bonos alemanes cotizaron con rentabilidades negativas. Con $i < 0$ las fórmulas siguen siendo válidas: el factor $(1+i)^{-T}$ es mayor que 1 y un pago futuro vale *más* que el mismo importe hoy, lo que ilustra que el valor temporal del dinero es una consecuencia de los tipos de mercado, no una ley natural.
+Entre junio de 2014 y julio de 2022, el tipo de la facilidad de depósito del BCE fue negativo (llegó al −0,50 %), aunque el tipo principal de financiación nunca bajó del 0 %, y muchos bonos alemanes cotizaron con rentabilidades negativas. Con $i < 0$ las fórmulas siguen siendo válidas: el factor $(1+i)^{-T}$ es mayor que 1 y un pago futuro vale *más* que el mismo importe hoy, lo que ilustra que el valor temporal del dinero es una consecuencia de los tipos de mercado, no una ley natural.
 
 ---
 
@@ -475,7 +475,7 @@ Para medir la dispersión usamos la **varianza**, la media del cuadrado de la di
 
 $$\operatorname{Var}(S_n - S_0) = n\,\sigma^2 \qquad\Longrightarrow\qquad \sigma_n = \sigma\sqrt{n}.$$
 
-Esta es la **regla de la raíz del tiempo** (también llamada regla de la raíz cuadrada). Comparando las dos fórmulas se entiende la pugna entre tendencia y ruido: la deriva acumulada crece como $n$ y el ruido como $\sqrt{n}$, de modo que su cociente, $\sqrt{n}\,\mu/\sigma$, crece con el horizonte. A corto plazo manda el ruido; a largo plazo, la deriva.
+Esta es la **regla de la raíz del tiempo** (también llamada regla de la raíz cuadrada). Comparando las dos fórmulas se entiende la pugna entre tendencia y ruido: la deriva acumulada crece como $n$ y el ruido como $\sqrt{n}$, de modo que su cociente, $\sqrt{n}\,\mu/\sigma$, crece en valor absoluto con el horizonte. A corto plazo manda el ruido; a largo plazo, la deriva.
 
 ### Gráfico interactivo
 
@@ -942,11 +942,11 @@ Sea $\mu$ la rentabilidad media anual de una inversión, $\sigma$ su volatilidad
 
 $$\text{SR} = \frac{\mu - r_f}{\sigma}.$$
 
-Si se invierte una fracción $w$ del capital en la inversión y el resto, $1 - w$, en el activo libre de riesgo (con $w > 1$ si se pide prestado), la rentabilidad en exceso y la volatilidad de la combinación se multiplican ambas por $w$:
+Si se invierte una fracción $w > 0$ del capital en la inversión y el resto, $1 - w$, en el activo libre de riesgo (con $w > 1$ si se pide prestado), la rentabilidad en exceso y la volatilidad de la combinación se multiplican ambas por $w$:
 
 $$\mu_w - r_f = w\,(\mu - r_f), \qquad \sigma_w = w\,\sigma \qquad\Longrightarrow\qquad \text{SR}_w = \text{SR}.$$
 
-Todas las combinaciones de una inversión con el activo sin riesgo forman una recta en el plano volatilidad–rentabilidad, que parte de $r_f$ y cuya pendiente es el ratio de Sharpe. Elegir la inversión con mayor ratio equivale a elegir la recta más empinada.
+Con una posición corta ($w < 0$), la volatilidad sería $|w|\,\sigma$ y el ratio cambiaría de signo. Todas las combinaciones con $w \ge 0$ de una inversión con el activo sin riesgo forman una recta en el plano volatilidad–rentabilidad, que parte de $r_f$ y cuya pendiente es el ratio de Sharpe. Elegir la inversión con mayor ratio equivale a elegir la recta más empinada.
 
 Cuando el ratio se calcula con datos mensuales o diarios, se anualiza multiplicando por la raíz del número de periodos por año, porque la rentabilidad en exceso crece en proporción al tiempo y la volatilidad en proporción a su raíz (capítulo 4). Esa regla supone, de nuevo, rentabilidades independientes.
 
@@ -1000,7 +1000,7 @@ El ratio de Sharpe es un estadístico estimado con ruido. Para rentabilidades i.
 
 $$\operatorname{SE}\big(\widehat{\text{SR}}\big) \approx \sqrt{\frac{1 + \tfrac12\,\text{SR}^2}{T}},$$
 
-donde $T$ es el número de observaciones en la misma frecuencia en que se mide el ratio. *Ejemplo:* un Sharpe anual de 0,5 estimado con 10 años de datos anuales tiene un error estándar de 0,34; el estadístico $t$ es solo 1,5, insuficiente para descartar que el Sharpe verdadero sea cero. Con autocorrelación, la anualización por $\sqrt{q}$ de la ejercicio 8.3 está sesgada y Lo (2002) da la corrección.
+donde $T$ es el número de observaciones en la misma frecuencia en que se mide el ratio. *Ejemplo:* un Sharpe anual de 0,5 estimado con 10 años de datos anuales tiene un error estándar de 0,34; el estadístico $t$ es solo 1,5, insuficiente para descartar que el Sharpe verdadero sea cero. Con autocorrelación, la anualización por $\sqrt{q}$ del ejercicio 8.3 está sesgada y Lo (2002) da la corrección.
 
 Además, cuando se prueban muchas estrategias y se elige la mejor, el Sharpe máximo está inflado por la selección. Bailey y López de Prado (2014) proponen el **ratio de Sharpe deflactado**, que ajusta por el número de pruebas, la asimetría y la curtosis.
 
@@ -1277,7 +1277,7 @@ Para dos activos con pesos $w_1$ y $w_2$, volatilidades $\sigma_1$ y $\sigma_2$ 
 
 $$\sigma_p^2 = w_1^2\sigma_1^2 + w_2^2\sigma_2^2 + 2\,w_1 w_2\,\rho\,\sigma_1\sigma_2.$$
 
-El último término es el que hace funcionar la diversificación: cuanto menor es $\rho$, menor es la varianza. Si $\rho = 1$, la volatilidad de la cartera es exactamente la media ponderada de las volatilidades; con cualquier $\rho < 1$, es menor.
+El último término es el que hace funcionar la diversificación: cuanto menor es $\rho$, menor es la varianza. Con pesos positivos, si $\rho = 1$, la volatilidad de la cartera es exactamente la media ponderada de las volatilidades; con cualquier $\rho < 1$, es menor.
 
 Para $N$ activos con la misma volatilidad $\sigma$, la misma correlación $\rho$ entre cada par y pesos iguales $1/N$,
 
@@ -1338,7 +1338,7 @@ Sharpe (1963) propuso describir cada acción como $R_i = \alpha_i + \beta_i R_m 
 
 $$\sigma_i^2 = \underbrace{\beta_i^2 \sigma_m^2}_{\text{sistemático}} + \underbrace{\sigma_{\varepsilon_i}^2}_{\text{específico}}, \qquad \sigma_p^2 = \beta_p^2\sigma_m^2 + \sum_i w_i^2\,\sigma_{\varepsilon_i}^2,$$
 
-y el segundo término tiende a cero en carteras bien diversificadas. La fracción sistemática de la varianza es $R^2 = \beta_i^2\sigma_m^2/\sigma_i^2 = \rho_{im}^2$. Este modelo reduce los parámetros a estimar de $N(N+1)/2$ covarianzas a $3N + 2$, y es el puente con el CAPM (capítulo 13).
+y el segundo término tiende a cero en carteras bien diversificadas. La fracción sistemática de la varianza es $R^2 = \beta_i^2\sigma_m^2/\sigma_i^2 = \rho_{im}^2$. Este modelo reduce los parámetros a estimar de $N(N+3)/2$ (medias, varianzas y covarianzas) a $3N + 2$, y es el puente con el CAPM (capítulo 13).
 
 #### ¿Cuántos activos hacen falta?
 
@@ -1436,7 +1436,7 @@ Markowitz (1952) planteó la selección de carteras como un problema de optimiza
 
 $$\min_{\mathbf{w}}\ \mathbf{w}^\top\Sigma\,\mathbf{w} \quad \text{sujeto a} \quad \mathbf{w}^\top\boldsymbol{\mu} = \mu_p, \quad \mathbf{w}^\top\mathbf{1} = 1.$$
 
-Con multiplicadores de Lagrange (Merton, 1972) y las constantes $A = \mathbf{1}^\top\Sigma^{-1}\mathbf{1}$, $B = \mathbf{1}^\top\Sigma^{-1}\boldsymbol{\mu}$, $C = \boldsymbol{\mu}^\top\Sigma^{-1}\boldsymbol{\mu}$ y $D = AC - B^2 > 0$, la solución da una frontera que es una hipérbola en el plano $(\sigma, \mu)$:
+Con multiplicadores de Lagrange (Merton, 1972) y las constantes $A = \mathbf{1}^\top\Sigma^{-1}\mathbf{1}$, $B = \mathbf{1}^\top\Sigma^{-1}\boldsymbol{\mu}$, $C = \boldsymbol{\mu}^\top\Sigma^{-1}\boldsymbol{\mu}$ y $D = AC - B^2$ (positiva si no todas las medias son iguales), la solución da una frontera que es una hipérbola en el plano $(\sigma, \mu)$:
 
 $$\sigma_p^2(\mu_p) = \frac{A\mu_p^2 - 2B\mu_p + C}{D}.$$
 
@@ -1444,13 +1444,13 @@ Su vértice es la **cartera de mínima varianza global**,
 
 $$\mathbf{w}_{\text{MVG}} = \frac{\Sigma^{-1}\mathbf{1}}{A}, \qquad \mu_{\text{MVG}} = \frac{B}{A}, \qquad \sigma^2_{\text{MVG}} = \frac{1}{A}.$$
 
-La rama superior de la hipérbola es la frontera eficiente. Para dos activos, derivar $\sigma_p^2 = w^2\sigma_1^2 + (1-w)^2\sigma_2^2 + 2w(1-w)\rho\sigma_1\sigma_2$ respecto a $w$ e igualar a cero da exactamente la fórmula de $w_1^*$ del capítulo.
+La rama superior de la hipérbola es la frontera eficiente. Para dos activos, derivar $\sigma_p^2 = w^2\sigma_1^2 + (1-w)^2\sigma_2^2 + 2w(1-w)\rho\sigma_1\sigma_2$ respecto a $w$ e igualar a cero da exactamente la fórmula de $w^*$ del capítulo.
 
-**Separación en dos fondos** (Black, 1972; Merton, 1972): toda cartera de la frontera es combinación lineal de dos carteras cualesquiera de la frontera.
+**Separación en dos fondos** (Black, 1972; Merton, 1972): toda cartera de la frontera es combinación, con coeficientes que suman 1, de dos carteras distintas cualesquiera de la frontera.
 
 #### Con activo libre de riesgo: la cartera tangente
 
-Si existe un activo sin riesgo con tipo $r_f$, la frontera eficiente pasa a ser una recta (capítulo 8) que toca la hipérbola en la **cartera tangente**
+Si existe un activo sin riesgo con tipo $r_f$, la frontera eficiente pasa a ser una recta (capítulo 8) que, si $r_f < \mu_{\text{MVG}}$ (el caso habitual), toca la rama superior de la hipérbola en la **cartera tangente**
 
 $$\mathbf{w}_T = \frac{\Sigma^{-1}(\boldsymbol{\mu} - r_f\mathbf{1})}{\mathbf{1}^\top\Sigma^{-1}(\boldsymbol{\mu} - r_f\mathbf{1})}, \qquad \text{SR}_T^2 = (\boldsymbol{\mu} - r_f\mathbf{1})^\top\Sigma^{-1}(\boldsymbol{\mu} - r_f\mathbf{1}),$$
 
@@ -1485,7 +1485,7 @@ Markowitz recibió el Premio Nobel de Economía en 1990, junto con William Sharp
 
 El capítulo 11 mostró que el riesgo de un activo tiene dos componentes: uno común a todo el mercado y otro específico de ese activo, que se puede eliminar diversificando. Esta distinción tiene una consecuencia profunda. Si cualquier inversor puede librarse del **riesgo específico** sin coste, combinando muchos activos, el mercado no tiene por qué pagar una prima por soportarlo. Lo único que debería remunerarse es la exposición al riesgo que no se puede diversificar: el de la **cartera de mercado**, que contiene todos los activos con riesgo en proporción a su valor.
 
-La **beta** mide esa exposición: cuánto tiende a moverse un activo cuando se mueve el mercado. Una beta de 1 indica que el activo amplifica los movimientos del mercado en la misma proporción; una beta de 1,5, que los amplifica un 50 %; una de 0,6, que los amortigua, y una negativa, que tiende a moverse en sentido contrario. El **modelo de valoración de activos financieros** (CAPM, por sus siglas en inglés) concluye que la rentabilidad esperada de cada activo es el tipo libre de riesgo más su beta multiplicada por la **prima de riesgo del mercado**, la rentabilidad esperada del mercado por encima del tipo libre de riesgo.
+La **beta** mide esa exposición: cuánto tiende a moverse un activo cuando se mueve el mercado. Una beta de 1 indica que el activo acompaña, de media, los movimientos del mercado en la misma proporción; una beta de 1,5, que los amplifica un 50 %; una de 0,6, que los amortigua, y una negativa, que tiende a moverse en sentido contrario. El **modelo de valoración de activos financieros** (CAPM, por sus siglas en inglés) concluye que la rentabilidad esperada de cada activo es el tipo libre de riesgo más su beta multiplicada por la **prima de riesgo del mercado**, la rentabilidad esperada del mercado por encima del tipo libre de riesgo.
 
 ### Un ejemplo resuelto
 
@@ -1567,7 +1567,7 @@ donde $\hat\beta_i = \widehat{\operatorname{Cov}}/\widehat{\operatorname{Var}}$ 
 #### Evidencia empírica
 
 - Black, Jensen y Scholes (1972) y Fama y MacBeth (1973) encontraron una relación positiva entre beta y rentabilidad, pero la línea del mercado de valores era **más plana** de lo previsto: las acciones de beta baja rendían más de lo que predecía el modelo y las de beta alta, menos.
-- Fama y French (1992) concluyeron que, una vez controlados el tamaño y el ratio valor contable/valor de mercado, la beta apenas explicaba las rentabilidades medias de las acciones de EE. UU. entre 1963 y 1990. Su revisión de 2004 resume que los problemas empíricos invalidan el CAPM en sus aplicaciones habituales.
+- Fama y French (1992) concluyeron que, una vez controlados el tamaño y el ratio valor contable/valor de mercado, la beta apenas explicaba las rentabilidades medias de las acciones de EE. UU. entre 1963 y 1990. Su revisión de 2004 resume que los problemas empíricos probablemente invalidan el CAPM en sus aplicaciones habituales.
 - Frazzini y Pedersen (2014) explican la línea plana por las restricciones al apalancamiento (quien no puede endeudarse compra acciones de beta alta) y documentan los beneficios de la estrategia *betting against beta*.
 - **Crítica de Roll** (1977): la cartera de mercado del modelo incluye *todos* los activos con riesgo (también inmuebles, capital humano, etc.) y no es observable; contrastar el CAPM con un índice bursátil es, en rigor, contrastar si ese índice es eficiente en media-varianza.
 
@@ -1612,7 +1612,7 @@ La última parte trata dos preguntas prácticas. La primera es cuánto arriesgar
 
 Tener una ventaja no basta: también hay que decidir cuánto arriesgar. Quien apuesta muy poco desaprovecha su ventaja y su capital apenas crece. Quien apuesta demasiado se expone a que una racha de pérdidas, que tarde o temprano llega, lo deje sin capital para seguir. Como cada pérdida reduce la base sobre la que se calculan las apuestas siguientes, las pérdidas pesan más de lo que su probabilidad sugiere: es el lastre de la volatilidad del capítulo 9 en otra forma.
 
-El **criterio de Kelly** responde con precisión: cuando se conocen las probabilidades y se reinvierten las ganancias, existe una fracción del capital que maximiza la tasa de crecimiento a largo plazo. Apostar más que esa fracción aumenta el riesgo y además reduce el crecimiento; apostar el doble lo deja prácticamente en cero.
+El **criterio de Kelly** responde con precisión: cuando se conocen las probabilidades y se reinvierten las ganancias, existe una fracción del capital que maximiza la tasa de crecimiento a largo plazo. Apostar más que esa fracción aumenta el riesgo y además reduce el crecimiento; con ventajas pequeñas, apostar el doble lo deja prácticamente en cero.
 
 Para entender el criterio conviene fijarse en el jugador **mediano**, el que queda en el centro de la distribución de resultados, y no en el promedio. Con apuestas agresivas, el promedio de la riqueza puede ser enorme gracias a unos pocos jugadores muy afortunados, mientras que la mayoría termina arruinada.
 
@@ -1627,7 +1627,7 @@ Con la fórmula que se deduce más abajo, la fracción de Kelly es $f^* = 2 \tim
 | Crecimiento por jugada | 0,00135 | 0,00180 | −0,00002 | −0,00231 |
 | Riqueza mediana tras 1.000 jugadas | ×3,9 | ×6,1 | ×0,98 | ×0,10 |
 
-Apostar la mitad de Kelly conserva unas tres cuartas partes del crecimiento con mucha menos oscilación. Apostar el doble de Kelly (12 %) deja al jugador mediano prácticamente donde empezó (×0,98), a pesar de que cada jugada tiene valor esperado positivo. Y por encima del doble, el jugador mediano se empobrece.
+Apostar la mitad de Kelly conserva unas tres cuartas partes del crecimiento con mucha menos oscilación. Apostar el doble de Kelly (12 %) deja al jugador mediano prácticamente donde empezó (×0,98), a pesar de que cada jugada tiene valor esperado positivo. Y por encima del doble, en este ejemplo, el jugador mediano se empobrece.
 
 ### Formalización
 
@@ -1643,7 +1643,7 @@ Si $f^* \le 0$, la apuesta no es favorable y lo óptimo es no apostar. Para inve
 
 ### Gráfico interactivo
 
-> **Gráfico interactivo · El tamaño de la apuesta.** Deslizadores para la probabilidad de ganar (de 0,50 a 0,70), el pago $b$ (de 0,5 a 5) y la fracción apostada (de 0 % a 50 %). Panel izquierdo: la curva de crecimiento $g(f)$, con su máximo en la fracción de Kelly marcado y la zona de crecimiento negativo sombreada en rojo; el punto de la fracción elegida se desplaza sobre la curva. Panel derecho: 1.000 jugadores simulados que empiezan con 100 € y juegan 1.000 veces con la fracción elegida; se muestran en escala logarítmica las trayectorias de la mediana, de los percentiles 10 y 90 y de la riqueza media, junto con el porcentaje de jugadores que terminan por debajo de 10 €. Lo que el lector debe observar: al pasar de la fracción de Kelly, la mediana empeora aunque la media siga subiendo; al acercarse al doble de Kelly, el crecimiento mediano desaparece.
+> **Gráfico interactivo · El tamaño de la apuesta.** Deslizadores para la probabilidad de ganar (de 0,50 a 0,70), el pago $b$ (de 0,5 a 5) y la fracción apostada (de 0 % a 50 %). Panel izquierdo: la curva de crecimiento $g(f)$, con su máximo en la fracción de Kelly marcado y la zona de crecimiento negativo sombreada en rojo; el punto de la fracción elegida se desplaza sobre la curva. Panel derecho: 1.000 jugadores simulados que empiezan con 100 € y juegan 1.000 veces con la fracción elegida; se muestran en escala logarítmica las trayectorias de la mediana, de los percentiles 10 y 90 y de la riqueza media, junto con el porcentaje de jugadores que terminan por debajo de 10 €. Lo que el lector debe observar: al pasar de la fracción de Kelly, la mediana empeora aunque la media siga subiendo; con ventajas pequeñas, al acercarse al doble de Kelly el crecimiento mediano desaparece.
 
 ### En Python
 
@@ -1666,7 +1666,7 @@ for x in (f / 2, f, 2 * f, 2.5 * f):
 
 - Muchos inversores y apostadores profesionales que usan el criterio apuestan una fracción de Kelly, a menudo la mitad, porque sus probabilidades son estimaciones y equivocarse por exceso es mucho más costoso que equivocarse por defecto.
 - Algunos gestores cuantitativos usan versiones del criterio para decidir el apalancamiento total de una estrategia a partir de su rentabilidad esperada y su volatilidad.
-- El criterio sirve también como límite superior de sentido común: una posición mayor que la de Kelly, con la ventaja estimada, no solo es arriesgada sino que reduce el crecimiento esperado a largo plazo.
+- El criterio sirve también como límite superior de sentido común: una posición mayor que la de Kelly, con la ventaja estimada, no solo es arriesgada sino que reduce la tasa de crecimiento a largo plazo (la de la riqueza mediana).
 
 ### Ejercicios
 
@@ -1694,9 +1694,9 @@ John L. Kelly Jr. (1956), en los Bell Labs, llegó a este resultado estudiando a
 
 Para ventajas pequeñas, un desarrollo de Taylor da $g(f) \approx f\,(pb - q) - \tfrac12 f^2\,m_2$, donde $m_2 = E[X^2]$ es el segundo momento del resultado de una apuesta unitaria (casi igual a su varianza cuando la ventaja es pequeña): una parábola simétrica alrededor de $f^*$. De ahí tres reglas:
 
-- Apostar el **doble** de Kelly da un crecimiento aproximadamente **nulo** (en el ejemplo, $g(0{,}12) = -0{,}00002$).
-- Apostar más del doble da crecimiento **negativo**: la ruina es casi segura a largo plazo, aunque cada apuesta tenga valor esperado positivo. El ejemplo del capítulo lo muestra: con $f = 12\,\%$, el doble de Kelly, la riqueza mediana tras 1.000 apuestas apenas se mueve (×0,98), y con $f = 15\,\%$ queda reducida a una décima parte.
-- En la aproximación cuadrática, apostar un mismo porcentaje de menos o de más cuesta *el mismo* crecimiento. La asimetría está en todo lo demás: apostar de más multiplica la volatilidad y las caídas (con $1{,}5 f^*$ la volatilidad es el triple que con $0{,}5 f^*$, y el crecimiento es prácticamente el mismo), la curva exacta cae más deprisa a la derecha de $f^*$ y, por encima de $2 f^*$, el crecimiento pasa a ser negativo. Como la ventaja real suele sobrestimarse, equivocarse por defecto es la opción prudente.
+- Con ventajas pequeñas, apostar el **doble** de Kelly da un crecimiento aproximadamente **nulo** (en el ejemplo, $g(0{,}12) = -0{,}00002$).
+- En esa aproximación, apostar más del doble da crecimiento **negativo**: la ruina es casi segura a largo plazo, aunque cada apuesta tenga valor esperado positivo. El ejemplo del capítulo lo muestra: con $f = 12\,\%$, el doble de Kelly, la riqueza mediana tras 1.000 apuestas apenas se mueve (×0,98), y con $f = 15\,\%$ queda reducida a una décima parte. En el modelo exacto, el punto en que el crecimiento se anula depende de $p$ y de $b$: con $p = 0{,}4$ y $b = 5$, Kelly es el 28 % y apostar el 56 % todavía da $g \approx +0{,}041$ por jugada.
+- En la aproximación cuadrática, apostar un mismo porcentaje de menos o de más cuesta *el mismo* crecimiento. La asimetría está en todo lo demás: apostar de más multiplica la volatilidad y las caídas (con $1{,}5 f^*$ la volatilidad es el triple que con $0{,}5 f^*$, y el crecimiento es prácticamente el mismo), con pagos a la par, la curva exacta cae más deprisa a la derecha de $f^*$ y, por encima de $2 f^*$, el crecimiento pasa a ser negativo; con pagos altos y probabilidad baja, no siempre. Como la ventaja real suele sobrestimarse, equivocarse por defecto es la opción prudente.
 
 #### Versión continua y con varios activos
 
@@ -1826,7 +1826,7 @@ McNeil y Frey (2000) combinan un GARCH para la volatilidad con una GPD para los 
 
 #### Un ejemplo histórico
 
-El 19 de octubre de 1987 («lunes negro») el índice Dow Jones cayó un 22,6 % en una sola sesión. Con una volatilidad diaria previa del orden del 1 %, fue un movimiento de más de 20 desviaciones típicas, con una probabilidad normal de alrededor de $3 \times 10^{-89}$: un modelo que asigna esa probabilidad a un suceso observado está claramente equivocado. Desde entonces, las volatilidades implícitas de las opciones sobre índices muestran una «sonrisa» o asimetría persistente: las opciones de venta muy fuera de dinero son más caras de lo que implicaría la normal (Rubinstein, 1994).
+El 19 de octubre de 1987 («lunes negro») el índice Dow Jones cayó un 22,6 % en una sola sesión. Con una volatilidad diaria previa del orden del 1 %, fue un movimiento de más de 20 desviaciones típicas, con una probabilidad normal inferior a $3 \times 10^{-89}$: un modelo que asigna esa probabilidad a un suceso observado está claramente equivocado. Desde entonces, las volatilidades implícitas de las opciones sobre índices muestran una «sonrisa» o asimetría persistente: las opciones de venta muy fuera de dinero son más caras de lo que implicaría la normal (Rubinstein, 1994).
 
 #### Consecuencias prácticas
 
@@ -1844,7 +1844,7 @@ $$z_{CF} = z + \frac{(z^2 - 1)\,S}{6} + \frac{(z^3 - 3z)(K - 3)}{24} - \frac{(2z
 
 ### La idea
 
-Un gestor de riesgos necesita resumir en una cifra cuánto puede perder una cartera en un mal periodo. El **valor en riesgo** (VaR) lo hace así: fija un horizonte (un día, diez días, un año) y un **nivel de confianza** (por ejemplo, el 99 %), y busca la pérdida que solo se supera con la probabilidad restante (el 1 %). Un VaR diario al 99 % de 50.000 € significa que, en condiciones normales del modelo, la pérdida de un día solo debería superar los 50.000 € uno de cada cien días.
+Un gestor de riesgos necesita resumir en una cifra cuánto puede perder una cartera en un mal periodo. El **valor en riesgo** (VaR) lo hace así: fija un horizonte (un día, diez días, un año) y un **nivel de confianza** (por ejemplo, el 99 %), y busca la pérdida que solo se supera con la probabilidad restante (el 1 %). Un VaR diario al 99 % de 50.000 € significa que, en condiciones normales del modelo, la pérdida de un día solo debería superar los 50.000 €, de media, uno de cada cien días.
 
 Es importante entender lo que el VaR no dice. No es la pérdida máxima posible: es el umbral a partir del cual empiezan los peores casos, y no informa de cuánto se pierde cuando se cruza. Dos carteras con el mismo VaR pueden tener peores días muy distintos. El **déficit esperado** (ES, por sus siglas en inglés), también llamado VaR condicional, completa la información: es la pérdida media en ese 1 % de peores casos (con distribuciones continuas, la pérdida media cuando se supera el VaR).
 
@@ -1859,7 +1859,7 @@ Una cartera vale 250.000 € y sus rentabilidades diarias siguen una normal de m
 | ES al 97,5 % | 2,338 | 7.013 € |
 | ES al 99 % | 2,665 | 7.996 € |
 
-Si las rentabilidades siguieran en cambio una $t$ de 4 grados de libertad con la misma volatilidad, el VaR al 99 % subiría a $2{,}65 \times 3\,000 = 7\,948$ € y el ES al 99 % a $3{,}69 \times 3\,000 = 11\,075$ €. El VaR apenas cambia; el déficit esperado, mucho. Esa es precisamente la información que el VaR oculta.
+Si las rentabilidades siguieran en cambio una $t$ de 4 grados de libertad con la misma volatilidad, el VaR al 99 % subiría a $2{,}65 \times 3\,000 = 7\,948$ € y el ES al 99 % a $3{,}69 \times 3\,000 = 11\,075$ €. El VaR sube un 14 %; el déficit esperado, un 39 %. Esa es precisamente la información que el VaR oculta.
 
 ### Formalización
 
@@ -1970,7 +1970,7 @@ Un **backtest** simula una estrategia con datos pasados. Es la herramienta más 
 - **Ignorar los costes** (tema B).
 - **Sobreajuste**: probar muchas variantes y quedarse con la mejor.
 
-El último es el más traicionero. Si se prueban $N$ estrategias independientes y sin ninguna habilidad, el ratio de Sharpe máximo observado crece aproximadamente como $\sqrt{2\ln N}$ veces su error estándar. *Ejemplo:* con 5 años de datos, el error estándar de un Sharpe anual es $\approx\sqrt{1/5} = 0{,}45$ (capítulo 8). La mejor de 100 estrategias puramente aleatorias tendrá, de media, un Sharpe de $0{,}45 \times 2{,}5 \approx 1{,}1$, un valor que parecería excelente. Si las estrategias son variantes parecidas, cuenta el número efectivo de pruebas independientes, que es menor.
+El último es el más traicionero. Si se prueban $N$ estrategias independientes y sin ninguna habilidad, el ratio de Sharpe máximo observado crece lentamente con $N$: para $N$ grande, del orden de $\sqrt{2\ln N}$ veces su error estándar, una aproximación que exagera algo con $N$ moderado (con $N = 100$ da 3,0, y el valor esperado exacto es 2,5). *Ejemplo:* con 5 años de datos, el error estándar de un Sharpe anual es $\approx\sqrt{1/5} = 0{,}45$ (capítulo 8). La mejor de 100 estrategias puramente aleatorias tendrá, de media, un Sharpe de $0{,}45 \times 2{,}5 \approx 1{,}1$, un valor que parecería excelente. Si las estrategias son variantes parecidas, cuenta el número efectivo de pruebas independientes, que es menor.
 
 Buenas prácticas:
 
@@ -2008,7 +2008,7 @@ $$\Delta = \frac{V_u - V_d}{(u - d)\,S_0}, \qquad q = \frac{1 + r - d}{u - d}, \
 
 *Ejemplo:* $S_0 = 100$ €, $u = 1{,}2$, $d = 0{,}8$, $r = 5\,\%$ y una opción de compra con precio de ejercicio 100 €, que paga $V_u = 20$ € o $V_d = 0$. Entonces $q = 0{,}25/0{,}4 = 0{,}625$ y $V_0 = 0{,}625 \times 20/1{,}05 = 11{,}90$ €. Comprobación: comprar $\Delta = 0{,}5$ acciones cuesta 50 € y se financian pidiendo prestados $0{,}5 \times 80/1{,}05 = 38{,}10$ €; el coste neto, 11,90 €, es el precio de la opción.
 
-Lo sorprendente es que la probabilidad real de subida no aparece: el precio sale de la réplica, no de las preferencias. $q$ es la medida neutral al riesgo $Q$ del capítulo 3. Encadenando muchos periodos con $u = e^{\sigma\sqrt{\Delta t}}$ y $d = 1/u$, el árbol converge a la fórmula de Black y Scholes (capítulo 6). Una relación útil que no depende del modelo de precios, sino solo de la ausencia de arbitraje, es la **paridad put-call**: para opciones europeas de compra y de venta con el mismo precio de ejercicio y vencimiento, sobre una acción que no paga dividendos, $C - P = S_0 - K e^{-rT}$. Con una rentabilidad por dividendo continua $q$, $S_0$ se sustituye por $S_0 e^{-qT}$. Las opciones americanas, que se pueden ejercer antes, no cumplen esta igualdad exacta. Aquí, como en la fórmula de Black y Scholes, $r$ es el tipo en capitalización continua; en el árbol, $1 + r$ era el factor de un periodo.
+Lo sorprendente es que la probabilidad real de subida no aparece: el precio sale de la réplica, no de las preferencias. $q$ es la probabilidad de subida bajo la medida neutral al riesgo $Q$ del capítulo 3. Encadenando muchos periodos con $u = e^{\sigma\sqrt{\Delta t}}$ y $d = 1/u$, el árbol converge a la fórmula de Black y Scholes (capítulo 6). Una relación útil que no depende del modelo de precios, sino solo de la ausencia de arbitraje, es la **paridad put-call**: para opciones europeas de compra y de venta con el mismo precio de ejercicio y vencimiento, sobre una acción que no paga dividendos, $C - P = S_0 - K e^{-rT}$. Con una rentabilidad por dividendo continua $\delta$, $S_0$ se sustituye por $S_0 e^{-\delta T}$. Las opciones americanas, que se pueden ejercer antes, no cumplen esta igualdad exacta. Aquí, como en la fórmula de Black y Scholes, $r$ es el tipo en capitalización continua; en el árbol, $1 + r$ era el factor de un periodo.
 
 **La fórmula de Black y Scholes.** Si el precio de la acción sigue el movimiento browniano geométrico del capítulo 4, con volatilidad constante $\sigma$, y se puede negociar sin costes y pedir prestado al tipo $r$, el límite del árbol da el precio de una opción europea de compra (Black y Scholes, 1973):
 
@@ -2036,7 +2036,7 @@ Las hipótesis son fuertes. La volatilidad no es constante (capítulo 7) y los r
 
 Una serie es **estacionaria** si su comportamiento estadístico no cambia con el tiempo: en sentido estricto, la distribución conjunta de cualquier grupo de observaciones no cambia al desplazarlas en el tiempo; en sentido débil, basta con que la media sea constante y la covarianza entre dos observaciones dependa solo de la distancia entre ellas. Los precios de la mayoría de activos no lo son (su varianza crece con el tiempo, capítulo 4), mientras que sus rentabilidades suelen serlo de forma aproximada, algo que conviene contrastar en cada caso; por eso la estadística se hace con rentabilidades (capítulo 10). El contraste de Dickey y Fuller (1979) comprueba si una serie tiene una **raíz unitaria**, como el paseo aleatorio, que es el caso más conocido.
 
-Dos precios no estacionarios están **cointegrados** si alguna combinación lineal de ellos, $s_t = P^A_t - \beta P^B_t$, sí es estacionaria (Engle y Granger, 1987): pueden alejarse, pero tienden a volver a su relación. Es la base de la **negociación por pares** (*pairs trading*). Cointegración y correlación son cosas distintas: dos activos pueden tener rentabilidades muy correlacionadas y precios que se separan sin límite, o al revés.
+En el caso clásico, dos precios integrados de orden uno, $I(1)$ (no estacionarios, pero con incrementos estacionarios, como un paseo aleatorio), están **cointegrados** si alguna combinación lineal no trivial de ellos, $s_t = P^A_t - \beta P^B_t$ con $\beta \ne 0$, es estacionaria, $I(0)$ (Engle y Granger, 1987): pueden alejarse, pero tienden a volver a su relación. Es la base de la **negociación por pares** (*pairs trading*). Cointegración y correlación son cosas distintas: dos activos pueden tener rentabilidades muy correlacionadas y precios que se separan sin límite, o al revés.
 
 Si el diferencial sigue un proceso autorregresivo $s_t = \phi\,s_{t-1} + \varepsilon_t$ con $0 < \phi < 1$, su **semivida** de reversión es $\ln 2/(-\ln\phi)$. *Ejemplo:* con $\phi = 0{,}95$ diario, la semivida es de unos 13,5 días. Las relaciones de cointegración se rompen a menudo (fusiones, cambios de negocio), así que hay que reestimarlas y limitar las pérdidas.
 
@@ -2220,7 +2220,7 @@ Cada paso tiene media $0{,}6 - 0{,}4 = 0{,}2$ €, así que $E[S_5] = 20 + 5 \ti
 $25\,\% \times \sqrt{21/252} = 25\,\%/\sqrt{12} = 7{,}22\,\%$ y $25\,\%/\sqrt{252} = 1{,}57\,\%$.
 
 **4.3 Hacen falta 400 sesiones; la probabilidad de un resultado negativo es entonces del 15,9 %.**
-La ganancia esperada acumulada es $0{,}05\,\% \times n$ y la desviación típica $1\,\% \times \sqrt{n}$. Igualándolas, $\sqrt{n} = 20$ y $n = 400$. En ese momento el resultado acumulado está una desviación típica por encima de cero, y $P(Z < -1) = 15{,}9\,\%$. Incluso con una ventaja real, casi un año y medio de sesiones deja una probabilidad apreciable de ir perdiendo.
+La ganancia esperada acumulada es $0{,}05\,\% \times n$ y la desviación típica $1\,\% \times \sqrt{n}$. Igualándolas, $\sqrt{n} = 20$ y $n = 400$. En ese momento el resultado acumulado está una desviación típica por encima de cero, y $P(Z < -1) = 15{,}9\,\%$. Incluso con una ventaja real, más de año y medio de sesiones deja una probabilidad apreciable de ir perdiendo.
 
 **4.4 No es raro: en un paseo equilibrado largo, ocurre aproximadamente una de cada siete veces.**
 Por la ley del arcoseno, la probabilidad de que un paseo simétrico pase más del 95 % del tiempo por encima de su origen es aproximadamente $1 - \frac{2}{\pi}\arcsin\sqrt{0{,}95} \approx 14\,\%$, y la de que pase más del 95 % del tiempo de un mismo lado, el doble, alrededor del 29 %. Una racha larga a un lado del punto de partida es lo típico en un paseo aleatorio, no la excepción; no prueba ninguna tendencia.
@@ -2414,7 +2414,7 @@ Términos ordenados alfabéticamente, con el capítulo o tema donde se definen.
 | **cartera** | conjunto de inversiones mantenidas a la vez | 11 |
 | **cartera de mercado** | cartera que contiene todos los activos con riesgo en proporción a su valor | 13 |
 | **cartera de mínima varianza** | combinación de activos con la menor volatilidad posible | 12 |
-| **cointegración** | relación entre precios no estacionarios cuya combinación lineal sí es estacionaria | D |
+| **cointegración** | relación entre precios no estacionarios (en el caso habitual, integrados de orden uno) con alguna combinación lineal estacionaria | D |
 | **colas** | zonas de una distribución correspondientes a valores extremos | 5 |
 | **colas gruesas** | propiedad de una distribución con más probabilidad en los extremos que la normal | 15 |
 | **correlación** | covarianza normalizada, entre −1 y +1, que mide la relación lineal entre dos variables | 10 |
@@ -2433,7 +2433,7 @@ Términos ordenados alfabéticamente, con el capítulo o tema donde se definen.
 | **frontera eficiente** | conjunto de carteras con la máxima rentabilidad media para cada volatilidad | 12 |
 | **independientes** | variables tales que conocer una no da información sobre la otra | 4 |
 | **interés compuesto** | interés que se calcula también sobre los intereses acumulados | 2 |
-| **ley de los grandes números** | resultado que garantiza que la media de muchas repeticiones se acerca al valor esperado | 3 |
+| **ley de los grandes números** | resultado según el cual la media de muchas repeticiones independientes se acerca al valor esperado, si este existe | 3 |
 | **línea del mercado de valores** | recta que relaciona beta y rentabilidad esperada en el CAPM | 13 |
 | **lastre de la volatilidad** | diferencia entre la rentabilidad media y la tasa de crecimiento compuesto | 9 |
 | **mediano (resultado)** | valor que deja la mitad de los resultados por debajo y la mitad por encima | 14 |
@@ -2443,7 +2443,7 @@ Términos ordenados alfabéticamente, con el capítulo o tema donde se definen.
 | **peso** | proporción del valor de una cartera invertida en un activo | 11 |
 | **prima de riesgo del mercado** | rentabilidad esperada del mercado por encima del tipo libre de riesgo | 13 |
 | **ratio de Sharpe** | rentabilidad en exceso dividida por la volatilidad | 8 |
-| **regla de la raíz del tiempo** | la desviación típica de una suma de pasos independientes crece con la raíz del número de pasos | 4 |
+| **regla de la raíz del tiempo** | la desviación típica de una suma de pasos independientes y con la misma varianza crece con la raíz del número de pasos | 4 |
 | **rentabilidad** | variación del valor de una inversión en proporción a su valor inicial | 1 |
 | **rentabilidad en exceso** | rentabilidad por encima del tipo libre de riesgo | 8 |
 | **rentabilidad logarítmica** | logaritmo natural del cociente entre el valor final y el inicial | 1 |
@@ -2463,7 +2463,7 @@ Términos ordenados alfabéticamente, con el capítulo o tema donde se definen.
 | **valor en riesgo (VaR)** | pérdida que solo se supera con una probabilidad dada en un horizonte dado | 16 |
 | **valor esperado** | media de los valores posibles ponderada por sus probabilidades | 3 |
 | **valor presente** | valor actual de un pago o de un flujo de pagos futuros | 2 |
-| **valor temporal del dinero** | principio según el cual disponer de una cantidad ahora es preferible a recibirla más tarde | 2 |
+| **valor temporal del dinero** | principio según el cual, con tipos de interés positivos, disponer de una cantidad ahora es preferible a recibirla más tarde | 2 |
 | **varianza** | media del cuadrado de la distancia a la media | 4 |
 | **venta en corto** | venta de un activo prestado, con la obligación de devolverlo más tarde | 12 |
 | **volatilidad** | desviación típica de las rentabilidades, normalmente anualizada | 7 |

@@ -208,4 +208,4 @@
   - pregunta: 'How many times, on average, would a well-calibrated 99% VaR be exceeded in 250 sessions?'
     opciones: ['Never', '1', '2.5', '25']
     correcta: 2
-    explicacion: 'Each day there is a 1% probability: $250 \times 0.01 = 2.5$ exceptions on average. Never exceeding it would also be suspicious (too conservative).'
+    explicacion: 'Each day there is a 1% probability: $250 \times 0.01 = 2.5$ exceptions on average. Never exceeding it does not prove it is too conservative: with a correct model it happens 8% of the time ($0.99^{250}$), although it may justify a check.'
