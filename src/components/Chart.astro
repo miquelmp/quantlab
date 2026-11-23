@@ -10,10 +10,11 @@ import type { ChartSpec } from '../lib/book';
 import { renderInline, type RenderCtx } from '../lib/render';
 import { t, tPrefix, numberFormat } from '../i18n';
 
-interface Props { chapter: number; spec: ChartSpec; ctx: RenderCtx; challenges?: string[] }
-const { chapter, spec, ctx, challenges = [] } = Astro.props;
+/** chapter: capítulo (gráfico según CHART_BY_CHAPTER); chartId: gráfico concreto (p. ej. el de un tema). */
+interface Props { chapter?: number; chartId?: string; spec: ChartSpec; ctx: RenderCtx; challenges?: string[] }
+const { chapter, chartId, spec, ctx, challenges = [] } = Astro.props;
 const lang = ctx.lang;
-const id = CHART_BY_CHAPTER[chapter];
+const id = chartId ?? (chapter !== undefined ? CHART_BY_CHAPTER[chapter] : undefined);
 const def = id ? await loadChart(id) : null;
 const strings = id ? { ...tPrefix(lang, I18N_PREFIX[id], 'chart.') } : {};
 const fmt = numberFormat(lang);
