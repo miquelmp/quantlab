@@ -23,6 +23,11 @@ export const CHART_BY_CHAPTER: Record<number, string> = {
   16: 'var',
 };
 
+/** Gráficos de los temas complementarios (por letra). */
+export const CHART_BY_TOPIC: Record<string, string> = {
+  C: 'blackscholes',
+};
+
 /** Prefijo de los textos de interfaz de cada gráfico en src/i18n/<idioma>.json. */
 export const I18N_PREFIX: Record<string, string> = {
   var: 'c16.',
@@ -41,6 +46,7 @@ export const I18N_PREFIX: Record<string, string> = {
   campana: 'c5.',
   montecarlo: 'c6.',
   kelly: 'c14.',
+  blackscholes: 'tC.',
 };
 
 export async function loadChart(id: string): Promise<ChartDef<any, any>> {
@@ -61,6 +67,7 @@ export async function loadChart(id: string): Promise<ChartDef<any, any>> {
     case 'capm': return (await import('./ch13-capm')).chart13;
     case 'colas': return (await import('./ch15-colas')).chart15;
     case 'var': return (await import('./ch16-var')).chart16;
+    case 'blackscholes': return (await import('./temaC-blackscholes')).chartC;
     default: throw new Error(`Gráfico desconocido: ${id}`);
   }
 }

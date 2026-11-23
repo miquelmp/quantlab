@@ -1,7 +1,9 @@
 ---
-/** Temas complementarios A–E (RF-TEM-01): páginas breves, sin gráfico propio por ahora. */
+/** Temas complementarios A–E (RF-TEM-01); los que tienen gráfico (RF-TEM-02) lo muestran al final. */
 import Base from '../../../layouts/Base.astro';
 import CodeDownload from '../../../components/CodeDownload.astro';
+import Chart from '../../../components/Chart.astro';
+import { CHART_BY_TOPIC } from '../../../charts/registry';
 import { LANGS } from '../../../i18n/config';
 import { t } from '../../../i18n';
 import { loadBook, type Topic } from '../../../lib/book';
@@ -30,6 +32,9 @@ const issueUrl = `${SITE.repo}/issues/new?` + new URLSearchParams({
   title: `[Errata] ${t(lang, 'nav.topic')} ${letter}: `,
   body: `${pageTitle}\n${pageUrl}\n\nSección:\n\nQué está mal:\n\nQué debería decir:\n`,
 }).toString();
+const chartId = CHART_BY_TOPIC[letter];
+const txt = (k: string) => [{ type: 'text', value: t(lang, `t${letter}.${k}`) }] as any;
+const chartSpec = chartId ? { title: t(lang, `t${letter}.title`), description: txt('chartDesc'), observe: txt('observe'), plainText: '' } : null;
 const label = (x: Topic) => `${t(lang, 'nav.topic')} ${x.letter} · ${x.title.replace(/\*/g, '')}`;
 ---
 <Base lang={lang} title={pageTitle} description={tp.description} path={`temas/${tp.slug}/`} ogType="article">
@@ -44,6 +49,12 @@ const label = (x: Topic) => `${t(lang, 'nav.topic')} ${x.letter} · ${x.title.re
     <p class="chapter-kicker">{t(lang, 'nav.topic')} {letter}</p>
     <h1>{tp.title.replace(/\*/g, '')}</h1>
     <Fragment set:html={html} />
+    {chartSpec && (
+      <section aria-labelledby="grafico-interactivo">
+        <h2 id="grafico-interactivo">{t(lang, `t${letter}.heading`)}</h2>
+        <Chart chartId={chartId} spec={chartSpec} ctx={ctx} />
+      </section>
+    )}
     {html.includes('data-py') && <CodeDownload lang={lang} base={base} name={tp.slug} />}
     <nav class="chapter-nav" aria-label={`${t(lang, 'nav.prev')} / ${t(lang, 'nav.next')}`}>
       {prev ? <a class="prev" href={topicUrl(ctx, prev.letter)!} rel="prev"><small>← {t(lang, 'nav.prev')}</small>{label(prev)}</a> : <a class="prev" href={url(ctx, `${lang}/indice/#temas`)}><small>← {t(lang, 'topic.back')}</small>{t(lang, 'index.topics')}</a>}

@@ -22,6 +22,7 @@ import { chart11, equalWeightVol, floorVol, twoAssetVol, effectiveN } from '../s
 import { chart12, computeFrontier, minVarWeight2, portStats, covMatrix } from '../src/charts/ch12-frontera';
 import { chart13, computeCapm, betaFrom, capm, totalVol } from '../src/charts/ch13-capm';
 import { chart15, computeTails, tTail, tailNormal, tailT } from '../src/charts/ch15-colas';
+import { chartC, blackScholes, binomialCall } from '../src/charts/temaC-blackscholes';
 import { chart16, computeVar, normalVaR, normalES, tVaR, tES, binomTail, kupiec } from '../src/charts/ch16-var';
 import { ES } from '../src/lib/format';
 
@@ -338,3 +339,29 @@ describe('cap. 16 · ejes', () => {
   });
 });
 
+
+describe('tema C · Black-Scholes y árbol binomial', () => {
+  it('reproduce el precio del capítulo 6 (S₀ = K = 100, r = 3 %, σ = 20 %, T = 1: 9,41)', () => {
+    const { call, put } = blackScholes(100, 100, 0.2, 1, 0.03);
+    expect(call).toBeCloseTo(9.41, 2);
+    // Paridad put-call del tema C: C − P = S₀ − K·e^{−rT}
+    expect(call - put).toBeCloseTo(100 - 100 * Math.exp(-0.03), 8);
+  });
+  it('el árbol binomial converge a Black-Scholes', () => {
+    const { call } = blackScholes(100, 100, 0.2, 1, 0.03);
+    expect(Math.abs(binomialCall(100, 100, 0.2, 1, 0.03, 200) - call)).toBeLessThan(0.02);
+    expect(Math.abs(binomialCall(100, 100, 0.2, 1, 0.03, 10) - call)).toBeLessThan(0.25);
+    expect(binomialCall(100, 100, 0.05, 3, 0.1, 1)).toBeNaN();   // q > 1: árbol no válido
+  });
+  it('dibuja los dos paneles en todo el rango de los mandos', () => {
+    const ctx = { tr: (k: string) => k, fmt: { decimal: ',', group: '.' } } as never;
+    for (const st of [chartC.defaults, { S: 50, K: 150, sigma: 0.05, T: 0.1, r: 0, N: 1 }, { S: 150, K: 50, sigma: 0.6, T: 3, r: 0.1, N: 200 }]) {
+      const d = chartC.compute(st);
+      for (const p of chartC.panels) {
+        const svg = p.render(d, st, 400, ctx);
+        expect(svg).not.toMatch(/NaN|Infinity/);
+      }
+      expect(chartC.table(d, st, ctx).rows.length).toBeGreaterThan(0);
+    }
+  });
+});
