@@ -202,7 +202,7 @@
     correcta: 2
     explicacion: '$2.326 \times 1\% \times 1{,}000{,}000 = 23{,}260$ euros. With 1.645 (€16,450) it would be the 95% VaR.'
   - pregunta: 'What does expected shortfall report that VaR does not?'
-    opciones: ['The average loss on the days when VaR is exceeded', 'The maximum gain', 'The probability of loss', 'The volatility']
+    opciones: ['The average loss in the worst cases, beyond VaR', 'The maximum gain', 'The probability of loss', 'The volatility']
     correcta: 0
     explicacion: 'VaR is a threshold: it does not say how much is lost beyond it. Expected shortfall is the average of those tail losses.'
   - pregunta: 'How many times, on average, would a well-calibrated 99% VaR be exceeded in 250 sessions?'

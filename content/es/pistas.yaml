@@ -88,7 +88,7 @@
   - 'La media aritmética es la media de +60 % y −40 %.'
   - 'La rentabilidad acumulada multiplica los factores: $1{,}6 \times 0{,}6$.'
 "9.2":
-  - 'La tasa de crecimiento compuesto es aproximadamente $\mu - \sigma^2/2$.'
+  - 'La tasa de crecimiento logarítmica es aproximadamente $g = \mu - \sigma^2/2$; la compuesta es $e^{g} - 1$.'
   - 'Ojo con las unidades: con $\sigma = 0{,}15$, $\sigma^2/2 = 0{,}01125$.'
 "9.3":
   - 'Para el índice, aplica $g \approx \mu - \sigma^2/2$.'

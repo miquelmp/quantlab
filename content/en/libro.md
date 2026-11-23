@@ -287,7 +287,7 @@ $$VP = \sum_{t=1}^{T} \frac{C_t}{(1+i)^t}.$$
 
 Using the sum of a geometric progression we get widely used closed formulas:
 
-- **Level annuity** of $C$ for $T$ periods: $VP = C\,\dfrac{1 - (1+i)^{-T}}{i}$. Example: €100 a year for 10 years at 5% is worth €772.17 today.
+- **Level annuity** of $C$ for $T$ periods: $VP = C\,\dfrac{1 - (1+i)^{-T}}{i}$ (if $i = 0$, simply $VP = C\,T$). Example: €100 a year for 10 years at 5% is worth €772.17 today.
 - **Perpetuity**: $VP = C/i$ (the limit $T \to \infty$).
 - **Growing perpetuity** at a rate $g < i$: $VP = \dfrac{C_1}{i - g}$, the basis of Gordon's dividend model for valuing shares.
 
@@ -1057,7 +1057,7 @@ If in one period the investment rises by a proportion $s$ and in the next falls 
 
 $$(1 + s)(1 - s) = 1 - s^2 < 1,$$
 
-and the loss, $s^2$, grows with the square of the size of the swing. In general, if an investment has a mean annual return $\mu$ and an annual volatility $\sigma$, its compound growth rate is approximately
+and the loss, $s^2$, grows with the square of the size of the swing. In general, if an investment has a mean annual return $\mu$ and an annual volatility $\sigma$, its log growth rate is approximately
 
 $$g \approx \mu - \tfrac12\,\sigma^2.$$
 
@@ -1124,7 +1124,7 @@ For a portfolio rebalanced to fixed weights $w_i$, the growth rate is
 
 $$g_p = \sum_i w_i\,g_i + \tfrac12\left(\sum_i w_i\,\sigma_i^2 - \sigma_p^2\right).$$
 
-The term in brackets, Fernholz's **excess growth rate** (Fernholz and Shay, 1982; Fernholz, 2002), is positive whenever the assets are not perfectly correlated. Booth and Fama (1992) call it the *diversification return*. *Example:* two uncorrelated assets, each with $\mu = 10\%$ and $\sigma = 40\%$, grow individually at $10 - 8 = 2\%$. A rebalanced 50/50 portfolio has $\sigma_p^2 = 0.08$ and grows at $10 - 4 = 6\%$: diversification reduces the drag and triples growth without changing the mean return.
+The term in brackets, Fernholz's **excess growth rate** (Fernholz and Shay, 1982; Fernholz, 2002), is positive in a portfolio without short positions (positive weights that add up to 1) whenever the assets are not perfectly correlated; with short positions or leverage it can be negative. Booth and Fama (1992) call it the *diversification return*. *Example:* two uncorrelated assets, each with $\mu = 10\%$ and $\sigma = 40\%$, grow individually at $10 - 8 = 2\%$. A rebalanced 50/50 portfolio has $\sigma_p^2 = 0.08$ and grows at $10 - 4 = 6\%$: diversification reduces the drag and triples growth without changing the mean return.
 
 #### Measuring growth
 
@@ -1712,7 +1712,7 @@ and with several assets $\mathbf{f}^* = \Sigma^{-1}(\boldsymbol\mu - r\mathbf{1}
 
 Betting a fraction $c f^*$ with $0 < c \le 1$ gives, in the continuous model, a growth of $c(2 - c)\,g^*_{\text{excess}}$ and a volatility $c$ times that of full Kelly. With half Kelly ($c = 1/2$) 75% of the growth is kept with half the volatility, the result that the solution of exercise 14.2 obtains numerically for a discrete bet ($0.00486/0.00640 \approx 0.76$). Fractional Kelly is equivalent to an isoelastic utility with relative risk aversion $1/c$ (MacLean, Thorp and Ziemba, 2011).
 
-**Drawdowns** matter even with full Kelly: in the continuous model, the probability that wealth ever falls to a fraction $x$ of its initial value is $x$ with full Kelly and $x^{2/c - 1}$ with fractional Kelly (Thorp, 2006). With full Kelly there is a 50% probability of losing half the capital at some point; with half Kelly, 12.5%.
+**Drawdowns** matter even with full Kelly. In the continuous model with a zero risk-free rate (or measuring wealth discounted at the risk-free rate), the probability that wealth ever falls to a fraction $x$ of its *initial* value is $x$ with full Kelly and $x^{2/c - 1}$ with fractional Kelly (Thorp, 2006). With full Kelly there is a 50% probability of reaching half the initial capital at some point; with half Kelly, 12.5%. With a positive rate and nominal wealth, these probabilities are lower. This is not the same as a 50% fall from an earlier peak (topic E), which is more likely: a portfolio that goes from 100 to 200 and back to 100 never drops below half its initial capital, but it does fall 50% from its peak.
 
 #### Criticisms and limitations
 
@@ -1848,7 +1848,7 @@ useful when deviations from normality are moderate. With very fat tails, extreme
 
 A risk manager needs to sum up in one figure how much a portfolio can lose in a bad period. **Value at risk** (VaR) does it like this: it fixes a horizon (one day, ten days, one year) and a **confidence level** (for example, 99%), and looks for the loss that is only exceeded with the remaining probability (1%). A 99% daily VaR of €50,000 means that, under the model's normal conditions, the loss of a day should exceed €50,000 only one day in a hundred.
 
-It is important to understand what VaR does not say. It is not the maximum possible loss: it is the threshold beyond which the worst cases begin, and it says nothing about how much is lost once it is crossed. Two portfolios with the same VaR can have very different worst days. **Expected shortfall** (ES), also called conditional VaR, completes the information: it is the average loss in the cases that exceed the VaR.
+It is important to understand what VaR does not say. It is not the maximum possible loss: it is the threshold beyond which the worst cases begin, and it says nothing about how much is lost once it is crossed. Two portfolios with the same VaR can have very different worst days. **Expected shortfall** (ES), also called conditional VaR, completes the information: it is the average loss in that worst 1% of cases (with continuous distributions, the average loss when VaR is exceeded).
 
 ### A worked example
 
@@ -1869,7 +1869,7 @@ Let $L$ be the loss of the portfolio over the chosen horizon and $c$ the confide
 
 $$P\big(L > \text{VaR}_c\big) = 1 - c,$$
 
-that is, the $c$ quantile of the loss distribution. Expected shortfall is the average loss when VaR is exceeded, $\text{ES}_c = E\big[L \mid L \ge \text{VaR}_c\big]$ (the Going further section gives the general definition, which also holds for discrete losses). If returns are normal with zero mean and volatility $\sigma$ over the chosen horizon, and the portfolio is worth $V$,
+that is, the $c$ quantile of the loss distribution. In that continuous case, expected shortfall is the average loss when VaR is exceeded, $\text{ES}_c = E\big[L \mid L \ge \text{VaR}_c\big]$ (the Going further section gives the general definition, which also holds for discrete losses). If returns are normal with zero mean and volatility $\sigma$ over the chosen horizon, and the portfolio is worth $V$,
 
 $$\text{VaR}_c = z_c\,\sigma\,V, \qquad \text{ES}_c = \frac{\varphi(z_c)}{1 - c}\,\sigma\,V,$$
 
@@ -2058,7 +2058,7 @@ dd = 1 - W / np.maximum.accumulate(W)               # drawdown at each date
 print(dd.max())                                     # maximum drawdown: 0.20 (from 115 to 92)
 ```
 
-Recovering from a drawdown $D$ requires a rise of $D/(1 - D)$: 25% after losing 20%, and 100% after losing 50% (chapter 1). Many investors judge a strategy by its maximum drawdown more than by its volatility, and the **Calmar ratio** divides the compound annual growth rate by the maximum drawdown. They must be compared carefully: the expected maximum drawdown grows with the length of the sample (Magdon-Ismail *et al.*, 2004), so a longer series will almost always have a worse maximum drawdown. Chapter 14 gives a related result: in its continuous model, with full Kelly, the probability of ever falling to half is 50%.
+Recovering from a drawdown $D$ requires a rise of $D/(1 - D)$: 25% after losing 20%, and 100% after losing 50% (chapter 1). Many investors judge a strategy by its maximum drawdown more than by its volatility, and the **Calmar ratio** divides the compound annual growth rate by the maximum drawdown. They must be compared carefully: the expected maximum drawdown grows with the length of the sample (Magdon-Ismail *et al.*, 2004), so a longer series will almost always have a worse maximum drawdown. Chapter 14 gives a related but different result: in its continuous model with a zero risk-free rate, with full Kelly, the probability of ever reaching half the *initial* capital is 50%. It is not the probability of a 50% fall from a peak, which is higher.
 
 ---
 
@@ -2277,8 +2277,8 @@ $\text{SE} \approx \sqrt{(1 + 0.5 \times 0.6^2)/8} = \sqrt{0.1475} = 0.384$, and
 **9.1 Arithmetic mean +10%; cumulative return −4%.**
 $(60 - 40)/2 = 10\%$, but $1.6 \times 0.6 = 0.96$.
 
-**9.2 About 5.9% with 15% volatility and 2.5% with 30% volatility.**
-$7 - \tfrac12 \times 15^2/100 = 7 - 1.125 = 5.875\%$ and $7 - \tfrac12 \times 30^2/100 = 7 - 4.5 = 2.5\%$. Doubling volatility quadruples the drag.
+**9.2 About 5.9% with 15% volatility and 2.5% with 30% volatility (log rates; as compound rates, 6.05% and 2.53%).**
+$7 - \tfrac12 \times 15^2/100 = 7 - 1.125 = 5.875\%$ and $7 - \tfrac12 \times 30^2/100 = 7 - 4.5 = 2.5\%$. As compound rates, $e^{0.05875} - 1 = 6.05\%$ and $e^{0.025} - 1 = 2.53\%$. Doubling volatility quadruples the drag.
 
 **9.3 The index grows at around 4.4% a year and the tripled product at only 3.4%.**
 Index: $6 - \tfrac12 \times 0.18^2 \times 100 = 4.38\%$. Product: $3 \times 6 - \tfrac12 \times 9 \times 0.18^2 \times 100 = 18 - 14.58 = 3.42\%$. Despite tripling the mean return, it grows less than the index, because the drag is multiplied by nine.
@@ -2371,7 +2371,7 @@ VaR only says where the tail begins, so two portfolios with very different tails
 | Gain that recovers a loss $L$ | $L/(1 - L)$ | 1 |
 | Future value | $FV = PV\,(1 + i)^T$ | 2 |
 | Present value of a stream of payments | $PV = \sum_t C_t/(1 + i)^t$ | 2 |
-| Level annuity | $PV = C\,[1 - (1+i)^{-T}]/i$ | 2 |
+| Level annuity | $PV = C\,[1 - (1+i)^{-T}]/i$; if $i = 0$, $PV = C\,T$ | 2 |
 | Expected value | $E[X] = \sum_k p_k x_k$ | 3 |
 | Random walk | $S_n = S_0 + \sum_{i=1}^{n} X_i$, $\quad E[S_n] = S_0 + n\mu$ | 4 |
 | Variance | $\operatorname{Var}(X) = E[(X - \mu)^2]$ | 4 |
@@ -2422,7 +2422,7 @@ Terms with the chapter or topic where they are defined.
 | **correlation** | normalized covariance, between −1 and +1, that measures the linear relationship between two variables | 10 |
 | **covariance** | expected value of the product of the deviations of two variables from their means | 10 |
 | **kurtosis** | standardized fourth moment; measures the weight of the tails (3 for the normal) | 15 |
-| **expected shortfall** | average loss in the cases that exceed the value at risk | 16 |
+| **expected shortfall** | average loss in the fraction of worst cases set by the confidence level; with continuous distributions, the average loss when value at risk is exceeded | 16 |
 | **delta** | number of shares that replicates an option; in Black–Scholes, $N(d_1)$ for the call | C |
 | **drift** | average trend per step of a random walk | 4 |
 | **discounting** | calculating the present value of a future payment | 2 |
@@ -2457,7 +2457,7 @@ Terms with the chapter or topic where they are defined.
 | **overfitting** | fitting a strategy or model to the noise in historical data | A |
 | **annual percentage rate (APR)** | compound annual rate that sums up the total cost or yield of a transaction | 2 |
 | **compound growth rate** | constant return that would produce the same final wealth | 9 |
-| **central limit theorem** | result according to which the sum of many independent variables tends to the normal | 5 |
+| **central limit theorem** | result according to which the sum of many independent, identically distributed variables with finite variance, once centred and normalized, tends to the normal | 5 |
 | **standardize** | to express a value as its distance from the mean measured in standard deviations | 5 |
 | **interest rate** | return paid per unit of time for having money available | 2 |
 | **risk-free rate** | return obtained without taking risk, such as that of a Treasury bill | 8 |

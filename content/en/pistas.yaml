@@ -88,7 +88,7 @@
   - 'The arithmetic mean is the mean of +60% and −40%.'
   - 'The cumulative return multiplies the factors: $1.6 \times 0.6$.'
 "9.2":
-  - 'The compound growth rate is approximately $\mu - \sigma^2/2$.'
+  - 'The log growth rate is approximately $g = \mu - \sigma^2/2$; the compound rate is $e^{g} - 1$.'
   - 'Watch the units: with $\sigma = 0.15$, $\sigma^2/2 = 0.01125$.'
 "9.3":
   - 'For the index, apply $g \approx \mu - \sigma^2/2$.'
