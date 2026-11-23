@@ -89,17 +89,22 @@ capitulos:
 
 temas:
   - letra: A
+    descripcion: "Backtesting y sobreajuste: los errores que hacen que una estrategia parezca buena con datos pasados y cómo evitarlos."
     slug: tema-a-backtesting-sobreajuste
-    publicado: false
+    publicado: true
   - letra: B
+    descripcion: "Costes de transacción, liquidez e impacto de mercado: cuánto cuesta operar y por qué una orden grande mueve el precio."
     slug: tema-b-costes-de-transaccion
-    publicado: false
+    publicado: true
   - letra: C
+    descripcion: "El árbol binomial: cómo se valora una opción replicándola, sin necesidad de conocer la probabilidad real de subida."
     slug: tema-c-arbol-binomial
-    publicado: false
+    publicado: true
   - letra: D
+    descripcion: "Estacionariedad y cointegración: qué series se pueden modelar directamente y cómo dos precios pueden mantener una relación de equilibrio."
     slug: tema-d-estacionariedad-cointegracion
-    publicado: false
+    publicado: true
   - letra: E
+    descripcion: "Caídas máximas: cuánto llega a perder una cartera desde su mejor momento y por qué hay que compararlas con cuidado."
     slug: tema-e-caidas-maximas
-    publicado: false
+    publicado: true

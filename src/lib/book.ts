@@ -79,7 +79,7 @@ export interface Part {
   chapters: number[];
 }
 
-export interface Topic { letter: string; title: string; slug: string; published: boolean }
+export interface Topic { letter: string; title: string; slug: string; published: boolean; description: string; nodes: Node[] }
 
 export interface GlossaryTerm {
   term: string;
@@ -102,6 +102,7 @@ export interface Book {
   parts: Part[];
   chapters: Chapter[];
   topics: Topic[];
+  topicsIntro: Node[];
   extras: { title: string; key: string; nodes?: Node[] }[];
   glossary: GlossaryTerm[];
   glossaryIntro: string;
@@ -343,6 +344,7 @@ export function loadBook(lang: string): Book {
   const parts: Part[] = [];
   const chapters: Chapter[] = [];
   const topics: Topic[] = [];
+  let topicsIntro: Node[] = [];
   const extras: { title: string; key: string; nodes?: Node[] }[] = [];
   let glossary: GlossaryTerm[] = [];
   let glossaryIntro = '';
@@ -374,11 +376,13 @@ export function loadBook(lang: string): Book {
     }
     if (/temas complementarios/i.test(ht)) {
       const tMeta = new Map<string, any>((meta?.temas ?? []).map((t: any) => [t.letra, t]));
-      for (const s of splitBy(g.nodes, 2).slice(1)) {
+      const tsub = splitBy(g.nodes, 2);
+      topicsIntro = tsub[0].nodes.filter((n) => n.type !== 'thematicBreak');
+      for (const s of tsub.slice(1)) {
         const m = text(s.heading!).match(/^Tema\s+([A-Z])\s*·\s*(.+)$/);
         if (!m) continue;
         const tm = tMeta.get(m[1]);
-        topics.push({ letter: m[1], title: m[2], slug: tm?.slug ?? `tema-${m[1].toLowerCase()}-${slugify(m[2])}`, published: !!tm?.publicado });
+        topics.push({ letter: m[1], title: m[2], slug: tm?.slug ?? `tema-${m[1].toLowerCase()}-${slugify(m[2])}`, published: !!tm?.publicado, description: tm?.descripcion ?? '', nodes: s.nodes.filter((n) => n.type !== 'thematicBreak') });
       }
       continue;
     }
@@ -415,6 +419,7 @@ export function loadBook(lang: string): Book {
       extras.push({ title: ht, key: 'epilogo', nodes: g.nodes.filter((n) => n !== last) });
       continue;
     }
+    if (/^Proyecto práctico/i.test(ht)) { extras.push({ title: ht, key: 'proyecto', nodes: g.nodes.filter((n) => n.type !== 'thematicBreak') }); continue; }
     extras.push({ title: ht, key: slugify(ht), nodes: g.nodes });
   }
 
@@ -437,7 +442,7 @@ export function loadBook(lang: string): Book {
     lang, title, subtitle, disclaimer,
     disclaimerText: text({ type: 'paragraph', children: disclaimer } as Paragraph),
     preface, prefaceIntro: prefSplit[0].nodes,
-    parts, chapters, topics, extras, glossary, glossaryIntro, formulas, formulasNote,
+    parts, chapters, topics, topicsIntro, extras, glossary, glossaryIntro, formulas, formulasNote,
   };
   cache.set(lang, book);
   return book;

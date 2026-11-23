@@ -15,6 +15,8 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Búsqueda**: `scripts/search.mjs` (integración que crea el índice Pagefind en `dist/pagefind/` antes de la PWA) + página `src/pages/[lang]/buscar.astro` + `src/lib/client/search.ts` (interfaz propia, sinónimos, agrupación por tipo). Se indexa el `<main data-pagefind-body>` de `Base.astro`; `searchable={false}` lo excluye. Atajo «/».
 - Progreso y preferencias del lector: solo `localStorage` (clave `quantlab:v1`), siempre con try/catch. Página «Mi progreso» en `src/pages/[lang]/progreso.astro` + `src/lib/client/progress.ts` (resumen, exportar/importar fichero, borrar).
 
+- **Temas A–E y proyecto**: páginas `src/pages/[lang]/temas/[slug].astro` (slug y descripción en `temas:` de `capitulos.yaml`) y `src/pages/[lang]/proyecto.astro`. «capítulo N» y «tema X» en el texto se enlazan solos si están publicados.
+
 ## Tareas habituales
 
 - **Publicar un capítulo nuevo**: `publicado: true` y `descripcion` en `content/es/capitulos.yaml`; respuestas de sus ejercicios de cálculo en `respuestas.yaml`; programar su gráfico en `src/charts/chNN-*.ts` (según la sección 9 del análisis funcional), registrarlo en `src/charts/registry.ts`, añadir sus textos `cNN.*` a `src/i18n/es.json` y sus pruebas con las cifras del libro en `tests/charts.test.ts`. `check:content` falla si falta algo de esto.

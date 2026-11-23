@@ -1,0 +1,40 @@
+---
+/** Proyecto práctico · Laboratorio de carteras (RF-PRY-01/02): fase 1 ejecutable y fases siguientes. */
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { t } from '../../i18n';
+import { loadBook } from '../../lib/book';
+import { initRenderer, renderBlocks, url, type RenderCtx } from '../../lib/render';
+import { SITE } from '../../config';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book, headingShift: -1, usedTerms: new Set(), usedIds: new Set(), pyCounter: { n: 0 } };
+const extra = book.extras.find((e) => e.key === 'proyecto');
+if (!extra?.nodes) throw new Error('El libro no tiene «Proyecto práctico».');
+const html = renderBlocks(extra.nodes, ctx);
+const pageUrl = new URL(url(ctx, `${lang}/proyecto/`), SITE.url).toString();
+const issueUrl = `${SITE.repo}/issues/new?` + new URLSearchParams({
+  title: `[Errata] ${extra.title}: `,
+  body: `${extra.title}\n${pageUrl}\n\nSección:\n\nQué está mal:\n\nQué debería decir:\n`,
+}).toString();
+const lastTopic = [...book.topics].reverse().find((x) => x.published);
+---
+<Base lang={lang} title={extra.title} description={t(lang, 'project.description')} path="proyecto/" ogType="article">
+  <article class="prose">
+    <h1>{extra.title}</h1>
+    <Fragment set:html={html} />
+    <p class="py-shared js-only">{t(lang, 'py.sharedNote')} <button type="button" class="btn" data-py-reset>{t(lang, 'py.resetEnv')}</button></p>
+    <nav class="chapter-nav" aria-label={`${t(lang, 'nav.prev')} / ${t(lang, 'nav.next')}`}>
+      {lastTopic ? <a class="prev" href={url(ctx, `${lang}/temas/${lastTopic.slug}/`)} rel="prev"><small>← {t(lang, 'nav.prev')}</small>{t(lang, 'nav.topic')} {lastTopic.letter} · {lastTopic.title.replace(/\*/g, '')}</a> : <span></span>}
+      <a class="next" href={url(ctx, `${lang}/epilogo/`)} rel="next"><small>{t(lang, 'nav.next')} →</small>{book.extras.find((e) => e.key === 'epilogo')?.title}</a>
+    </nav>
+    <p class="report"><a href={issueUrl} rel="noopener" data-report>{t(lang, 'chapter.reportError')}</a> · {t(lang, 'chapter.reportHint')}</p>
+  </article>
+</Base>

@@ -19,6 +19,7 @@ export interface RenderCtx {
   base: string;                    // p. ej. «/quantlab/»
   book: Book;
   chapter?: number;                // capítulo actual (para no enlazarse a sí mismo)
+  topic?: string;                  // letra del tema actual
   headingShift?: number;           // h3 del libro → h2 de la página: shift = -1
   usedTerms?: Set<string>;         // términos del glosario ya enlazados en esta página
   usedIds?: Set<string>;
@@ -47,6 +48,12 @@ export function chapterUrl(ctx: RenderCtx, n: number): string | null {
   const ch = ctx.book.chapters.find((c) => c.number === n);
   if (!ch || !ch.published) return null;
   return url(ctx, `${ctx.lang}/capitulos/${ch.slug}/`);
+}
+
+export function topicUrl(ctx: RenderCtx, letter: string): string | null {
+  const tp = ctx.book.topics.find((x) => x.letter === letter.toUpperCase());
+  if (!tp || !tp.published) return null;
+  return url(ctx, `${ctx.lang}/temas/${tp.slug}/`);
 }
 
 export function glossaryUrl(ctx: { base: string; lang: string }, slug: string): string {
@@ -107,6 +114,15 @@ function transformMd(root: Root, ctx: RenderCtx): void {
       parent.children[index] = { type: 'html', value: pythonBlock((node as Code).value, ctx) };
       return SKIP;
     }
+    // «$$…$$» en una sola línea lo lee remark-math como fórmula en línea: si ocupa todo el
+    // párrafo, es una fórmula destacada (centrada, con desplazamiento horizontal si no cabe).
+    if (node.type === 'paragraph' && parent && index !== undefined) {
+      const kids = (node as any).children.filter((c: any) => !(c.type === 'text' && !c.value.trim()));
+      if (kids.length === 1 && kids[0].type === 'inlineMath') {
+        parent.children[index] = { type: 'math', value: kids[0].value, data: { hName: 'div', hProperties: { className: ['math', 'math-display'] }, hChildren: [{ type: 'text', value: kids[0].value }] } };
+        return SKIP;
+      }
+    }
     if (node.type === 'heading') {
       const h = node as Heading;
       h.depth = Math.min(6, Math.max(2, h.depth + (ctx.headingShift ?? 0))) as Heading['depth'];
@@ -127,15 +143,16 @@ function transformMd(root: Root, ctx: RenderCtx): void {
       }
     }
     if (node.type === 'text' && parent && index !== undefined && parent.type !== 'link' && parent.type !== 'heading') {
-      // Referencias cruzadas «capítulo 9» → enlace, solo a capítulos publicados.
+      // Referencias cruzadas «capítulo 9» / «tema B» → enlace, solo a páginas publicadas.
       const value = (node as Text).value;
-      const re = /\b(capítulo)\s+(\d{1,2})\b/gi;
+      const re = /\b(?:[Cc]ap[ií]tulo\s+(\d{1,2})|[Tt]ema\s+([A-E]))\b/g;
       const pieces: PhrasingContent[] = [];
       let last = 0;
       let m: RegExpExecArray | null;
       while ((m = re.exec(value))) {
-        const n = Number(m[2]);
-        const href = n !== ctx.chapter ? chapterUrl(ctx, n) : null;
+        const href = m[1]
+          ? (Number(m[1]) !== ctx.chapter ? chapterUrl(ctx, Number(m[1])) : null)
+          : (m[2] !== ctx.topic ? topicUrl(ctx, m[2]) : null);
         if (!href) continue;
         if (m.index > last) pieces.push({ type: 'text', value: value.slice(last, m.index) });
         pieces.push({ type: 'link', url: href, title: null, children: [{ type: 'text', value: m[0] }] });

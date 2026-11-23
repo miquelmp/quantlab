@@ -1,6 +1,6 @@
 import { t } from '../i18n';
 import type { Book } from './book';
-import { chapterUrl, url, type RenderCtx } from './render';
+import { chapterUrl, topicUrl, url, type RenderCtx } from './render';
 
 /** Primera letra para agrupar (sin tildes; la ñ va aparte). */
 export function letterOf(term: string): string {
@@ -24,6 +24,7 @@ export function refLabel(lang: string, ref: string, book?: Book): string {
 
 export function refHref(ctx: RenderCtx, ref: string): string | null {
   if (/^\d+$/.test(ref)) return chapterUrl(ctx, Number(ref));
+  if (/^[A-Z]$/.test(ref)) return topicUrl(ctx, ref);
   if (ref === 'Prefacio') return url(ctx, `${ctx.lang}/sobre-el-libro/#prefacio`);
   return null;
 }
