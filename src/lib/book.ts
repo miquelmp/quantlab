@@ -118,16 +118,53 @@ export interface Book {
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
 
-const SECTION_TYPES: [RegExp, SectionType][] = [
-  [/^La idea$/i, 'idea'],
-  [/^Un ejemplo resuelto$/i, 'ejemplo'],
-  [/^Formalización$/i, 'formalizacion'],
-  [/^Gráfico interactivo$/i, 'grafico'],
-  [/^En Python$/i, 'python'],
-  [/^En la práctica$/i, 'practica'],
-  [/^Ejercicios$/i, 'ejercicios'],
-  [/^Ampliación\b/i, 'ampliacion'],
-];
+/** Títulos fijos del libro en cada idioma (la estructura es la misma). */
+interface Labels {
+  sections: [RegExp, SectionType][];
+  preface: RegExp; part: RegExp; chapter: RegExp; topics: RegExp; topic: RegExp;
+  solutions: RegExp; formulas: RegExp; glossary: RegExp; epilogue: RegExp; project: RegExp; bibliography: RegExp;
+  chartPrefix: RegExp; observe: RegExp;
+  tags: Record<string, string>;   // etiquetas de los ejercicios → claves comunes (las del español)
+}
+const LABELS: Record<string, Labels> = {
+  es: {
+    sections: [
+      [/^La idea$/i, 'idea'],
+      [/^Un ejemplo resuelto$/i, 'ejemplo'],
+      [/^Formalización$/i, 'formalizacion'],
+      [/^Gráfico interactivo$/i, 'grafico'],
+      [/^En Python$/i, 'python'],
+      [/^En la práctica$/i, 'practica'],
+      [/^Ejercicios$/i, 'ejercicios'],
+      [/^Ampliación\b/i, 'ampliacion'],
+    ],
+    preface: /^Prefacio$/i, part: /^Parte\s+([IVX]+)\s*·\s*(.+)$/, chapter: /^Capítulo\s+(\d+)\s*·\s*(.+)$/,
+    topics: /temas complementarios/i, topic: /^Tema\s+([A-Z])\s*·\s*(.+)$/,
+    solutions: /^Soluciones/i, formulas: /^Resumen de fórmulas/i, glossary: /^Glosario/i, epilogue: /^Epílogo/i,
+    project: /^Proyecto práctico/i, bibliography: /^Bibliografía/i,
+    chartPrefix: /^Gráfico interactivo\s*·\s*/i, observe: /Lo que el lector debe observar:\s*/,
+    tags: {},
+  },
+  en: {
+    sections: [
+      [/^The idea$/i, 'idea'],
+      [/^A worked example$/i, 'ejemplo'],
+      [/^Formalization$/i, 'formalizacion'],
+      [/^Interactive chart$/i, 'grafico'],
+      [/^In Python$/i, 'python'],
+      [/^In practice$/i, 'practica'],
+      [/^Exercises$/i, 'ejercicios'],
+      [/^Going further\b/i, 'ampliacion'],
+    ],
+    preface: /^Preface$/i, part: /^Part\s+([IVX]+)\s*·\s*(.+)$/, chapter: /^Chapter\s+(\d+)\s*·\s*(.+)$/,
+    topics: /supplementary topics/i, topic: /^Topic\s+([A-Z])\s*·\s*(.+)$/,
+    solutions: /^Solutions/i, formulas: /^Formula summary/i, glossary: /^Glossary/i, epilogue: /^Epilogue/i,
+    project: /^Practical project/i, bibliography: /^Bibliography/i,
+    chartPrefix: /^Interactive chart\s*·\s*/i, observe: /What the reader should observe:\s*/,
+    tags: { basic: 'básico', intermediate: 'intermedio', advanced: 'avanzado', calculation: 'cálculo', reflection: 'reflexión' },
+  },
+};
+let L: Labels = LABELS.es;
 
 const SECTION_IDS: Record<SectionType, string> = {
   idea: 'la-idea', ejemplo: 'ejemplo-resuelto', formalizacion: 'formalizacion', grafico: 'grafico-interactivo',
@@ -196,9 +233,9 @@ function parseChart(bq: Blockquote): ChartSpec {
   if (!p || p.type !== 'paragraph') fail('Recuadro de gráfico sin párrafo');
   const first = p.children[0];
   if (!first || first.type !== 'strong') fail('Recuadro de gráfico sin título en negrita');
-  const title = text(first).replace(/^Gráfico interactivo\s*·\s*/i, '').replace(/\.$/, '');
+  const title = text(first).replace(L.chartPrefix, '').replace(/\.$/, '');
   const rest = stripLeading(p.children.slice(1), /^\s+/);
-  const marker = /Lo que el lector debe observar:\s*/;
+  const marker = L.observe;
   const description: PhrasingContent[] = [];
   const observe: PhrasingContent[] = [];
   let found = false;
@@ -225,7 +262,7 @@ function parseExercises(list: List, chapter: number): Exercise[] {
     const id = text(strong);
     if (!/^\d+\.\d+$/.test(id)) fail(`Número de ejercicio extraño: ${id}`);
     const em = p.children.find((c) => c.type === 'emphasis');
-    const tags = em ? text(em).replace(/[()]/g, '').split(',').map((s) => s.trim()) : [];
+    const tags = em ? text(em).replace(/[()]/g, '').split(',').map((s) => s.trim()).map((s) => L.tags[s.toLowerCase()] ?? s) : [];
     const [level = '', kind = ''] = tags;
     const idx = em ? p.children.indexOf(em) + 1 : 1;
     const statement = stripLeading(p.children.slice(idx), /^\s+/);
@@ -244,7 +281,7 @@ function parseChapterNodes(num: number, title: string, nodes: Node[], meta: any,
   let wadv = 0;
   for (const g of groups.slice(1)) {
     const st = text(g.heading!);
-    const type = SECTION_TYPES.find(([re]) => re.test(st))?.[1] ?? 'otra';
+    const type = L.sections.find(([re]) => re.test(st))?.[1] ?? 'otra';
     const body = g.nodes.filter((n) => n.type !== 'thematicBreak');
     if (type === 'grafico') {
       const bq = body.find((n) => n.type === 'blockquote') as Blockquote | undefined;
@@ -318,6 +355,7 @@ export function contentDir(lang: string): string {
 export function loadBook(lang: string): Book {
   const hit = cache.get(lang);
   if (hit) return hit;
+  L = LABELS[lang] ?? LABELS.es;
   const dir = contentDir(lang);
   const src = fs.readFileSync(path.join(dir, 'libro.md'), 'utf8');
   const meta = YAML.parse(fs.readFileSync(path.join(dir, 'capitulos.yaml'), 'utf8'));
@@ -346,7 +384,7 @@ export function loadBook(lang: string): Book {
   const headNodes = splitBy(head.nodes, 2);
   const subtitleP = headNodes[0].nodes.find((n) => n.type === 'paragraph') as Paragraph;
   const subtitle = subtitleP ? text(subtitleP) : '';
-  const prefaceGroup = headNodes.find((g) => g.heading && /^Prefacio$/i.test(text(g.heading)));
+  const prefaceGroup = headNodes.find((g) => g.heading && L.preface.test(text(g.heading)));
   if (!prefaceGroup) fail('No se encuentra el prefacio');
   const prefSplit = splitBy(prefaceGroup.nodes, 3);
   const preface: Section[] = prefSplit.slice(1).map((g) => ({
@@ -377,7 +415,7 @@ export function loadBook(lang: string): Book {
 
   for (const g of top.slice(2)) {
     const ht = text(g.heading!);
-    const partMatch = ht.match(/^Parte\s+([IVX]+)\s*·\s*(.+)$/);
+    const partMatch = ht.match(L.part);
     if (partMatch) {
       const roman = partMatch[1];
       const number = ROMAN.indexOf(roman) + 1;
@@ -387,7 +425,7 @@ export function loadBook(lang: string): Book {
         intro: sub[0].nodes.filter((n) => n.type !== 'thematicBreak'), chapters: [],
       };
       for (const c of sub.slice(1)) {
-        const m = text(c.heading!).match(/^Capítulo\s+(\d+)\s*·\s*(.+)$/);
+        const m = text(c.heading!).match(L.chapter);
         if (!m) fail(`Título de capítulo inesperado: «${text(c.heading!)}»`);
         const num = Number(m[1]);
         chapters.push(parseChapterNodes(num, m[2], c.nodes, chMeta.get(num), number));
@@ -396,20 +434,20 @@ export function loadBook(lang: string): Book {
       parts.push(part);
       continue;
     }
-    if (/temas complementarios/i.test(ht)) {
+    if (L.topics.test(ht)) {
       const tMeta = new Map<string, any>((meta?.temas ?? []).map((t: any) => [t.letra, t]));
       const tsub = splitBy(g.nodes, 2);
       topicsIntro = tsub[0].nodes.filter((n) => n.type !== 'thematicBreak');
       for (const s of tsub.slice(1)) {
-        const m = text(s.heading!).match(/^Tema\s+([A-Z])\s*·\s*(.+)$/);
+        const m = text(s.heading!).match(L.topic);
         if (!m) continue;
         const tm = tMeta.get(m[1]);
         topics.push({ letter: m[1], title: m[2], slug: tm?.slug ?? `tema-${m[1].toLowerCase()}-${slugify(m[2])}`, published: !!tm?.publicado, description: tm?.descripcion ?? '', nodes: s.nodes.filter((n) => n.type !== 'thematicBreak') });
       }
       continue;
     }
-    if (/^Soluciones/i.test(ht)) { solutions = parseSolutions(g.nodes); continue; }
-    if (/^Resumen de fórmulas/i.test(ht)) {
+    if (L.solutions.test(ht)) { solutions = parseSolutions(g.nodes); continue; }
+    if (L.formulas.test(ht)) {
       const t = g.nodes.find((n) => n.type === 'table') as Table;
       formulas = tableRows(t).map((r) => ({
         concept: r[0], conceptText: text({ type: 'paragraph', children: r[0] } as Paragraph),
@@ -419,7 +457,7 @@ export function loadBook(lang: string): Book {
       extras.push({ title: ht, key: 'formulas' });
       continue;
     }
-    if (/^Glosario/i.test(ht)) {
+    if (L.glossary.test(ht)) {
       const t = g.nodes.find((n) => n.type === 'table') as Table;
       const intro = g.nodes.find((n) => n.type === 'paragraph');
       glossaryIntro = intro ? text(intro) : '';
@@ -435,14 +473,15 @@ export function loadBook(lang: string): Book {
       extras.push({ title: ht, key: 'glossary' });
       continue;
     }
-    if (/^Epílogo/i.test(ht)) {
+    if (L.epilogue.test(ht)) {
       // Último párrafo en cursiva = aviso legal del libro.
       const last = [...g.nodes].reverse().find((n) => n.type === 'paragraph' && (n as Paragraph).children[0]?.type === 'emphasis') as Paragraph | undefined;
       if (last) disclaimer = (last.children[0] as any).children;
       extras.push({ title: ht, key: 'epilogo', nodes: g.nodes.filter((n) => n !== last) });
       continue;
     }
-    if (/^Proyecto práctico/i.test(ht)) { extras.push({ title: ht, key: 'proyecto', nodes: g.nodes.filter((n) => n.type !== 'thematicBreak') }); continue; }
+    if (L.project.test(ht)) { extras.push({ title: ht, key: 'proyecto', nodes: g.nodes.filter((n) => n.type !== 'thematicBreak') }); continue; }
+    if (L.bibliography.test(ht)) { extras.push({ title: ht, key: 'bibliografia', nodes: g.nodes }); continue; }
     extras.push({ title: ht, key: slugify(ht), nodes: g.nodes });
   }
 

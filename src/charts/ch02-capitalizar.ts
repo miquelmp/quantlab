@@ -5,7 +5,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
-import { fmtPct, fmtNum } from '../lib/format';
+import { fmtPct, fmtNum, fmtEur } from '../lib/format';
 
 export interface S2 extends Record<string, number> { i: number; T: number }
 export interface D2 {
@@ -27,7 +27,7 @@ export const annuityPayment = (vp: number, i: number, T: number) => (i === 0 ? v
 
 const M = { top: 12, right: 16, bottom: 44, left: 60 };
 const pct = (v: number, ctx: ChartCtx, d = 1) => fmtPct(v, d, ctx.fmt);
-const eur = (v: number, ctx: ChartCtx, d = 0) => fmtNum(v, d, ctx.fmt) + ' €';
+const eur = (v: number, ctx: ChartCtx, d = 0) => fmtEur(v, d, ctx.fmt);
 const fac = (v: number, ctx: ChartCtx) => fmtNum(v, 3, ctx.fmt);
 
 function compute(s: S2): D2 {

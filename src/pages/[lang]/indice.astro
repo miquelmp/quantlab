@@ -32,7 +32,7 @@ const extraLink: Record<string, string> = {
     <ol class="book-index">
       {book.parts.map((p) => (
         <li id={`parte-${p.number}`}>
-          <h2>Parte {p.roman} · {p.title}</h2>
+          <h2>{t(lang, 'nav.part')} {p.roman} · {p.title}</h2>
           <p class="question">{p.question}</p>
           <ol>
             {p.chapters.map((n) => {

@@ -44,7 +44,7 @@ for (const c of book.chapters) {
     }
   }
 }
-const heads = book.parts.map((p, i) => `<text class="map-part" x="${PAD + i * (BW + GX) + BW / 2}" y="20" text-anchor="middle">Parte ${p.roman}</text>`).join('');
+const heads = book.parts.map((p, i) => `<text class="map-part" x="${PAD + i * (BW + GX) + BW / 2}" y="20" text-anchor="middle">${t(lang, 'nav.part')} ${p.roman}</text>`).join('');
 const nodes = book.chapters.filter((c) => pos.has(c.number)).map((c) => {
   const { x, y } = pos.get(c.number)!;
   const href = chapterUrl(ctx, c.number);

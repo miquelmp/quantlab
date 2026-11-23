@@ -56,7 +56,7 @@ export function bibEntries(book: { extras: { key: string; nodes?: Node[] }[] }):
   if (list) return list;
   list = [];
   const used = new Map<string, number>();
-  const extra = book.extras.find((e) => e.key === 'bibliografia');
+  const extra = book.extras.find((e) => e.key === 'bibliografia');  // también en inglés (book.ts normaliza la clave)
   for (const n of extra?.nodes ?? []) {
     if (n.type !== 'list') continue;
     for (const li of (n as List).children as ListItem[]) {
@@ -67,7 +67,7 @@ export function bibEntries(book: { extras: { key: string; nodes?: Node[] }[] }):
       if (k > 1) id = `${id}-${k}`;
       const m = txt.match(/^(.*?)\s*\((\d{4}[a-z]?)\)/);
       if (!m) continue;
-      const authors = m[1].replace(/\(eds?\.\)/g, '').split(/,\s*|\s+y\s+|\s*&\s*/)
+      const authors = m[1].replace(/\(eds?\.\)/g, '').split(/,\s*|\s+(?:y|and)\s+|\s*&\s*/)
         .map((a) => a.trim()).filter((a) => a && !INITIALS.test(a)).map(slugify);
       list.push({ id, year: m[2], authors });
     }
@@ -84,7 +84,7 @@ const WORD = String.raw`[${UP}][\p{L}'’-]+`;
 const NAME_CORE = String.raw`${WORD}(?:\s+${PART}\s+${WORD})*`;
 const NAME_FIRST = String.raw`(?:${PART}\s+)*${NAME_CORE}`;
 const NAME_ANY = String.raw`(?:${PART}\s+)*${NAME_CORE}`;
-const SEP = String.raw`\s*(?:,|\by\b|&)\s*`;
+const SEP = String.raw`\s*(?:,|\by\b|\band\b|&)\s*`;
 const CHAIN_AT_END = new RegExp(String.raw`(${NAME_FIRST}(?:${SEP}${NAME_ANY})*)(\s+et\s+al\.)?\s*,?\s*\(?\s*$`, 'u');
 
 /** Autores de la cita que termina justo antes del año: «… von Neumann y Morgenstern (» → von Neumann, Morgenstern. */

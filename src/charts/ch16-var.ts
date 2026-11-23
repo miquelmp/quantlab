@@ -8,7 +8,7 @@
 import type { ChartDef, ChartCtx } from './types';
 import { Rng, normCdf, normInv } from './rng';
 import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
-import { fmtPct, fmtNum } from '../lib/format';
+import { fmtPct, fmtNum, fmtEur } from '../lib/format';
 import { tTail } from './ch15-colas';
 
 export interface S16 extends Record<string, number> { conf: number; model: number; nu: number; seed: number }
@@ -101,7 +101,7 @@ export function computeVar(s: S16): D16 {
 }
 
 const M = { top: 12, right: 16, bottom: 44, left: 60 };
-const eur = (v: number, ctx: ChartCtx) => fmtNum(v, 0, ctx.fmt) + ' €';
+const eur = (v: number, ctx: ChartCtx) => fmtEur(v, 0, ctx.fmt);
 const pct = (v: number, ctx: ChartCtx, d = 1) => fmtPct(v, d, ctx.fmt);
 const modelName = (s: S16, ctx: ChartCtx) => (Math.round(s.model) === 1 ? ctx.tr('c16.modelT', { nu: Math.round(s.nu) }) : ctx.tr('c16.modelN'));
 

@@ -19,11 +19,18 @@ export function fmtNum(x: number, decimals = 0, f: NumFmt = ES): string {
 
 /** Tanto por uno → «12,5 %» (espacio fino inseparable, como en el libro). */
 export function fmtPct(x: number, decimals = 1, f: NumFmt = ES): string {
-  return fmtNum(x * 100, decimals, f) + ' %';
+  return fmtNum(x * 100, decimals, f) + (f.decimal === '.' ? '%' : ' %');   // en inglés, «12.5%»
 }
 
+/** Añade el símbolo del euro a un número ya formateado; unit: «k» o «M». */
+export function withEur(num: string, f: NumFmt = ES, unit = ''): string {
+  if (f.decimal !== '.') return `${num} ${unit}€`;
+  return (num.startsWith('−') ? '−€' + num.slice(1) : '€' + num) + unit;
+}
+
+/** «1.000 €» en español; «€1,000» en inglés. */
 export function fmtEur(x: number, decimals = 0, f: NumFmt = ES): string {
-  return fmtNum(x, decimals, f) + ' €';
+  return withEur(fmtNum(x, decimals, f), f);
 }
 
 /**
@@ -31,15 +38,16 @@ export function fmtEur(x: number, decimals = 0, f: NumFmt = ES): string {
  * signo menos tipográfico, «%» y palabras como «millones».
  * Devuelve { value, percent } o null si no se reconoce.
  */
-export function parseUserNumber(raw: string): { value: number; percent: boolean } | null {
+/** decimal: separador decimal del idioma de la página (en inglés, «40,000» son miles y «0.12», decimal). */
+export function parseUserNumber(raw: string, decimal = ','): { value: number; percent: boolean } | null {
   let s = raw.trim().toLowerCase().replace(/[−–—]/g, '-').replace(/\s+/g, ' ');
   if (!s) return null;
   let mult = 1;
   const percent = s.includes('%');
-  s = s.replace(/%/g, '').replace(/€/g, '');
+  s = s.replace(/%/g, '').replace(/[€$]/g, '');
   const words: [RegExp, number][] = [
-    [/\b(millones|millón|millon|mill\.?|m)$/, 1e6],
-    [/\b(mil)$/, 1e3],
+    [/\b(millones|millón|millon|millions?|mill\.?|m)$/, 1e6],
+    [/\b(mil|thousands?|k)$/, 1e3],
   ];
   s = s.trim();
   for (const [re, m] of words) {
@@ -57,11 +65,13 @@ export function parseUserNumber(raw: string): { value: number; percent: boolean 
     const dec = lastComma > lastDot ? ',' : '.';
     const grp = dec === ',' ? '.' : ',';
     s = s.split(grp).join('').replace(dec, '.');
+  } else if (lastComma >= 0 && decimal === '.') {
+    s = s.split(',').join('');                          // 40,000
   } else if (lastComma >= 0) {
     const parts = s.split(',');
     if (parts.length > 2) s = parts.join('');           // 1,000,000
     else s = s.replace(',', '.');                       // 0,12
-  } else if (lastDot >= 0) {
+  } else if (lastDot >= 0 && decimal !== '.') {
     const parts = s.split('.');
     // «40.000» o «2.700.000» = miles; «0.12» o «2.7» = decimal.
     const thousands = parts.length > 2 || (/^[-+]?\d{1,3}$/.test(parts[0]) && parts[1].length === 3 && !/^[-+]?0$/.test(parts[0]));
@@ -76,8 +86,8 @@ export function parseUserNumber(raw: string): { value: number; percent: boolean 
  * Comprueba una respuesta. Para tipo «porcentaje» acepta 12 %, 0,12 y 12 (si 12 no
  * encaja como tanto por uno, se prueba como porcentaje).
  */
-export function checkAnswer(raw: string, expected: number, tipo: 'porcentaje' | 'numero', tol?: number): boolean | null {
-  const p = parseUserNumber(raw);
+export function checkAnswer(raw: string, expected: number, tipo: 'porcentaje' | 'numero', tol?: number, decimal = ','): boolean | null {
+  const p = parseUserNumber(raw, decimal);
   if (!p) return null;
   const t = tol ?? (tipo === 'porcentaje' ? 0.0005 : Math.abs(expected) * 0.005);
   const ok = (v: number) => Math.abs(v - expected) <= t + 1e-12;

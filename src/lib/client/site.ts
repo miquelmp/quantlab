@@ -168,7 +168,7 @@ function initExercises() {
       const run = () => {
         const v = input.value;
         if (!v.trim()) { out.className = 'check-result'; out.textContent = tr('ex.empty'); return; }
-        const r = checkAnswer(v, Number(row.dataset.value), row.dataset.tipo as any, row.dataset.tol ? Number(row.dataset.tol) : undefined);
+        const r = checkAnswer(v, Number(row.dataset.value), row.dataset.tipo as any, row.dataset.tol ? Number(row.dataset.tol) : undefined, document.documentElement.lang.startsWith('en') ? '.' : ',');
         input.setAttribute('aria-invalid', String(r === false || r === null));
         if (r === null) { out.className = 'check-result bad'; out.textContent = tr('ex.invalid'); return; }
         out.className = 'check-result ' + (r ? 'ok' : 'bad');
