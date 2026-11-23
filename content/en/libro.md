@@ -95,7 +95,7 @@ That is the practical advantage of logarithms: the log return over a long period
 
 ### Interactive chart
 
-> **Interactive chart · The asymmetry of losses.** Left panel: the reader picks a loss between 0% and 90% with a slider, and a curve shows the gain needed to recover it, $L/(1-L)$, with the chosen point highlighted and its numerical value. Right panel: the log return $\ln(1+R)$ against the simple return $R$ for $R$ between −60% and +100%, together with the diagonal $r = R$; hovering shows the difference between the two. What the reader should observe: near zero the two measures almost coincide, but the log return always stays below the simple one and moves far away from it in large moves, above all in falls.
+> **Interactive chart · The asymmetry of losses.** Left panel: the reader picks a loss between 0% and 90% with a slider, and a curve shows the gain needed to recover it, $L/(1-L)$, with the chosen point highlighted and its numerical value. Right panel: the log return $\ln(1+R)$ against the simple return $R$ for $R$ between −60% and +100%, together with the diagonal $r = R$; hovering shows the difference between the two. What the reader should observe: near zero the two measures almost coincide, but the log return always stays below the simple one (except at $R = 0$) and moves far away from it in large moves, above all in falls.
 
 ### In Python
 
@@ -150,7 +150,7 @@ Two important consequences:
 1. For small moves ($|R| \lesssim 5\%$) both measures are almost equal; the difference is of second order, $\approx R^2/2$.
 2. Since $\ln(1+x) \le x$ for all $x > -1$, it always holds that $r \le R$, with equality only if $R = 0$.
 
-In addition, the simple return is bounded below ($R \ge -1$: you cannot lose more than 100% without leverage), whereas the log return takes values on the whole real line ($r \to -\infty$ as $R \to -1$). That is why it is consistent to model $r$ with distributions defined on $\mathbb{R}$, such as the normal: if $r \sim \mathcal{N}(\mu, \sigma^2)$, then the price $P_t = P_{t-1}e^{r}$ follows a **lognormal** distribution and is never negative.
+In addition, the simple return is bounded below ($R \ge -1$: you cannot lose more than 100% without leverage or short positions), whereas the log return takes values on the whole real line ($r \to -\infty$ as $R \to -1$). That is why it is consistent to model $r$ with distributions defined on $\mathbb{R}$, such as the normal: if $r \sim \mathcal{N}(\mu, \sigma^2)$, then the price $P_t = P_{t-1}e^{r}$ follows a **lognormal** distribution and is never negative.
 
 #### Aggregation over time and across assets
 
@@ -169,7 +169,7 @@ Given a series $R_1, \dots, R_T$, the **arithmetic mean** is $\bar{R} = \frac{1}
 
 $$G = \left(\prod_{t=1}^{T}(1+R_t)\right)^{1/T} - 1 = \exp\!\left(\frac{1}{T}\sum_t r_t\right) - 1.$$
 
-By the inequality of arithmetic and geometric means, $G \le \bar{R}$, with equality only if all returns are equal. The geometric mean is the constant rate that would have produced the same final wealth; the arithmetic mean is the best estimator of the expected return of *one* period. The difference between the two is precisely the volatility drag (chapter 9), and confusing them leads to overestimating final wealth. In the chapter's worked example, +25% and −20% have an arithmetic mean of +2.5% and a geometric mean of $\sqrt{1.25 \times 0.80} - 1 = 0\%$.
+By the inequality of arithmetic and geometric means, $G \le \bar{R}$, with equality only if all returns are equal. The geometric mean is the constant rate that would have produced the same final wealth; the arithmetic mean is an unbiased estimator of the expected return of *one* period. The difference between the two is, approximately, the volatility drag (chapter 9), and confusing them leads to overestimating final wealth. In the chapter's worked example, +25% and −20% have an arithmetic mean of +2.5% and a geometric mean of $\sqrt{1.25 \times 0.80} - 1 = 0\%$.
 
 #### Annualization
 
@@ -281,14 +281,14 @@ The equivalent **effective annual rate** is $(1 + i/m)^m - 1$. For $i = 5\%$: wi
 
 #### Present value of a stream of cash flows
 
-For cash flows $CF_1, \dots, CF_T$ with a constant discount rate $i$:
+For cash flows $C_1, \dots, C_T$ with a constant discount rate $i$:
 
 $$VP = \sum_{t=1}^{T} \frac{C_t}{(1+i)^t}.$$
 
 Using the sum of a geometric progression we get widely used closed formulas:
 
 - **Level annuity** of $C$ for $T$ periods: $VP = C\,\dfrac{1 - (1+i)^{-T}}{i}$ (if $i = 0$, simply $VP = C\,T$). Example: €100 a year for 10 years at 5% is worth €772.17 today.
-- **Perpetuity**: $VP = C/i$ (the limit $T \to \infty$).
+- **Perpetuity**: $VP = C/i$ (the limit $T \to \infty$, if $i > 0$).
 - **Growing perpetuity** at a rate $g < i$: $VP = \dfrac{C_1}{i - g}$, the basis of Gordon's dividend model for valuing shares.
 
 #### NPV and IRR
@@ -320,7 +320,7 @@ In general, each maturity has its own spot rate $z_t$ and its **discount factor*
 
 #### Historical note
 
-Between June 2014 and July 2022, the ECB's deposit facility rate was negative (it reached −0.50%), although the main refinancing rate stayed at 0%, and many German bonds traded at negative yields. With $i < 0$ the formulas remain valid: the factor $(1+i)^{-T}$ is greater than 1 and a future payment is worth *more* than the same amount today, which illustrates that the time value of money is a consequence of market rates, not a law of nature.
+Between June 2014 and July 2022, the ECB's deposit facility rate was negative (it reached −0.50%), although the main refinancing rate never went below 0%, and many German bonds traded at negative yields. With $i < 0$ the formulas remain valid: the factor $(1+i)^{-T}$ is greater than 1 and a future payment is worth *more* than the same amount today, which illustrates that the time value of money is a consequence of market rates, not a law of nature.
 
 ---
 
@@ -475,7 +475,7 @@ To measure the spread we use the **variance**, the average squared distance from
 
 $$\operatorname{Var}(S_n - S_0) = n\,\sigma^2 \qquad\Longrightarrow\qquad \sigma_n = \sigma\sqrt{n}.$$
 
-This is the **square-root-of-time rule** (also called the square-root rule). Comparing the two formulas explains the tug of war between trend and noise: the accumulated drift grows like $n$ and the noise like $\sqrt{n}$, so their ratio, $\sqrt{n}\,\mu/\sigma$, grows with the horizon. In the short run noise rules; in the long run, drift.
+This is the **square-root-of-time rule** (also called the square-root rule). Comparing the two formulas explains the tug of war between trend and noise: the accumulated drift grows like $n$ and the noise like $\sqrt{n}$, so their ratio, $\sqrt{n}\,\mu/\sigma$, grows in absolute value with the horizon. In the short run noise rules; in the long run, drift.
 
 ### Interactive chart
 
@@ -944,11 +944,11 @@ Let $\mu$ be the mean annual return of an investment, $\sigma$ its annual volati
 
 $$\text{SR} = \frac{\mu - r_f}{\sigma}.$$
 
-If a fraction $w$ of capital is invested in it and the rest, $1 - w$, in the risk-free asset (with $w > 1$ when borrowing), the excess return and the volatility of the combination are both multiplied by $w$:
+If a fraction $w > 0$ of capital is invested in it and the rest, $1 - w$, in the risk-free asset (with $w > 1$ when borrowing), the excess return and the volatility of the combination are both multiplied by $w$:
 
 $$\mu_w - r_f = w\,(\mu - r_f), \qquad \sigma_w = w\,\sigma \qquad\Longrightarrow\qquad \text{SR}_w = \text{SR}.$$
 
-All the combinations of an investment with the riskless asset form a straight line in the volatility–return plane, starting at $r_f$ and with the Sharpe ratio as its slope. Choosing the investment with the highest ratio amounts to choosing the steepest line.
+With a short position ($w < 0$), the volatility would be $|w|\,\sigma$ and the ratio would change sign. All the combinations with $w \ge 0$ of an investment with the riskless asset form a straight line in the volatility–return plane, starting at $r_f$ and with the Sharpe ratio as its slope. Choosing the investment with the highest ratio amounts to choosing the steepest line.
 
 When the ratio is computed from monthly or daily data, it is annualized by multiplying by the square root of the number of periods per year, because excess return grows in proportion to time and volatility in proportion to its square root (chapter 4). That rule assumes, once again, independent returns.
 
@@ -1279,7 +1279,7 @@ For two assets with weights $w_1$ and $w_2$, volatilities $\sigma_1$ and $\sigma
 
 $$\sigma_p^2 = w_1^2\sigma_1^2 + w_2^2\sigma_2^2 + 2\,w_1 w_2\,\rho\,\sigma_1\sigma_2.$$
 
-The last term is what makes diversification work: the lower $\rho$, the lower the variance. If $\rho = 1$, the volatility of the portfolio is exactly the weighted average of the volatilities; with any $\rho < 1$, it is lower.
+The last term is what makes diversification work: the lower $\rho$, the lower the variance. With positive weights, if $\rho = 1$, the volatility of the portfolio is exactly the weighted average of the volatilities; with any $\rho < 1$, it is lower.
 
 For $N$ assets with the same volatility $\sigma$, the same correlation $\rho$ between each pair and equal weights $1/N$,
 
@@ -1340,7 +1340,7 @@ Sharpe (1963) proposed describing each stock as $R_i = \alpha_i + \beta_i R_m + 
 
 $$\sigma_i^2 = \underbrace{\beta_i^2 \sigma_m^2}_{\text{systematic}} + \underbrace{\sigma_{\varepsilon_i}^2}_{\text{specific}}, \qquad \sigma_p^2 = \beta_p^2\sigma_m^2 + \sum_i w_i^2\,\sigma_{\varepsilon_i}^2,$$
 
-and the second term tends to zero in well-diversified portfolios. The systematic fraction of the variance is $R^2 = \beta_i^2\sigma_m^2/\sigma_i^2 = \rho_{im}^2$. This model reduces the parameters to estimate from $N(N+1)/2$ covariances to $3N + 2$, and it is the bridge to the CAPM (chapter 13).
+and the second term tends to zero in well-diversified portfolios. The systematic fraction of the variance is $R^2 = \beta_i^2\sigma_m^2/\sigma_i^2 = \rho_{im}^2$. This model reduces the parameters to estimate from $N(N+3)/2$ (means, variances and covariances) to $3N + 2$, and it is the bridge to the CAPM (chapter 13).
 
 #### How many assets are needed?
 
@@ -1438,7 +1438,7 @@ Markowitz (1952) framed portfolio selection as an optimization problem: for each
 
 $$\min_{\mathbf{w}}\ \mathbf{w}^\top\Sigma\,\mathbf{w} \quad \text{subject to} \quad \mathbf{w}^\top\boldsymbol{\mu} = \mu_p, \quad \mathbf{w}^\top\mathbf{1} = 1.$$
 
-With Lagrange multipliers (Merton, 1972) and the constants $A = \mathbf{1}^\top\Sigma^{-1}\mathbf{1}$, $B = \mathbf{1}^\top\Sigma^{-1}\boldsymbol{\mu}$, $C = \boldsymbol{\mu}^\top\Sigma^{-1}\boldsymbol{\mu}$ and $D = AC - B^2 > 0$, the solution gives a frontier that is a hyperbola in the $(\sigma, \mu)$ plane:
+With Lagrange multipliers (Merton, 1972) and the constants $A = \mathbf{1}^\top\Sigma^{-1}\mathbf{1}$, $B = \mathbf{1}^\top\Sigma^{-1}\boldsymbol{\mu}$, $C = \boldsymbol{\mu}^\top\Sigma^{-1}\boldsymbol{\mu}$ and $D = AC - B^2$ (positive unless all the means are equal), the solution gives a frontier that is a hyperbola in the $(\sigma, \mu)$ plane:
 
 $$\sigma_p^2(\mu_p) = \frac{A\mu_p^2 - 2B\mu_p + C}{D}.$$
 
@@ -1446,13 +1446,13 @@ Its vertex is the **global minimum variance portfolio**,
 
 $$\mathbf{w}_{\text{GMV}} = \frac{\Sigma^{-1}\mathbf{1}}{A}, \qquad \mu_{\text{GMV}} = \frac{B}{A}, \qquad \sigma^2_{\text{GMV}} = \frac{1}{A}.$$
 
-The upper branch of the hyperbola is the efficient frontier. For two assets, differentiating $\sigma_p^2 = w^2\sigma_1^2 + (1-w)^2\sigma_2^2 + 2w(1-w)\rho\sigma_1\sigma_2$ with respect to $w$ and setting it to zero gives exactly the chapter's formula for $w_1^*$.
+The upper branch of the hyperbola is the efficient frontier. For two assets, differentiating $\sigma_p^2 = w^2\sigma_1^2 + (1-w)^2\sigma_2^2 + 2w(1-w)\rho\sigma_1\sigma_2$ with respect to $w$ and setting it to zero gives exactly the chapter's formula for $w^*$.
 
-**Two-fund separation** (Black, 1972; Merton, 1972): every frontier portfolio is a linear combination of any two frontier portfolios.
+**Two-fund separation** (Black, 1972; Merton, 1972): every frontier portfolio is a combination, with coefficients adding up to 1, of any two distinct frontier portfolios.
 
 #### With a risk-free asset: the tangency portfolio
 
-If there is a riskless asset with rate $r_f$, the efficient frontier becomes a straight line (chapter 8) that touches the hyperbola at the **tangency portfolio**
+If there is a riskless asset with rate $r_f$, the efficient frontier becomes a straight line (chapter 8) that, if $r_f < \mu_{\text{MVG}}$ (the usual case), touches the upper branch of the hyperbola at the **tangency portfolio**
 
 $$\mathbf{w}_T = \frac{\Sigma^{-1}(\boldsymbol{\mu} - r_f\mathbf{1})}{\mathbf{1}^\top\Sigma^{-1}(\boldsymbol{\mu} - r_f\mathbf{1})}, \qquad \text{SR}_T^2 = (\boldsymbol{\mu} - r_f\mathbf{1})^\top\Sigma^{-1}(\boldsymbol{\mu} - r_f\mathbf{1}),$$
 
@@ -1569,7 +1569,7 @@ where $\hat\beta_i = \widehat{\operatorname{Cov}}/\widehat{\operatorname{Var}}$ 
 #### Empirical evidence
 
 - Black, Jensen and Scholes (1972) and Fama and MacBeth (1973) found a positive relationship between beta and return, but the security market line was **flatter** than predicted: low-beta stocks returned more than the model predicted and high-beta ones less.
-- Fama and French (1992) concluded that, once size and the book-to-market ratio are controlled for, beta barely explained the mean returns of US stocks between 1963 and 1990. Their 2004 review sums up that the empirical problems invalidate the CAPM in its usual applications.
+- Fama and French (1992) concluded that, once size and the book-to-market ratio are controlled for, beta barely explained the mean returns of US stocks between 1963 and 1990. Their 2004 review sums up that the empirical problems probably invalidate the CAPM in its usual applications.
 - Frazzini and Pedersen (2014) explain the flat line by leverage constraints (those who cannot borrow buy high-beta stocks) and document the profits of the *betting against beta* strategy.
 - **Roll's critique** (1977): the model's market portfolio includes *all* risky assets (also real estate, human capital, etc.) and is not observable; testing the CAPM with a stock index is, strictly speaking, testing whether that index is mean-variance efficient.
 
@@ -1614,7 +1614,7 @@ The last part deals with two practical questions. The first is how much to risk 
 
 Having an edge is not enough: one must also decide how much to risk. Whoever bets very little wastes their edge and their capital barely grows. Whoever bets too much is exposed to a losing streak, which sooner or later comes, leaving them without capital to carry on. Since each loss reduces the base on which the following bets are calculated, losses weigh more than their probability suggests: it is the volatility drag of chapter 9 in another form.
 
-The **Kelly criterion** answers precisely: when the probabilities are known and winnings are reinvested, there is a fraction of capital that maximizes the long-run growth rate. Betting more than that fraction increases risk and also reduces growth; betting twice as much brings it practically to zero.
+The **Kelly criterion** answers precisely: when the probabilities are known and winnings are reinvested, there is a fraction of capital that maximizes the long-run growth rate. Betting more than that fraction increases risk and also reduces growth; with small edges, betting twice as much brings it practically to zero.
 
 To understand the criterion it helps to look at the **median** player, the one in the middle of the distribution of outcomes, and not at the average. With aggressive bets, average wealth can be enormous thanks to a few very lucky players, while most end up ruined.
 
@@ -1629,7 +1629,7 @@ With the formula derived below, the Kelly fraction is $f^* = 2 \times 0.53 - 1 =
 | Growth per play | 0.00135 | 0.00180 | −0.00002 | −0.00231 |
 | Median wealth after 1,000 plays | ×3.9 | ×6.1 | ×0.98 | ×0.10 |
 
-Betting half Kelly keeps about three quarters of the growth with much less fluctuation. Betting twice Kelly (12%) leaves the median player practically where they started (×0.98), even though each play has a positive expected value. And above twice Kelly, the median player gets poorer.
+Betting half Kelly keeps about three quarters of the growth with much less fluctuation. Betting twice Kelly (12%) leaves the median player practically where they started (×0.98), even though each play has a positive expected value. And above twice Kelly, in this example, the median player gets poorer.
 
 ### Formalization
 
@@ -1645,7 +1645,7 @@ If $f^* \le 0$, the bet is not favourable and the optimum is not to bet. For inv
 
 ### Interactive chart
 
-> **Interactive chart · The size of the bet.** Sliders for the probability of winning (from 0.50 to 0.70), the payoff $b$ (from 0.5 to 5) and the fraction bet (from 0% to 50%). Left panel: the growth curve $g(f)$, with its maximum at the Kelly fraction marked and the negative growth zone shaded in red; the point of the chosen fraction moves along the curve. Right panel: 1,000 simulated players who start with €100 and play 1,000 times with the chosen fraction; the paths of the median, of the 10th and 90th percentiles and of mean wealth are shown on a log scale, together with the percentage of players who end below €10. What the reader should observe: beyond the Kelly fraction, the median gets worse even though the mean keeps rising; as one approaches twice Kelly, median growth disappears.
+> **Interactive chart · The size of the bet.** Sliders for the probability of winning (from 0.50 to 0.70), the payoff $b$ (from 0.5 to 5) and the fraction bet (from 0% to 50%). Left panel: the growth curve $g(f)$, with its maximum at the Kelly fraction marked and the negative growth zone shaded in red; the point of the chosen fraction moves along the curve. Right panel: 1,000 simulated players who start with €100 and play 1,000 times with the chosen fraction; the paths of the median, of the 10th and 90th percentiles and of mean wealth are shown on a log scale, together with the percentage of players who end below €10. What the reader should observe: beyond the Kelly fraction, the median gets worse even though the mean keeps rising; with small edges, as one approaches twice Kelly, median growth disappears.
 
 ### In Python
 
@@ -1668,7 +1668,7 @@ for x in (f / 2, f, 2 * f, 2.5 * f):
 
 - Many professional investors and bettors who use the criterion bet a fraction of Kelly, often half, because their probabilities are estimates and erring on the high side is much costlier than erring on the low side.
 - Some quantitative managers use versions of the criterion to decide the total leverage of a strategy from its expected return and its volatility.
-- The criterion also serves as a common-sense upper limit: a position larger than Kelly's, given the estimated edge, is not only risky but reduces expected long-run growth.
+- The criterion also serves as a common-sense upper limit: a position larger than Kelly's, given the estimated edge, is not only risky but reduces the long-run growth rate (that of median wealth).
 
 ### Exercises
 
@@ -1696,9 +1696,9 @@ John L. Kelly Jr. (1956), at Bell Labs, reached this result by studying a gamble
 
 For small edges, a Taylor expansion gives $g(f) \approx f\,(pb - q) - \tfrac12 f^2\,m_2$, where $m_2 = E[X^2]$ is the second moment of the outcome of a unit bet (almost equal to its variance when the edge is small): a parabola symmetric around $f^*$. Hence three rules:
 
-- Betting **twice** Kelly gives approximately **zero** growth (in the example, $g(0.12) = -0.00002$).
-- Betting more than twice gives **negative** growth: ruin is almost certain in the long run, even though each bet has positive expected value. The chapter's example shows it: with $f = 12\%$, twice Kelly, median wealth after 1,000 bets barely moves (×0.98), and with $f = 15\%$ it is cut to a tenth.
-- In the quadratic approximation, betting the same percentage too little or too much costs *the same* growth. The asymmetry lies in everything else: betting too much multiplies volatility and drawdowns (with $1.5 f^*$ volatility is three times that with $0.5 f^*$, and growth is practically the same), the exact curve falls faster to the right of $f^*$ and, above $2 f^*$, growth becomes negative. Since the real edge is usually overestimated, erring on the low side is the prudent option.
+- With small edges, betting **twice** Kelly gives approximately **zero** growth (in the example, $g(0.12) = -0.00002$).
+- In that approximation, betting more than twice gives **negative** growth: ruin is almost certain in the long run, even though each bet has positive expected value. The chapter's example shows it: with $f = 12\%$, twice Kelly, median wealth after 1,000 bets barely moves (×0.98), and with $f = 15\%$ it is cut to a tenth. In the exact model, the point where growth vanishes depends on $p$ and $b$: with $p = 0.4$ and $b = 5$, Kelly is 28% and betting 56% still gives $g \approx +0.041$ per round.
+- In the quadratic approximation, betting the same percentage too little or too much costs *the same* growth. The asymmetry lies in everything else: betting too much multiplies volatility and drawdowns (with $1.5 f^*$ volatility is three times that with $0.5 f^*$, and growth is practically the same), with even-money payoffs, the exact curve falls faster to the right of $f^*$ and, above $2 f^*$, growth becomes negative; with large payoffs and low probability, not always. Since the real edge is usually overestimated, erring on the low side is the prudent option.
 
 #### Continuous version and several assets
 
@@ -1828,7 +1828,7 @@ McNeil and Frey (2000) combine a GARCH for volatility with a GPD for the residua
 
 #### A historical example
 
-On 19 October 1987 («Black Monday») the Dow Jones index fell 22.6% in a single session. With a previous daily volatility of the order of 1%, it was a move of more than 20 standard deviations, with a normal probability of about $3 \times 10^{-89}$: a model that assigns that probability to an observed event is clearly wrong. Since then, the implied volatilities of index options show a persistent «smile» or skew: deep out-of-the-money put options are more expensive than the normal would imply (Rubinstein, 1994).
+On 19 October 1987 («Black Monday») the Dow Jones index fell 22.6% in a single session. With a previous daily volatility of the order of 1%, it was a move of more than 20 standard deviations, with a normal probability below $3 \times 10^{-89}$: a model that assigns that probability to an observed event is clearly wrong. Since then, the implied volatilities of index options show a persistent «smile» or skew: deep out-of-the-money put options are more expensive than the normal would imply (Rubinstein, 1994).
 
 #### Practical consequences
 
@@ -1846,7 +1846,7 @@ useful when deviations from normality are moderate. With very fat tails, extreme
 
 ### The idea
 
-A risk manager needs to sum up in one figure how much a portfolio can lose in a bad period. **Value at risk** (VaR) does it like this: it fixes a horizon (one day, ten days, one year) and a **confidence level** (for example, 99%), and looks for the loss that is only exceeded with the remaining probability (1%). A 99% daily VaR of €50,000 means that, under the model's normal conditions, the loss of a day should exceed €50,000 only one day in a hundred.
+A risk manager needs to sum up in one figure how much a portfolio can lose in a bad period. **Value at risk** (VaR) does it like this: it fixes a horizon (one day, ten days, one year) and a **confidence level** (for example, 99%), and looks for the loss that is only exceeded with the remaining probability (1%). A 99% daily VaR of €50,000 means that, under the model's normal conditions, the loss of a day should exceed €50,000, on average, only one day in a hundred.
 
 It is important to understand what VaR does not say. It is not the maximum possible loss: it is the threshold beyond which the worst cases begin, and it says nothing about how much is lost once it is crossed. Two portfolios with the same VaR can have very different worst days. **Expected shortfall** (ES), also called conditional VaR, completes the information: it is the average loss in that worst 1% of cases (with continuous distributions, the average loss when VaR is exceeded).
 
@@ -1861,7 +1861,7 @@ A portfolio is worth €250,000 and its daily returns follow a normal with zero 
 | ES at 97.5% | 2.338 | €7,013 |
 | ES at 99% | 2.665 | €7,996 |
 
-If returns instead followed a $t$ with 4 degrees of freedom with the same volatility, the 99% VaR would rise to $2.65 \times 3{,}000 = 7{,}948$ euros and the 99% ES to $3.69 \times 3{,}000 = 11{,}075$ euros. VaR barely changes; expected shortfall, a lot. That is precisely the information VaR hides.
+If returns instead followed a $t$ with 4 degrees of freedom with the same volatility, the 99% VaR would rise to $2.65 \times 3{,}000 = 7{,}948$ euros and the 99% ES to $3.69 \times 3{,}000 = 11{,}075$ euros. VaR rises by 14%; expected shortfall, by 39%. That is precisely the information VaR hides.
 
 ### Formalization
 
@@ -1972,7 +1972,7 @@ A **backtest** simulates a strategy with past data. It is the most used tool for
 - **Ignoring costs** (topic B).
 - **Overfitting**: trying many variants and keeping the best one.
 
-The last one is the most treacherous. If $N$ independent strategies without any skill are tried, the maximum observed Sharpe ratio grows approximately as $\sqrt{2\ln N}$ times its standard error. *Example:* with 5 years of data, the standard error of an annual Sharpe ratio is $\approx\sqrt{1/5} = 0.45$ (chapter 8). The best of 100 purely random strategies will have, on average, a Sharpe ratio of $0.45 \times 2.5 \approx 1.1$, a value that would look excellent. If the strategies are similar variants, what counts is the effective number of independent tests, which is smaller.
+The last one is the most treacherous. If $N$ independent strategies without any skill are tried, the maximum observed Sharpe ratio grows slowly with $N$: for large $N$, of the order of $\sqrt{2\ln N}$ times its standard error, an approximation that overstates it somewhat for moderate $N$ (with $N = 100$ it gives 3.0, and the exact expected value is 2.5). *Example:* with 5 years of data, the standard error of an annual Sharpe ratio is $\approx\sqrt{1/5} = 0.45$ (chapter 8). The best of 100 purely random strategies will have, on average, a Sharpe ratio of $0.45 \times 2.5 \approx 1.1$, a value that would look excellent. If the strategies are similar variants, what counts is the effective number of independent tests, which is smaller.
 
 Good practices:
 
@@ -2010,7 +2010,7 @@ $$\Delta = \frac{V_u - V_d}{(u - d)\,S_0}, \qquad q = \frac{1 + r - d}{u - d}, \
 
 *Example:* $S_0 = 100$ euros, $u = 1.2$, $d = 0.8$, $r = 5\%$ and a call option with strike price €100, which pays $V_u = 20$ euros or $V_d = 0$. Then $q = 0.25/0.4 = 0.625$ and $V_0 = 0.625 \times 20/1.05 = 11.90$ euros. Check: buying $\Delta = 0.5$ shares costs €50, financed by borrowing $0.5 \times 80/1.05 = 38.10$ euros; the net cost, €11.90, is the price of the option.
 
-The surprising thing is that the real probability of an up move does not appear: the price comes from replication, not from preferences. $q$ is the risk-neutral measure $Q$ of chapter 3. Chaining many periods with $u = e^{\sigma\sqrt{\Delta t}}$ and $d = 1/u$, the tree converges to the Black–Scholes formula (chapter 6). A useful relationship that does not depend on the price model, only on the absence of arbitrage, is **put-call parity**: for European call and put options with the same strike and maturity, on a stock that pays no dividends, $C - P = S_0 - K e^{-rT}$. With a continuous dividend yield $q$, $S_0$ is replaced by $S_0 e^{-qT}$. American options, which can be exercised early, do not satisfy this exact equality. Here, as in the Black–Scholes formula, $r$ is the continuously compounded rate; in the tree, $1 + r$ was the one-period factor.
+The surprising thing is that the real probability of an up move does not appear: the price comes from replication, not from preferences. $q$ is the probability of an up move under the risk-neutral measure $Q$ of chapter 3. Chaining many periods with $u = e^{\sigma\sqrt{\Delta t}}$ and $d = 1/u$, the tree converges to the Black–Scholes formula (chapter 6). A useful relationship that does not depend on the price model, only on the absence of arbitrage, is **put-call parity**: for European call and put options with the same strike and maturity, on a stock that pays no dividends, $C - P = S_0 - K e^{-rT}$. With a continuous dividend yield $\delta$, $S_0$ is replaced by $S_0 e^{-\delta T}$. American options, which can be exercised early, do not satisfy this exact equality. Here, as in the Black–Scholes formula, $r$ is the continuously compounded rate; in the tree, $1 + r$ was the one-period factor.
 
 **The Black–Scholes formula.** If the stock price follows the geometric Brownian motion of chapter 4, with constant volatility $\sigma$, and one can trade without costs and borrow at rate $r$, the limit of the tree gives the price of a European call option (Black and Scholes, 1973):
 
@@ -2038,7 +2038,7 @@ The assumptions are strong. Volatility is not constant (chapter 7) and returns h
 
 A series is **stationary** if its statistical behaviour does not change over time: in the strict sense, the joint distribution of any group of observations does not change when they are shifted in time; in the weak sense, it is enough for the mean to be constant and for the covariance between two observations to depend only on the distance between them. The prices of most assets are not (their variance grows over time, chapter 4), while their returns usually are, approximately, something worth testing in each case; that is why statistics is done with returns (chapter 10). The Dickey–Fuller test (1979) checks whether a series has a **unit root**, like the random walk, which is the best-known case.
 
-Two non-stationary prices are **cointegrated** if some linear combination of them, $s_t = P^A_t - \beta P^B_t$, is stationary (Engle and Granger, 1987): they can drift apart, but they tend to return to their relationship. This is the basis of **pairs trading**. Cointegration and correlation are different things: two assets can have highly correlated returns and prices that separate without limit, or the other way round.
+In the classical case, two prices integrated of order one, $I(1)$ (non-stationary, but with stationary increments, like a random walk), are **cointegrated** if some non-trivial linear combination of them, $s_t = P^A_t - \beta P^B_t$ with $\beta \ne 0$, is stationary, $I(0)$ (Engle and Granger, 1987): they can drift apart, but they tend to return to their relationship. This is the basis of **pairs trading**. Cointegration and correlation are different things: two assets can have highly correlated returns and prices that separate without limit, or the other way round.
 
 If the spread follows an autoregressive process $s_t = \phi\,s_{t-1} + \varepsilon_t$ with $0 < \phi < 1$, its reversion **half-life** is $\ln 2/(-\ln\phi)$. *Example:* with a daily $\phi = 0.95$, the half-life is about 13.5 days. Cointegration relationships often break down (mergers, business changes), so they must be re-estimated and losses limited.
 
@@ -2222,7 +2222,7 @@ Each step has mean $0.6 - 0.4 = 0.2$ euros, so $E[S_5] = 20 + 5 \times 0.2 = 21$
 $25\% \times \sqrt{21/252} = 25\%/\sqrt{12} = 7.22\%$ and $25\%/\sqrt{252} = 1.57\%$.
 
 **4.3 400 sessions are needed; the probability of a negative result is then 15.9%.**
-The cumulative expected gain is $0.05\% \times n$ and the standard deviation $1\% \times \sqrt{n}$. Setting them equal, $\sqrt{n} = 20$ and $n = 400$. At that point the cumulative result is one standard deviation above zero, and $P(Z < -1) = 15.9\%$. Even with a real edge, almost a year and a half of sessions leaves an appreciable probability of being behind.
+The cumulative expected gain is $0.05\% \times n$ and the standard deviation $1\% \times \sqrt{n}$. Setting them equal, $\sqrt{n} = 20$ and $n = 400$. At that point the cumulative result is one standard deviation above zero, and $P(Z < -1) = 15.9\%$. Even with a real edge, more than a year and a half of sessions leaves an appreciable probability of being behind.
 
 **4.4 It is not rare: in a long balanced walk, it happens roughly one time in seven.**
 By the arcsine law, the probability that a symmetric walk spends more than 95% of the time above its origin is approximately $1 - \frac{2}{\pi}\arcsin\sqrt{0.95} \approx 14\%$, and that it spends more than 95% of the time on the same side, twice as much, about 29%. A long spell on one side of the starting point is typical in a random walk, not the exception; it proves no trend.
@@ -2416,7 +2416,7 @@ Terms with the chapter or topic where they are defined.
 | **portfolio** | set of investments held at the same time | 11 |
 | **market portfolio** | portfolio that contains all risky assets in proportion to their value | 13 |
 | **minimum variance portfolio** | combination of assets with the lowest possible volatility | 12 |
-| **cointegration** | relationship between non-stationary prices whose linear combination is stationary | D |
+| **cointegration** | relationship between non-stationary prices (in the usual case, integrated of order one) with some stationary linear combination | D |
 | **tails** | regions of a distribution corresponding to extreme values | 5 |
 | **fat tails** | property of a distribution with more probability in the extremes than the normal | 15 |
 | **correlation** | normalized covariance, between −1 and +1, that measures the linear relationship between two variables | 10 |
@@ -2435,7 +2435,7 @@ Terms with the chapter or topic where they are defined.
 | **efficient frontier** | set of portfolios with the highest mean return for each volatility | 12 |
 | **independent** | variables such that knowing one gives no information about the other | 4 |
 | **compound interest** | interest calculated also on the accumulated interest | 2 |
-| **law of large numbers** | result that guarantees that the average of many repetitions approaches the expected value | 3 |
+| **law of large numbers** | result by which the average of many independent repetitions approaches the expected value, if it exists | 3 |
 | **security market line** | straight line relating beta and expected return in the CAPM | 13 |
 | **volatility drag** | difference between the mean return and the compound growth rate | 9 |
 | **median (outcome)** | value that leaves half the outcomes below and half above | 14 |
@@ -2445,7 +2445,7 @@ Terms with the chapter or topic where they are defined.
 | **weight** | proportion of a portfolio's value invested in an asset | 11 |
 | **market risk premium** | expected return of the market above the risk-free rate | 13 |
 | **Sharpe ratio** | excess return divided by volatility | 8 |
-| **square-root-of-time rule** | the standard deviation of a sum of independent steps grows with the square root of the number of steps | 4 |
+| **square-root-of-time rule** | the standard deviation of a sum of independent steps with the same variance grows with the square root of the number of steps | 4 |
 | **return** | change in the value of an investment in proportion to its initial value | 1 |
 | **excess return** | return above the risk-free rate | 8 |
 | **log return** | natural logarithm of the ratio between the final and the initial value | 1 |
@@ -2465,7 +2465,7 @@ Terms with the chapter or topic where they are defined.
 | **value at risk (VaR)** | loss that is only exceeded with a given probability over a given horizon | 16 |
 | **expected value** | average of the possible values weighted by their probabilities | 3 |
 | **present value** | current value of a future payment or stream of payments | 2 |
-| **time value of money** | principle according to which having an amount now is preferable to receiving it later | 2 |
+| **time value of money** | principle according to which, with positive interest rates, having an amount now is preferable to receiving it later | 2 |
 | **variance** | average of the squared distance from the mean | 4 |
 | **short sale** | sale of a borrowed asset, with the obligation to return it later | 12 |
 | **volatility** | standard deviation of returns, usually annualized | 7 |

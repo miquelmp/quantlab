@@ -208,4 +208,4 @@
   - pregunta: 'Un VaR al 99 % bien calibrado, ¿cuántas veces se superaría, de media, en 250 sesiones?'
     opciones: ['Ninguna', '1', '2,5', '25']
     correcta: 2
-    explicacion: 'Cada día hay un 1 % de probabilidad: $250 \times 0{,}01 = 2{,}5$ excepciones de media. No superarlo nunca también sería sospechoso (demasiado prudente).'
+    explicacion: 'Cada día hay un 1 % de probabilidad: $250 \times 0{,}01 = 2{,}5$ excepciones de media. No superarlo nunca no prueba que sea demasiado prudente: con un modelo correcto ocurre un 8 % de las veces ($0{,}99^{250}$), aunque puede justificar una comprobación.'
