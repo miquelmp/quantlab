@@ -1,0 +1,51 @@
+# Retos de los gráficos interactivos (RF-GRA-03): de 1 a 3 por capítulo, breves y alcanzables con
+# los mandos del gráfico. tests/retos.test.ts comprueba con los propios gráficos que cada uno se puede
+# conseguir: si cambias un reto, ajusta también allí su «solución».
+1:
+  - Encuentra la pérdida que obliga a ganar exactamente un 100 % para recuperarse.
+  - Consigue que la rentabilidad logarítmica quede más de 10 puntos por debajo de la simple.
+2:
+  - Busca un tipo de interés con el que 1.000 € superen los 2.000 € en 20 años.
+  - Con un tipo negativo y un horizonte largo, consigue que el valor actual de 1.000 € futuros supere los 1.000 €.
+3:
+  - Encuentra el premio con el que el juego es justo, es decir, con valor esperado cero.
+  - Con el premio de 4 €, consigue que al menos una cuarta parte de los jugadores vaya ganando cambiando solo el número de jugadas.
+4:
+  - Con p = 0,50, haz que la dispersión teórica llegue a 30 €.
+  - Con p = 0,55, consigue que al menos el 95 % de las trayectorias termine por encima del punto de partida.
+5:
+  - Con un dado (k = 1) ningún resultado supera media + 2σ. Sube k hasta que esa probabilidad quede entre el 2 % y el 3 %, cerca del 2,3 % de la normal.
+  - Con la distribución asimétrica, busca cuántos sumandos hacen falta para que la probabilidad de superar media + 2σ baje del 3 %.
+6:
+  - Con una volatilidad del 15 %, busca una rentabilidad media con la que la probabilidad de acabar con menos de 10.000 € baje del 1 %.
+  - Sube la volatilidad sin tocar la media hasta que más de un 20 % de los escenarios acabe por debajo de 10.000 €.
+7:
+  - Encuentra una volatilidad con la que al menos 2 de cada 5 años (40 %) tengan pérdidas.
+  - Baja la volatilidad hasta igualar la probabilidad de un año con pérdidas de la cartera de referencia.
+8:
+  - Sube el tipo libre de riesgo hasta que el fondo B deje de tener el mayor ratio de Sharpe.
+  - Combina el fondo B con el activo libre de riesgo para conseguir una volatilidad del 6 %.
+9:
+  - Con una volatilidad del 30 %, busca la rentabilidad media con la que la tasa de crecimiento es cero.
+  - Con una media del 8 %, sube la volatilidad hasta que más de la mitad de las trayectorias acabe por debajo de 100 €.
+10:
+  - Consigue una cartera de dos activos con volatilidad cero.
+  - Encuentra la correlación con la que la cartera reduce el riesgo a la mitad frente a un solo activo.
+11:
+  - Con los demás valores por defecto, busca cuántos activos hacen falta para quedarse a medio punto o menos del suelo de riesgo.
+  - Haz que el suelo de riesgo con infinitos activos baje del 5 %.
+12:
+  - Sube el tipo libre de riesgo hasta que la cartera de máximo Sharpe tenga más de un 10 % de volatilidad.
+  - Quita el activo libre de riesgo y comprueba qué cartera deja de aparecer en los resultados.
+13:
+  - Haz que el activo 1 tenga la misma rentabilidad esperada que el mercado.
+  - Comprueba con el activo 3 qué rentabilidad predice el CAPM para un activo con β = 0.
+14:
+  - Consigue que la mediana caiga por debajo de 100 € sin cambiar la probabilidad ni el pago.
+  - Con p = 0,60 y b = 1, ajusta la fracción apostada exactamente a la de Kelly.
+15:
+  - Sube los grados de libertad hasta que la curtosis de la t baje de 4.
+  - Con 3 grados de libertad, consigue que más de 90 días superen ±4 %.
+16:
+  - Con el modelo normal, busca un nivel de confianza en el que el contraste de Kupiec no rechace el VaR (p-valor mayor que 0,05).
+  - Cambia al modelo t y consigue que el déficit esperado supere los 10.000 €.

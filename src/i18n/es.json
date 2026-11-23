@@ -569,6 +569,7 @@
   "progress.noStorage": "Tu navegador no permite guardar datos (quizá estás en una ventana privada). Puedes leer el libro igual, pero el progreso no se guardará.",
   "progress.sections": "Secciones leídas",
   "progress.chaptersRead": "Capítulos terminados",
+  "progress.challenges": "Retos conseguidos",
   "progress.exercises": "Ejercicios de cálculo resueltos",
   "progress.resume": "Seguir donde lo dejé",
   "progress.barLabel": "Secciones leídas del capítulo {n}",
@@ -601,5 +602,7 @@
   "chart.copyLinkShort": "Copiar enlace",
   "chart.moreControls": "Más ajustes",
   "chart.present": "Presentación",
+  "chart.challenges": "Retos",
+  "chart.challengesHint": "Márcalos al conseguirlos; se guardan en «Mi progreso».",
   "chart.presentExit": "Salir de la presentación"
 }

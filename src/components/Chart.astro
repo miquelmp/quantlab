@@ -10,8 +10,8 @@ import type { ChartSpec } from '../lib/book';
 import { renderInline, type RenderCtx } from '../lib/render';
 import { t, tPrefix, numberFormat } from '../i18n';
 
-interface Props { chapter: number; spec: ChartSpec; ctx: RenderCtx }
-const { chapter, spec, ctx } = Astro.props;
+interface Props { chapter: number; spec: ChartSpec; ctx: RenderCtx; challenges?: string[] }
+const { chapter, spec, ctx, challenges = [] } = Astro.props;
 const lang = ctx.lang;
 const id = CHART_BY_CHAPTER[chapter];
 const def = id ? await loadChart(id) : null;
@@ -92,6 +92,16 @@ const sliderHtml = (sl: NonNullable<typeof def>['sliders'][number]) => {
     <strong>{t(lang, 'chart.observe')}</strong>
     <p set:html={renderInline(spec.observe, ctx)} />
   </aside>
+  {challenges.length > 0 && (
+    <div class="challenges" data-challenges={`${lang}/${chapter}`}>
+      <p class="challenges-title"><strong>{t(lang, 'chart.challenges')}</strong> <span class="challenges-hint js-only">{t(lang, 'chart.challengesHint')}</span></p>
+      <ul>
+        {challenges.map((c, i) => (
+          <li><label><input type="checkbox" class="js-only" data-challenge={i} /> <span>{c}</span></label></li>
+        ))}
+      </ul>
+    </div>
+  )}
   {def && (
     <>
       <p class="chart-describe" data-describe aria-live="polite" data-label={t(lang, 'chart.description')}>{def.describe(data, state, cctx)}</p>

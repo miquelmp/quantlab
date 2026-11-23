@@ -103,7 +103,7 @@ const jsonLd = [
       {level1.map((s) => (
         <section id={s.id} data-section data-title={s.title} aria-labelledby={`${s.id}-h`}>
           <h2 id={`${s.id}-h`}>{s.title}<a class="anchor" href={`#${s.id}`} aria-label={t(lang, 'nav.permalink')}>#</a></h2>
-          {s.type === 'grafico' && ch.chart && <Chart chapter={num} spec={ch.chart} ctx={ctx} />}
+          {s.type === 'grafico' && ch.chart && <Chart chapter={num} spec={ch.chart} ctx={ctx} challenges={ch.challenges} />}
           {s.type === 'ejercicios' && <Exercises exercises={ch.exercises} ctx={ctx} />}
           {s.html && <Fragment set:html={s.html} />}
           {s.type === 'python' && hasPython && <CodeDownload lang={lang} base={base} name={ch.slug} />}

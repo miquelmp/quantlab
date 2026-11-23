@@ -67,6 +67,7 @@ for (const { code: lang } of LANGS) {
     else {
       if (!c.chart.observe.length) err(`[${lang}] Capítulo ${c.number}: el gráfico no tiene «Lo que debes observar»`);
       if (!c.chart.description.length) err(`[${lang}] Capítulo ${c.number}: el gráfico no tiene descripción`);
+      if (c.challenges.length < 1 || c.challenges.length > 3) err(`[${lang}] Capítulo ${c.number}: el gráfico debe tener de 1 a 3 retos en retos.yaml (tiene ${c.challenges.length})`);
       if (!CHART_BY_CHAPTER[c.number]) err(`[${lang}] Capítulo ${c.number}: publicado pero su gráfico no está programado (src/charts/registry.ts)`);
     }
     if (!c.description) err(`[${lang}] Capítulo ${c.number}: falta la descripción en capitulos.yaml`);

@@ -5,7 +5,7 @@
  */
 const KEY = 'quantlab:v1';
 
-export interface Store { read: Record<string, string[]>; ex: Record<string, 'ok'>; last?: { url: string; title: string; section?: string; ts: number }; advancedOpen?: boolean }
+export interface Store { read: Record<string, string[]>; ex: Record<string, 'ok'>; ch?: Record<string, number[]>; last?: { url: string; title: string; section?: string; ts: number }; advancedOpen?: boolean }
 
 function storageOk(): boolean {
   try { localStorage.setItem(KEY + ':t', '1'); localStorage.removeItem(KEY + ':t'); return true; } catch { return false; }
@@ -33,6 +33,16 @@ export function normalize(x: unknown): Store | null {
   const ex: Store['ex'] = {};
   for (const [k, v] of Object.entries(r.ex as Record<string, unknown>)) if (/^\d+\.\d+$/.test(k) && v === 'ok') ex[k] = 'ok';
   const out: Store = { read, ex };
+  // Retos conseguidos: «es/14» → índices de los retos marcados.
+  if (r.ch && typeof r.ch === 'object') {
+    const ch: Record<string, number[]> = {};
+    for (const [k, v] of Object.entries(r.ch as Record<string, unknown>)) {
+      if (!/^[a-z]{2}\/\d+$/.test(k) || !Array.isArray(v)) continue;
+      const ids = [...new Set(v.filter((i): i is number => Number.isInteger(i) && i >= 0 && i < 10))].sort();
+      if (ids.length) ch[k] = ids;
+    }
+    if (Object.keys(ch).length) out.ch = ch;
+  }
   const last = r.last as Store['last'];
   if (last && isLocalPath(last.url) && typeof last.title === 'string') {
     out.last = { url: last.url, title: last.title.slice(0, 200), section: typeof last.section === 'string' ? last.section.slice(0, 200) : undefined, ts: Number(last.ts) || 0 };
@@ -81,6 +91,13 @@ export function initProgress() {
     set('sections', `${secRead} / ${secTotal}`);
     set('chapters', `${chRead} / ${chTotal}`);
     set('exercises', `${exOk} / ${exTotal}`);
+    const chEl = document.querySelector<HTMLElement>('[data-sum="challenges"]');
+    if (chEl) {
+      const totals: Record<string, number> = JSON.parse(chEl.dataset.totals || '{}');
+      const done = Object.entries(totals).reduce((n, [k, t]) => n + Math.min(t, (s.ch?.[k] ?? []).filter((i) => i < t).length), 0);
+      const all = Object.values(totals).reduce((a, b) => a + b, 0);
+      chEl.textContent = `${done} / ${all}`;
+    }
     const resume = document.querySelector<HTMLAnchorElement>('[data-resume]')!;
     if (s.last) {
       resume.href = s.last.url;
@@ -120,6 +137,7 @@ export function initProgress() {
     const cur = load();
     for (const [k, v] of Object.entries(data.read)) cur.read[k] = [...new Set([...(cur.read[k] ?? []), ...v])];
     Object.assign(cur.ex, data.ex);
+    if (data.ch) { cur.ch ??= {}; for (const [k, v] of Object.entries(data.ch)) cur.ch[k] = [...new Set([...(cur.ch[k] ?? []), ...v])].sort((a, b) => a - b); }
     if (data.last && (!cur.last || data.last.ts > cur.last.ts)) cur.last = data.last;
     msg.textContent = save(cur) ? tr('imported') : tr('noStorage');
     render();
