@@ -24,7 +24,10 @@ function build(api: ChartApi) {
   wrap.innerHTML = `<p class="chart-edit-title">${tr('c12.editTitle')}</p><div class="chart-edit-tables">` +
     `<table><thead><tr><th scope="col">${tr('c12.colAsset')}</th><th scope="col">${tr('c12.colMu')} (%)</th><th scope="col">${tr('c12.axisSigma')} (%)</th></tr></thead><tbody>${rows}</tbody></table>` +
     `<table><thead><tr><th scope="col">${tr('c12.colPair')}</th><th scope="col">${tr('c12.colRho')}</th></tr></thead><tbody>${corr}</tbody></table></div>`;
-  api.root.querySelector('.chart-controls')?.insertAdjacentElement('afterend', wrap);
+  // En el móvil, debajo de los resultados: así mandos, gráfico y resultados quedan juntos.
+  const mobile = 'matchMedia' in window && matchMedia('(max-width: 759px)').matches;
+  if (mobile) api.root.querySelector('.chart-sim-note, .chart-stats')?.insertAdjacentElement('afterend', wrap);
+  else api.root.querySelector('.chart-controls')?.insertAdjacentElement('afterend', wrap);
   wrap.addEventListener('input', (ev) => {
     const el = ev.target as HTMLInputElement;
     const key = el.dataset.edit;

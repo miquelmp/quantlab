@@ -6,7 +6,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
-import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S10 extends Record<string, number> { rho: number; mode: number; seed: number }
@@ -78,7 +78,7 @@ export const chart10: ChartDef<S10, D10> = {
       title: (c) => c.tr('c10.panelLeft'),
       height: () => 340,
       render(d, s, w, ctx) {
-        const h = 340;
+        const h = panelH(w, 340);
         const items = [{ cls: 'hist', label: ctx.tr('c10.legendPairs'), box: true }];
         const lh = legendHeight(items, w - M.left - M.right);
         const lim = 0.035;
@@ -108,7 +108,7 @@ export const chart10: ChartDef<S10, D10> = {
       title: (c) => c.tr('c10.panelRight'),
       height: () => 340,
       render(d, s, w, ctx) {
-        const h = 340;
+        const h = panelH(w, 340);
         const items = [{ cls: 's1', label: ctx.tr('c10.legendVol') }];
         const lh = legendHeight(items, w - M.left - M.right);
         const xs: number[] = [];

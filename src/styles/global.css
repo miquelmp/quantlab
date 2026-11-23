@@ -489,3 +489,59 @@ pre { margin: 0; }
 .biblio li:target { background: var(--accent-soft, rgba(30, 110, 230, 0.12)); border-radius: 6px; }
 .biblio .star { color: #b7791f; }
 .biblio-count { color: var(--text-2); }
+
+/* ---------- Gráficos en el móvil: mandos, gráfico y resultados en una sola pantalla ---------- */
+.panel-tabs { display: none; }
+.more-controls { grid-column: 1 / -1; }
+.more-controls > summary { cursor: pointer; font-size: 0.88rem; font-weight: 600; color: var(--accent); min-height: 32px; display: flex; align-items: center; }
+.more-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.75rem 1.25rem; padding-top: 0.25rem; }
+.share-short, .btn-icon { display: none; }
+@media (max-width: 759px) {
+  .chart { padding: 0.6rem; margin-left: -0.4rem; margin-right: -0.4rem; }
+  .chart-head .chart-desc { font-size: 0.82rem; margin-bottom: 0.5rem; }
+  .chart-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.15rem 0.75rem; padding: 0.45rem 0.6rem 0.5rem; margin-bottom: 0.5rem; }
+  .control label { font-size: 0.76rem; line-height: 1.25; gap: 0.3rem; align-items: baseline; }
+  .control label span { min-width: 0; overflow-wrap: anywhere; }
+  .control output { font-size: 0.8rem; white-space: nowrap; }
+  .control input[type="range"] { height: 30px; }
+  .control-seed { gap: 0.35rem; align-items: center; margin-top: 0.2rem; }
+  .control-seed label { display: flex; align-items: center; gap: 0.35rem; font-size: 0.76rem; }
+  .control-seed input { width: 4.2rem; min-height: 32px; padding: 0.15rem 0.4rem; font-size: 0.85rem; }
+  .control-seed .btn { min-height: 32px; padding: 0.15rem 0.55rem; font-size: 0.76rem; }
+  .chart-panels { gap: 0.5rem; }
+  .panel-title { font-size: 0.8rem; margin-bottom: 0.1rem; }
+  /* Con varios paneles, pestañas: se ve uno cada vez y el resto de la figura no se mueve. */
+  .chart.tabbed .panel-tabs { display: flex; gap: 0.25rem; margin: 0 0 0.35rem; background: var(--surface-2); border-radius: 8px; padding: 0.2rem; }
+  .panel-tabs button { flex: 1 1 0; min-width: 0; min-height: 34px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); font: inherit; font-size: 0.74rem; line-height: 1.2; padding: 0.25rem 0.4rem; cursor: pointer; }
+  .chart.tabbed .panel-title { display: none; }
+  .more-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.15rem 0.75rem; }
+  .more-controls > summary { font-size: 0.78rem; min-height: 30px; }
+  .share-long, .btn-text { display: none; }
+  .share-short, .btn-icon { display: inline; }
+  .btn-icon { font-size: 1rem; line-height: 1; }
+  .seed-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .panel-tabs button[aria-selected="true"] { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+  .panel-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .chart.tabbed .panel[hidden] { display: none; }
+  .chart-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.3rem; margin-top: 0.5rem; }
+  .stat { padding: 0.3rem 0.5rem; }
+  .stat dt { font-size: 0.7rem; line-height: 1.2; }
+  .stat dd { font-size: 0.92rem; margin-top: 0.05rem; }
+  .stat-note { font-size: 0.68rem; line-height: 1.2; }
+  .chart-sim-note { font-size: 0.7rem; margin-top: 0.3rem; }
+  .chart-edit { margin: 0.6rem 0 0.4rem; }
+  .chart-edit-title { font-size: 0.85rem; }
+  .chart-edit-tables { flex-wrap: nowrap; gap: 0.5rem; }
+  .chart-edit table { font-size: 0.78rem; }
+  .chart-edit th, .chart-edit td { padding: 0.15rem 0.25rem; }
+  .chart-edit tbody th { white-space: nowrap; }
+  .chart-edit input { width: 3.4rem; padding: 0.15rem 0.3rem; }
+  .control-seed input { width: 3.8rem; }
+}
+
+/* En el móvil la cabecera se esconde al bajar y vuelve al subir: deja más pantalla al contenido. */
+@media (max-width: 759px) {
+  .site-header { transition: transform 0.2s ease; }
+  .site-header.away { transform: translateY(-100%); }
+}
+@media (prefers-reduced-motion: reduce) { .site-header { transition: none; } }

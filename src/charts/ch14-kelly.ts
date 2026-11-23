@@ -10,7 +10,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
-import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum, fmtEur } from '../lib/format';
 
 export interface S14 extends Record<string, number> { p: number; b: number; f: number; seed: number }
@@ -148,7 +148,7 @@ function tickLabel(e: number, ctx: ChartCtx): string {
 const ML = { top: 10, right: 14, bottom: 42, left: 62 };
 
 function growthPanel(d: D14, s: S14, w: number, ctx: ChartCtx): string {
-  const h = 320;
+  const h = panelH(w, 320);
   const items = [
     { cls: 's1', label: ctx.tr('c14.curve') },
     { cls: 'neg', label: ctx.tr('c14.negZone'), box: true },
@@ -229,7 +229,7 @@ function domainRight(d: D14): [number, number] {
 }
 
 function playersPanel(d: D14, s: S14, w: number, ctx: ChartCtx): string {
-  const h = 320;
+  const h = panelH(w, 320);
   const items = [
     { cls: 's1', label: ctx.tr('c14.median') },
     { cls: 's2', label: ctx.tr('c14.p1090'), dash: true },

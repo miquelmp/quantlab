@@ -8,7 +8,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
-import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S3 extends Record<string, number> { n: number; prize: number; seed: number }
@@ -118,7 +118,7 @@ export const chart03: ChartDef<S3, D3> = {
           { cls: 'path', label: ctx.tr('c3.legendPlayers') },
           { cls: 's1', label: ctx.tr('c3.legendExpected') },
         ];
-        const h = 320;
+        const h = panelH(w, 320);
         const lh = legendHeight(items, w - M.left - M.right);
         const ts = steps(n);
         let lo = Math.min(0, n * d.E);
@@ -166,7 +166,7 @@ export const chart03: ChartDef<S3, D3> = {
           { cls: 's1', label: ctx.tr('c3.legendE', { e: eur(d.E, ctx, 3) }), dash: true },
           { cls: 'band', label: ctx.tr('c3.legendBand'), box: true },
         ];
-        const h = 320;
+        const h = panelH(w, 320);
         const lh = legendHeight(items, w - M.left - M.right);
         const ts = steps(n).filter((t) => t >= 1);
         // Escala vertical centrada en E: muestra la banda desde ~10 jugadas; lo de antes se recorta.

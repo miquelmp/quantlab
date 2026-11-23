@@ -10,7 +10,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
-import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S12 extends Record<string, number> {
@@ -152,7 +152,14 @@ export function computeFrontier(s: S12): D12 {
 
 const M = { top: 12, right: 24, bottom: 44, left: 56 };
 const pct = (v: number, ctx: ChartCtx, d = 1) => fmtPct(v, d, ctx.fmt);
-const H = 420;
+const H0 = 420;
+/** Etiqueta de la cartera de mínima varianza: a la izquierda del punto o, si no cabe (móvil), debajo. */
+function gmvLabel(x: number, y: number, label: string, left: number): string {
+  const fits = x - 12 - label.length * 7.5 > left + 4;
+  return fits
+    ? `<text class="value-label" x="${r1(x - 12)}" y="${r1(y - 10)}" text-anchor="end">${esc(label)}</text>`
+    : `<text class="value-label" x="${r1(x + 4)}" y="${r1(y + 26)}" text-anchor="start">${esc(label)}</text>`;
+}
 const onOff = (v: number, ctx: ChartCtx) => ctx.tr(Math.round(v) === 1 ? 'c12.yes' : 'c12.no');
 const weights = (p: Port, ctx: ChartCtx) => p.w.map((x, i) => `${NAMES[i]} ${pct(x, ctx, 0)}`).join(' · ');
 
@@ -172,7 +179,7 @@ export const chart12: ChartDef<S12, D12> = {
       id: 'nube',
       wide: true,
       title: (c) => c.tr('c12.panel'),
-      height: () => H,
+      height: (w) => panelH(w, H0),
       render(d, s, w, ctx) {
         const items = [
           { cls: 'path', label: ctx.tr('c12.legendCloud') },
@@ -185,6 +192,7 @@ export const chart12: ChartDef<S12, D12> = {
         const ymin = Math.min(0, ...d.assets.map((a) => a.mu)) - 0.01;
         const ymax = Math.max(...d.assets.map((a) => a.mu)) + 0.04;
         const sx = linear([0, xmax], [M.left, w - M.right]);
+        const H = panelH(w, H0);
         const sy = linear([ymin, ymax], [H - M.bottom, M.top + lh + 8]);
         let cloud = '';
         for (let i = 0; i < RANDOM; i++) cloud += `M${r1(sx(d.cloud[2 * i]))},${r1(sy(d.cloud[2 * i + 1]))}h0`;
@@ -208,7 +216,7 @@ export const chart12: ChartDef<S12, D12> = {
             }
           }
           body += `<circle class="s1 dot" cx="${r1(sx(d.gmv.sigma))}" cy="${r1(sy(d.gmv.mu))}" r="7"/>` +
-            `<text class="value-label" x="${r1(sx(d.gmv.sigma) - 12)}" y="${r1(sy(d.gmv.mu) - 10)}" text-anchor="end">${esc(ctx.tr('c12.gmvLabel'))}</text>`;
+            gmvLabel(sx(d.gmv.sigma), sy(d.gmv.mu), ctx.tr('c12.gmvLabel'), M.left);
         } else {
           body += `<text class="value-label" x="${r1(w / 2)}" y="${r1(H / 2)}" text-anchor="middle">${esc(ctx.tr('c12.invalid'))}</text>`;
         }

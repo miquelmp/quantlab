@@ -5,7 +5,7 @@
  * Los botones están fuera del SVG para que la imagen siga siendo una imagen accesible.
  */
 import type { ChartExt, ChartApi } from './mount';
-import { planeScales, legendItems, H, X_MAX, Y_MIN, Y_MAX, MARGIN, FUNDS } from '../ch08-sharpe';
+import { planeScales, legendItems, plotH, X_MAX, Y_MIN, Y_MAX, MARGIN, FUNDS } from '../ch08-sharpe';
 import { legendHeight } from '../svg';
 import { fmtPct } from '../../lib/format';
 
@@ -18,7 +18,7 @@ const round = (v: number, step: number) => Math.round(v / step) * step;
 function scales(api: ChartApi, host: HTMLElement) {
   const w = Math.max(260, Math.floor(host.clientWidth));
   const lh = legendHeight(legendItems(api.ctx), w - MARGIN.left - MARGIN.right);
-  return planeScales(w, H, lh);
+  return planeScales(w, plotH(w), lh);
 }
 
 function label(api: ChartApi, f: string) {

@@ -7,7 +7,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
-import { linear, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S13 extends Record<string, number> {
@@ -87,11 +87,11 @@ export const chart13: ChartDef<S13, D13> = {
     { key: 'b1', label: 'c13.b1', min: 0, max: 2, step: 0.05, format: (v, c) => num(v, c) },
     { key: 'b2', label: 'c13.b2', min: 0, max: 2, step: 0.05, format: (v, c) => num(v, c) },
     { key: 'b3', label: 'c13.b3', min: 0, max: 2, step: 0.05, format: (v, c) => num(v, c) },
-    { key: 'e1', label: 'c13.e1', min: 0, max: 0.4, step: 0.005, format: (v, c) => pct(v, c, 1) },
-    { key: 'e2', label: 'c13.e2', min: 0, max: 0.4, step: 0.005, format: (v, c) => pct(v, c, 1) },
-    { key: 'e3', label: 'c13.e3', min: 0, max: 0.4, step: 0.005, format: (v, c) => pct(v, c, 1) },
-    { key: 'rf', label: 'c13.rf', min: 0, max: 0.06, step: 0.0025, format: (v, c) => pct(v, c, 2) },
-    { key: 'prem', label: 'c13.prem', min: 0, max: 0.1, step: 0.0025, format: (v, c) => pct(v, c, 2) },
+    { key: 'e1', more: true, label: 'c13.e1', min: 0, max: 0.4, step: 0.005, format: (v, c) => pct(v, c, 1) },
+    { key: 'e2', more: true, label: 'c13.e2', min: 0, max: 0.4, step: 0.005, format: (v, c) => pct(v, c, 1) },
+    { key: 'e3', more: true, label: 'c13.e3', min: 0, max: 0.4, step: 0.005, format: (v, c) => pct(v, c, 1) },
+    { key: 'rf', more: true, label: 'c13.rf', min: 0, max: 0.06, step: 0.0025, format: (v, c) => pct(v, c, 2) },
+    { key: 'prem', more: true, label: 'c13.prem', min: 0, max: 0.1, step: 0.0025, format: (v, c) => pct(v, c, 2) },
   ],
   compute: computeCapm,
   panels: [
@@ -102,7 +102,7 @@ export const chart13: ChartDef<S13, D13> = {
       render(d, s, w, ctx) {
         const names = NAMES(ctx);
         const items = names.map((n, k) => ({ cls: CLS[k], label: `${n} (β ${num(d.est[k], ctx)})` }));
-        const h = 340;
+        const h = panelH(w, 340);
         const lh = legendHeight(items, w - M.left - M.right);
         const lim = 0.04;
         const sx = linear([-0.03, 0.03], [M.left, w - M.right]);
@@ -143,7 +143,7 @@ export const chart13: ChartDef<S13, D13> = {
           { cls: 'muted', label: ctx.tr('c13.legendSml') },
           { cls: 'hist', label: ctx.tr('c13.legendAssets'), box: true },
         ];
-        const h = 340;
+        const h = panelH(w, 340);
         const lh = legendHeight(items, w - M.left - M.right);
         const sx = linear([0, 2], [M.left, w - M.right]);
         const ys = [...d.sml.map((a) => a.mean), s.rf, capm(2, s.rf, s.prem)];

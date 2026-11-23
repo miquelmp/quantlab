@@ -10,9 +10,11 @@ const PAGES = ['es/', 'es/indice/', 'es/capitulos/1-medir-lo-que-gana-una-invers
 (async () => {
   const browser = await chromium.launch();
   let total = 0;
-  for (const scheme of ['light', 'dark']) {
-    const page = await browser.newPage({ colorScheme: scheme, viewport: { width: 1280, height: 900 } });
-    for (const p of PAGES) {
+  // Claro y oscuro en escritorio; además, los capítulos en un móvil (mandos compactos, pestañas).
+  const RUNS = [['light', 1280], ['dark', 1280], ['light', 390]];
+  for (const [scheme, width] of RUNS) {
+    const page = await browser.newPage({ colorScheme: scheme, viewport: { width, height: 900 } });
+    for (const p of PAGES.filter((x) => width > 500 || x.includes('capitulos/'))) {
       await page.goto(BASE + p, { waitUntil: 'networkidle' });
       // Montar todos los gráficos y abrir la Ampliación y las tablas para auditarlo todo
       await page.evaluate(async () => { for (const el of document.querySelectorAll('[data-chart]')) el.scrollIntoView(); document.querySelectorAll('details').forEach((d) => (d.open = true)); });
@@ -21,7 +23,7 @@ const PAGES = ['es/', 'es/indice/', 'es/capitulos/1-medir-lo-que-gana-una-invers
       const res = await page.evaluate(() => axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] }));
       for (const v of res.violations) {
         total++;
-        console.log(`✗ [${scheme}] ${p} · ${v.id} (${v.impact}): ${v.help}`);
+        console.log(`✗ [${scheme} ${width}px] ${p} · ${v.id} (${v.impact}): ${v.help}`);
         v.nodes.slice(0, 3).forEach((n) => console.log('    ', n.target.join(' '), n.failureSummary?.split('\n')[1] ?? ''));
       }
     }

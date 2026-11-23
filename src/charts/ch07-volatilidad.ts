@@ -7,7 +7,7 @@
  */
 import type { ChartDef, ChartCtx } from './types';
 import { Rng, normCdf } from './rng';
-import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct, fmtNum } from '../lib/format';
 
 export interface S7 extends Record<string, number> { sigma: number; seed: number }
@@ -95,7 +95,7 @@ export const chart07: ChartDef<S7, D7> = {
           { cls: 's2', label: ctx.tr('c7.legendSel', { s: pct(s.sigma, ctx, 0) }) },
           { cls: 'muted', label: ctx.tr('c7.legendTrend'), dash: true },
         ];
-        const h = 320;
+        const h = panelH(w, 320);
         const lh = legendHeight(items, w - M.left - M.right);
         // Se dibuja un punto por semana (suficiente para el ojo, mucho más ligero).
         const idx: number[] = [];
@@ -139,7 +139,7 @@ export const chart07: ChartDef<S7, D7> = {
           { cls: 's2', label: ctx.tr('c7.legendSel', { s: pct(s.sigma, ctx, 0) }) },
           { cls: 'neg', label: ctx.tr('c7.legendLoss'), box: true },
         ];
-        const h = 320;
+        const h = panelH(w, 320);
         const lh = legendHeight(items, w - M.left - M.right);
         const span = Math.max(0.2, 3.2 * Math.max(s.sigma, REF_SIGMA));
         const x0 = MU - span;

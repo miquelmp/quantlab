@@ -220,7 +220,32 @@ function initSearchShortcut() {
   });
 }
 
+/* ---------- Cabecera que se esconde al bajar en el móvil ---------- */
+function initHeaderAutoHide() {
+  const header = document.querySelector<HTMLElement>('.site-header');
+  if (!header || !('matchMedia' in window)) return;
+  const mq = matchMedia('(max-width: 759px)');
+  let lastY = window.scrollY;
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const y = window.scrollY;
+      const menuOpen = header.querySelector('.main-nav.open, details[open]');
+      if (!mq.matches || menuOpen || y < 80) header.classList.remove('away');
+      else if (y > lastY + 6) header.classList.add('away');
+      else if (y < lastY - 6) header.classList.remove('away');
+      lastY = y;
+    });
+  }, { passive: true });
+  // Si el foco entra en la cabecera (teclado), se muestra.
+  header.addEventListener('focusin', () => header.classList.remove('away'));
+}
+
 initSettings();
+initHeaderAutoHide();
 initSearchShortcut();
 initChapter();
 initExercises();

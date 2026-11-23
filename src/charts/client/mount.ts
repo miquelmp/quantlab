@@ -6,7 +6,7 @@
 import { loadChart } from '../registry';
 import type { ChartCtx, ChartDef } from '../types';
 import { randomSeed } from '../rng';
-import { esc } from '../svg';
+import { esc, setCompact } from '../svg';
 
 export interface ChartApi {
   root: HTMLElement;
@@ -47,6 +47,10 @@ function readUrlState(id: string): Record<string, number> {
   } catch { return {}; }
 }
 
+const compactMq = typeof matchMedia === 'function' ? matchMedia('(max-width: 759px)') : null;
+setCompact(!!compactMq?.matches);
+compactMq?.addEventListener?.('change', () => setCompact(compactMq.matches));
+
 export async function mountChart(root: HTMLElement): Promise<void> {
   if (root.dataset.mounted) return;
   root.dataset.mounted = '1';
@@ -84,6 +88,7 @@ export async function mountChart(root: HTMLElement): Promise<void> {
   };
 
   let changed = new Set<string>(Object.keys(state));
+  let activePanel: string | null = null;   // pestaña visible en el móvil (null: se ven todos)
   let raf = 0;
   let descTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -101,7 +106,8 @@ export async function mountChart(root: HTMLElement): Promise<void> {
   }
 
   function renderPanels(ids?: string[]) {
-    const list = ids ?? def.panels.map((p) => p.id);
+    // Los paneles ocultos por las pestañas del móvil se dibujan al mostrarlos.
+    const list = (ids ?? def.panels.map((p) => p.id)).filter((pid) => !panels.get(pid)?.hidden);
     for (const pid of list) {
       const p = def.panels.find((x) => x.id === pid);
       const el = panels.get(pid);
@@ -115,7 +121,7 @@ export async function mountChart(root: HTMLElement): Promise<void> {
 
   function renderStats() {
     if (!statsEl) return;
-    statsEl.innerHTML = def.stats(api.data, state, ctx).map((s) =>
+    statsEl.innerHTML = def.stats(api.data, state, ctx).filter((s) => !activePanel || !s.panels || s.panels.includes(activePanel)).map((s) =>
       `<div class="stat"><dt>${esc(s.label)}</dt><dd>${esc(s.value)}${s.note ? `<span class="stat-note">${esc(s.note)}</span>` : ''}</dd></div>`).join('');
   }
 
@@ -180,6 +186,7 @@ export async function mountChart(root: HTMLElement): Promise<void> {
     schedule();
   });
   const shareBtn = root.querySelector<HTMLButtonElement>('[data-act="share"]');
+  const shareHtml = shareBtn?.innerHTML ?? '';
   shareBtn?.addEventListener('click', async () => {
     const keys = [...def.sliders.map((s) => s.key), ...(def.extraKeys ?? []), ...(def.simulated ? ['seed'] : [])];
     const value = keys.map((k) => `${k}:${+state[k].toFixed(6)}`).join(',');
@@ -193,9 +200,68 @@ export async function mountChart(root: HTMLElement): Promise<void> {
     } catch {
       window.prompt(tr('chart.copyLink'), link);
     }
-    setTimeout(() => { shareBtn.textContent = tr('chart.copyLink'); }, 2000);
+    setTimeout(() => { shareBtn.innerHTML = shareHtml; }, 2000);
   });
   root.querySelectorAll<HTMLButtonElement>('.chart-controls button').forEach((b) => (b.disabled = false));
+  // «Más ajustes»: abierto en pantallas anchas; plegado en el móvil para que todo quepa.
+  const more = root.querySelector<HTMLDetailsElement>('[data-more]');
+  if (more && 'matchMedia' in window && !matchMedia('(max-width: 759px)').matches) more.open = true;
+
+  // Pestañas en el móvil cuando hay varios paneles: se ve uno cada vez, de modo que mandos,
+  // gráfico y resultados caben juntos en la pantalla.
+  if (panels.size > 1 && 'matchMedia' in window) {
+    const mq = matchMedia('(max-width: 759px)');
+    const wrap = root.querySelector<HTMLElement>('.chart-panels')!;
+    const bar = document.createElement('div');
+    bar.className = 'panel-tabs';
+    bar.setAttribute('role', 'tablist');
+    bar.setAttribute('aria-label', tr('chart.panels'));
+    const tabs: HTMLButtonElement[] = [];
+    def.panels.forEach((p, i) => {
+      const el = panels.get(p.id);
+      if (!el) return;
+      el.id ||= `${root.id}-p-${p.id}`;
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.id = `${el.id}-tab`;
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-controls', el.id);
+      b.textContent = p.title(ctx);
+      b.title = p.title(ctx);
+      b.dataset.panel = p.id;
+      b.addEventListener('click', () => select(i, true));
+      b.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const n = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+        select(n, true);
+        tabs[n].focus();
+      });
+      tabs.push(b);
+      bar.appendChild(b);
+    });
+    wrap.before(bar);
+    let active = 0;
+    const select = (i: number, draw: boolean) => {
+      active = i;
+      tabs.forEach((b, k) => {
+        const el = panels.get(b.dataset.panel!)!;
+        const on = k === i;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        if (mq.matches) { el.hidden = !on; el.setAttribute('role', 'tabpanel'); el.setAttribute('aria-labelledby', b.id); }
+      });
+      activePanel = mq.matches ? tabs[i].dataset.panel! : null;
+      if (draw) { renderPanels([tabs[i].dataset.panel!]); renderStats(); }
+    };
+    const apply = () => {
+      root.classList.toggle('tabbed', mq.matches);
+      if (mq.matches) select(active, false);
+      else { activePanel = null; panels.forEach((el) => { el.hidden = false; el.removeAttribute('role'); el.removeAttribute('aria-labelledby'); }); }
+    };
+    apply();
+    mq.addEventListener?.('change', () => { apply(); renderPanels(); renderStats(); });
+  }
   tableEl?.addEventListener('toggle', renderTable);
 
   // Información emergente al pasar el cursor o tocar (RF-GRA-06)

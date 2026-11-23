@@ -4,7 +4,7 @@
  * Derecha: rentabilidad logarítmica ln(1+R) frente a la simple R.
  */
 import type { ChartDef, ChartCtx } from './types';
-import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc } from './svg';
+import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { fmtPct } from '../lib/format';
 
 export interface S1 extends Record<string, number> { L: number; R: number }
@@ -37,7 +37,7 @@ export const chart01: ChartDef<S1, D1> = {
           { cls: 'muted', label: ctx.tr('c1.legendSymmetric'), dash: true },
         ];
         const lh = legendHeight(items, w - M.left - M.right);
-        const h = 300;
+        const h = panelH(w, 300);
         const sx = linear([0, 0.9], [M.left, w - M.right]);
         const sy = linear([0, 9], [h - M.bottom, M.top + lh + 8]);
         const xs: number[] = [];
@@ -76,7 +76,7 @@ export const chart01: ChartDef<S1, D1> = {
           { cls: 'muted', label: ctx.tr('c1.legendDiag'), dash: true },
         ];
         const lh = legendHeight(items, w - M.left - M.right);
-        const h = 300;
+        const h = panelH(w, 300);
         const sx = linear([-0.6, 1], [M.left, w - M.right]);
         const sy = linear([-1, 1], [h - M.bottom, M.top + lh + 8]);
         const xs: number[] = [];
