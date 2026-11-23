@@ -6,7 +6,7 @@
 
 Para que puedas seguir donde lo dejaste, la web guarda en tu propio navegador (almacenamiento local), y solo allí:
 
-- las secciones que has leído y los ejercicios que has resuelto;
+- las secciones que has leído, los ejercicios que has resuelto y los retos de los gráficos que has conseguido;
 - la última sección visitada;
 - tus preferencias de lectura (tema claro u oscuro, tamaño de letra, Ampliación abierta o cerrada).
 
@@ -22,7 +22,7 @@ La web se aloja en GitHub Pages. GitHub puede registrar datos técnicos de las v
 
 ## Analítica
 
-Si se activa, la analítica de uso es anónima y sin cookies: cuenta visitas por página, sin identificar a las personas ni seguirlas entre sitios. En la versión piloto está desactivada.
+Para saber qué páginas se leen más, la web usa [GoatCounter](https://www.goatcounter.com/), un servicio de analítica anónimo y sin cookies. Por cada página vista se envía la dirección de la página, la web de la que vienes (si la hay), el tamaño de la pantalla y el tipo de navegador. No se guarda tu dirección IP ni nada que permita identificarte o seguirte entre sitios. Puedes consultar su [política de privacidad](https://www.goatcounter.com/help/privacy). Si tu navegador bloquea la analítica, la web funciona igual.
 
 ## Avisos de errores
 

@@ -21,6 +21,7 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Descargas del código** (`src/pages/[lang]/codigo/[file].ts` + `src/lib/download.ts`): `.py` y `.ipynb` de cada capítulo, del tema E y del proyecto.
 - **Laboratorio** (`src/pages/[lang]/laboratorio.astro`): galería con la miniatura del primer panel de cada gráfico publicado.
 - **Temas A–E y proyecto**: páginas `src/pages/[lang]/temas/[slug].astro` (slug y descripción en `temas:` de `capitulos.yaml`) y `src/pages/[lang]/proyecto.astro`. «capítulo N» y «tema X» en el texto se enlazan solos si están publicados; los años de las citas «Autor (año)» enlazan a su obra en la bibliografía (`citationId` en `src/lib/biblio.ts`).
+- **Analítica**: GoatCounter (anónima, sin cookies), `ANALYTICS_GOATCOUNTER` en `src/config.ts`; panel del autor en https://miquelmp.goatcounter.com/. Explicada en `content/es/paginas/privacidad.md`.
 
 ## Tareas habituales
 
@@ -39,6 +40,6 @@ npm run build && npm run check:links
 npm run preview & npm run check:a11y   # axe-core, temas claro y oscuro (no está en CI)
 ```
 
-## Pendiente (fases siguientes del análisis funcional)
+## Pendiente
 
-Analítica (GoatCounter: poner la URL en `src/config.ts` cuando el autor cree la cuenta).
+Nada del análisis funcional: el plan está completo.
