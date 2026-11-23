@@ -113,7 +113,7 @@
   - pregunta: 'Un activo tiene una rentabilidad media anual del 10 % y una volatilidad del 30 %. ¿Qué tasa de crecimiento compuesto cabe esperar, aproximadamente?'
     opciones: ['10 %', '8,5 %', '5,5 %', '1 %']
     correcta: 2
-    explicacion: '$g \approx \mu - \sigma^2/2 = 10\,\% - 0{,}09/2 = 5{,}5\,\%$. El lastre de la volatilidad se come casi la mitad.'
+    explicacion: '$g \approx \mu - \sigma^2/2 = 10\,\% - 0{,}09/2 = 5{,}5\,\%$. El lastre de la volatilidad se come casi la mitad. Es la tasa logarítmica; la compuesta equivalente, $e^{0{,}055} - 1 \approx 5{,}7\,\%$, es casi igual.'
   - pregunta: '¿Cómo se comparan la media geométrica y la aritmética de unas rentabilidades?'
     opciones: ['La geométrica nunca es mayor que la aritmética', 'La geométrica siempre es mayor', 'Son siempre iguales', 'Depende del signo de la media']
     correcta: 0

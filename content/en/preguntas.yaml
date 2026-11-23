@@ -113,7 +113,7 @@
   - pregunta: 'An asset has a mean annual return of 10% and a volatility of 30%. Roughly what compound growth rate can be expected?'
     opciones: ['10%', '8.5%', '5.5%', '1%']
     correcta: 2
-    explicacion: '$g \approx \mu - \sigma^2/2 = 10\% - 0.09/2 = 5.5\%$. Volatility drag eats almost half.'
+    explicacion: '$g \approx \mu - \sigma^2/2 = 10\% - 0.09/2 = 5.5\%$. Volatility drag eats almost half. This is the log rate; the equivalent compound rate, $e^{0.055} - 1 \approx 5.7\%$, is almost the same.'
   - pregunta: 'How do the geometric and arithmetic means of a set of returns compare?'
     opciones: ['The geometric mean is never larger than the arithmetic mean', 'The geometric mean is always larger', 'They are always equal', 'It depends on the sign of the mean']
     correcta: 0

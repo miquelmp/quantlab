@@ -592,7 +592,7 @@ The unbiased sample variance divides by $n - 1$ (Bessel's correction), $s^2 = \f
 
 ### The idea
 
-Roll a die: all the outcomes from 1 to 6 are equally likely, and the histogram is flat. Roll two and add them: 7 is the most frequent outcome and the extremes (2 and 12) are rare, so the histogram has the shape of a roof. Roll ten and add them: the histogram already has an almost perfect bell shape. It does not matter that each die has a flat distribution: the sum of many small, independent random effects always tends to the same shape, the **normal distribution** or **Gaussian bell curve**. This result is the **central limit theorem**, and it explains why the normal appears in measurement errors, in people's heights and, as a first approximation, in returns accumulated over many days.
+Roll a die: all the outcomes from 1 to 6 are equally likely, and the histogram is flat. Roll two and add them: 7 is the most frequent outcome and the extremes (2 and 12) are rare, so the histogram has the shape of a roof. Roll ten and add them: the histogram already has an almost perfect bell shape. It does not matter that each die has a flat distribution: the sum of many small, independent random effects tends to the same shape, the **normal distribution** or **Gaussian bell curve**. This result is the **central limit theorem**, and it explains why the normal appears in measurement errors, in people's heights and, as a first approximation, in returns accumulated over many days.
 
 The normal is described by two numbers: its mean, which marks the center, and its standard deviation, which marks the width. Most of the probability is concentrated near the mean and drops very quickly further away: the **tails**, the regions of extreme values, are thin.
 
@@ -688,7 +688,7 @@ The mean exceeds the median: the distribution of future wealth is skewed to the 
 
 #### When the bell fails
 
-The CLT requires finite variance and weak dependence. If the variance is infinite, the classical CLT no longer applies. When the tails decay as a power law with index $\alpha < 2$, the sums, normalized differently, converge to a non-Gaussian **Lévy stable distribution**, but this is not a universal result; Mandelbrot (1963) proposed this model for cotton prices. Today we know that daily returns have finite variance but power-law tails with a tail index $\alpha$ that most studies place between 2 and 5, with typical values close to 3 for stocks and indices (the «inverse cubic law»: Gopikrishnan *et al.*, 1999; Cont, 2001; see chapter 15), so that:
+The CLT requires finite variance and weak dependence. If the variance is infinite, the classical CLT no longer applies. When the tails decay as a power law with index $\alpha < 2$, the sums, normalized differently, converge to a non-Gaussian **Lévy stable distribution**, but this is not a universal result: there are even infinite-variance distributions whose sums tend to the normal with a different normalization; Mandelbrot (1963) proposed this model for cotton prices. Most studies find in daily returns power-law tails with a tail index $\alpha$ between 2 and 5, with typical values close to 3 for stocks and indices (the «inverse cubic law»: Gopikrishnan *et al.*, 1999; Cont, 2001; see chapter 15), compatible with finite variance, although a finite sample cannot fully prove it, so that:
 
 - At short horizons (daily or intraday) the normal greatly underestimates extremes: a move of more than $4\sigma$ (in either direction) should occur with probability $6.3 \times 10^{-5}$, about 1.6 times every hundred trading years, and it is observed much more often.
 - At long horizons (monthly, annual) the distribution gets closer to the normal, the phenomenon called **aggregational Gaussianity** (Cont, 2001), although convergence is slow because of volatility dependence.
@@ -1496,7 +1496,7 @@ The risk-free rate is 2.5% and the market risk premium 5.5%. The volatility of t
 - A utility has a volatility of 15% and a correlation of 0.6 with the market. Its beta is $0.6 \times 15/15 = 0.6$, and the CAPM assigns it an expected return of $2.5 + 0.6 \times 5.5 = 5.8\%$.
 - A tech company has a volatility of 30% and a correlation of 0.75. Its beta is $0.75 \times 30/15 = 1.5$, and its expected return, $2.5 + 1.5 \times 5.5 = 10.75\%$.
 
-The tech company has twice the volatility of the utility, but what determines its premium is not total volatility but the part linked to the market. If the market fell 4% in one day, one would expect, on average, a fall of 2.4% in the utility and of 6% in the tech company.
+The tech company has twice the volatility of the utility, but what determines its premium is not total volatility but the part linked to the market. If the market fell 4% in one day, one would expect, on average and with zero alpha, a fall of 2.4% in the utility and of 6% in the tech company.
 
 ### Formalization
 
@@ -1972,7 +1972,7 @@ A **backtest** simulates a strategy with past data. It is the most used tool for
 - **Ignoring costs** (topic B).
 - **Overfitting**: trying many variants and keeping the best one.
 
-The last one is the most treacherous. If $N$ strategies without any skill are tried, the maximum observed Sharpe ratio grows approximately as $\sqrt{2\ln N}$ times its standard error. *Example:* with 5 years of data, the standard error of an annual Sharpe ratio is $\approx\sqrt{1/5} = 0.45$ (chapter 8). The best of 100 purely random strategies will have, on average, a Sharpe ratio of $0.45 \times 2.5 \approx 1.1$, a value that would look excellent.
+The last one is the most treacherous. If $N$ independent strategies without any skill are tried, the maximum observed Sharpe ratio grows approximately as $\sqrt{2\ln N}$ times its standard error. *Example:* with 5 years of data, the standard error of an annual Sharpe ratio is $\approx\sqrt{1/5} = 0.45$ (chapter 8). The best of 100 purely random strategies will have, on average, a Sharpe ratio of $0.45 \times 2.5 \approx 1.1$, a value that would look excellent. If the strategies are similar variants, what counts is the effective number of independent tests, which is smaller.
 
 Good practices:
 
@@ -2010,7 +2010,7 @@ $$\Delta = \frac{V_u - V_d}{(u - d)\,S_0}, \qquad q = \frac{1 + r - d}{u - d}, \
 
 *Example:* $S_0 = 100$ euros, $u = 1.2$, $d = 0.8$, $r = 5\%$ and a call option with strike price €100, which pays $V_u = 20$ euros or $V_d = 0$. Then $q = 0.25/0.4 = 0.625$ and $V_0 = 0.625 \times 20/1.05 = 11.90$ euros. Check: buying $\Delta = 0.5$ shares costs €50, financed by borrowing $0.5 \times 80/1.05 = 38.10$ euros; the net cost, €11.90, is the price of the option.
 
-The surprising thing is that the real probability of an up move does not appear: the price comes from replication, not from preferences. $q$ is the risk-neutral measure $Q$ of chapter 3. Chaining many periods with $u = e^{\sigma\sqrt{\Delta t}}$ and $d = 1/u$, the tree converges to the Black–Scholes formula (chapter 6). A useful relationship that does not depend on the price model, only on the absence of arbitrage, is **put-call parity**: for European call and put options with the same strike and maturity, on a stock that pays no dividends, $C - P = S_0 - K e^{-rT}$. With a continuous dividend yield $q$, $S_0$ is replaced by $S_0 e^{-qT}$. American options, which can be exercised early, do not satisfy this exact equality.
+The surprising thing is that the real probability of an up move does not appear: the price comes from replication, not from preferences. $q$ is the risk-neutral measure $Q$ of chapter 3. Chaining many periods with $u = e^{\sigma\sqrt{\Delta t}}$ and $d = 1/u$, the tree converges to the Black–Scholes formula (chapter 6). A useful relationship that does not depend on the price model, only on the absence of arbitrage, is **put-call parity**: for European call and put options with the same strike and maturity, on a stock that pays no dividends, $C - P = S_0 - K e^{-rT}$. With a continuous dividend yield $q$, $S_0$ is replaced by $S_0 e^{-qT}$. American options, which can be exercised early, do not satisfy this exact equality. Here, as in the Black–Scholes formula, $r$ is the continuously compounded rate; in the tree, $1 + r$ was the one-period factor.
 
 **The Black–Scholes formula.** If the stock price follows the geometric Brownian motion of chapter 4, with constant volatility $\sigma$, and one can trade without costs and borrow at rate $r$, the limit of the tree gives the price of a European call option (Black and Scholes, 1973):
 
@@ -2036,7 +2036,7 @@ The assumptions are strong. Volatility is not constant (chapter 7) and returns h
 
 ## Topic D · Stationarity and cointegration
 
-A series is **stationary** if its distribution does not change over time. The prices of most assets are not (their variance grows over time, chapter 4), while their returns usually are, approximately, something worth testing in each case; that is why statistics is done with returns (chapter 10). The Dickey–Fuller test (1979) checks whether a series has a **unit root**, that is, whether it behaves like a random walk.
+A series is **stationary** if its statistical behaviour does not change over time: in the strict sense, the joint distribution of any group of observations does not change when they are shifted in time; in the weak sense, it is enough for the mean to be constant and for the covariance between two observations to depend only on the distance between them. The prices of most assets are not (their variance grows over time, chapter 4), while their returns usually are, approximately, something worth testing in each case; that is why statistics is done with returns (chapter 10). The Dickey–Fuller test (1979) checks whether a series has a **unit root**, like the random walk, which is the best-known case.
 
 Two non-stationary prices are **cointegrated** if some linear combination of them, $s_t = P^A_t - \beta P^B_t$, is stationary (Engle and Granger, 1987): they can drift apart, but they tend to return to their relationship. This is the basis of **pairs trading**. Cointegration and correlation are different things: two assets can have highly correlated returns and prices that separate without limit, or the other way round.
 
@@ -2058,7 +2058,7 @@ dd = 1 - W / np.maximum.accumulate(W)               # drawdown at each date
 print(dd.max())                                     # maximum drawdown: 0.20 (from 115 to 92)
 ```
 
-Recovering from a drawdown $D$ requires a rise of $D/(1 - D)$: 25% after losing 20%, and 100% after losing 50% (chapter 1). Many investors judge a strategy by its maximum drawdown more than by its volatility, and the **Calmar ratio** divides the compound annual growth rate by the maximum drawdown. They must be compared carefully: the expected maximum drawdown grows with the length of the sample (Magdon-Ismail *et al.*, 2004), so a longer series will almost always have a worse maximum drawdown. Chapter 14 gives a related result: with full Kelly, the probability of ever falling to half is 50%.
+Recovering from a drawdown $D$ requires a rise of $D/(1 - D)$: 25% after losing 20%, and 100% after losing 50% (chapter 1). Many investors judge a strategy by its maximum drawdown more than by its volatility, and the **Calmar ratio** divides the compound annual growth rate by the maximum drawdown. They must be compared carefully: the expected maximum drawdown grows with the length of the sample (Magdon-Ismail *et al.*, 2004), so a longer series will almost always have a worse maximum drawdown. Chapter 14 gives a related result: in its continuous model, with full Kelly, the probability of ever falling to half is 50%.
 
 ---
 
@@ -2382,7 +2382,7 @@ VaR only says where the tail begins, so two portfolios with very different tails
 | Sample volatility | $\hat\sigma = \sqrt{\frac{1}{N-1}\sum_t (r_t - \bar r)^2}$ | 7 |
 | Annualizing volatility | $\sigma_{\text{annual}} = \hat\sigma\sqrt{h}$ | 7 |
 | Sharpe ratio | $\text{SR} = (\mu - r_f)/\sigma$ | 8 |
-| Compound growth | $g \approx \mu - \tfrac12\sigma^2$ | 9 |
+| Log growth (approx.) | $g \approx \mu - \tfrac12\sigma^2$; compound rate $G = e^{g} - 1$ | 9 |
 | Covariance | $\operatorname{Cov}(X, Y) = E[(X - \mu_X)(Y - \mu_Y)]$ | 10 |
 | Correlation | $\rho = \operatorname{Cov}(X, Y)/(\sigma_X\sigma_Y)$ | 10 |
 | Variance of two assets | $\sigma_p^2 = w_1^2\sigma_1^2 + w_2^2\sigma_2^2 + 2w_1w_2\rho\sigma_1\sigma_2$ | 11 |
