@@ -48,7 +48,7 @@ semilla: seed
 sesion: trading session
 simulacion-de-monte-carlo: Monte Carlo simulation
 sobreajuste: overfitting
-tasa-anual-equivalente-tae: annual percentage yield (APY)
+tasa-anual-equivalente-tae: annual percentage rate (APR) en créditos; annual percentage yield (APY) en depósitos
 tasa-de-crecimiento-compuesto: compound growth rate (CAGR)
 teorema-central-del-limite: central limit theorem
 tipificar: standardize

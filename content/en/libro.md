@@ -688,7 +688,7 @@ The mean exceeds the median: the distribution of future wealth is skewed to the 
 
 #### When the bell fails
 
-The CLT requires finite variance and weak dependence. If the variance is infinite, the normalized sums converge to a non-Gaussian **Lévy stable distribution**; Mandelbrot (1963) proposed this model for cotton prices. Today we know that daily returns have finite variance but power-law tails with a tail index $\alpha$ that most studies place between 2 and 5, with typical values close to 3 for stocks and indices (the «inverse cubic law»: Gopikrishnan *et al.*, 1999; Cont, 2001; see chapter 15), so that:
+The CLT requires finite variance and weak dependence. If the variance is infinite, the classical CLT no longer applies. When the tails decay as a power law with index $\alpha < 2$, the sums, normalized differently, converge to a non-Gaussian **Lévy stable distribution**, but this is not a universal result; Mandelbrot (1963) proposed this model for cotton prices. Today we know that daily returns have finite variance but power-law tails with a tail index $\alpha$ that most studies place between 2 and 5, with typical values close to 3 for stocks and indices (the «inverse cubic law»: Gopikrishnan *et al.*, 1999; Cont, 2001; see chapter 15), so that:
 
 - At short horizons (daily or intraday) the normal greatly underestimates extremes: a move of more than $4\sigma$ (in either direction) should occur with probability $6.3 \times 10^{-5}$, about 1.6 times every hundred trading years, and it is observed much more often.
 - At long horizons (monthly, annual) the distribution gets closer to the normal, the phenomenon called **aggregational Gaussianity** (Cont, 2001), although convergence is slow because of volatility dependence.
@@ -1039,13 +1039,13 @@ The Sharpe ratio thus determines how fast wealth can grow with optimal leverage 
 
 If an asset rises 10% and then falls 10%, it does not return to its starting point: it ends 1% below, because the fall applies to a larger amount than the rise. Returns compound by multiplying, not adding, and that asymmetry means volatility has a cost: the more an investment swings, the further its real growth drifts from its mean return. That difference is known as **volatility drag**.
 
-The relevant magnitude for the long-term investor is not the arithmetic mean of returns but the **compound growth rate**: the constant return that would have produced the same final wealth, that is, the geometric mean of chapter 1 or, equivalently, the mean of the log returns.
+The relevant magnitude for the long-term investor is not the arithmetic mean of returns but the **compound growth rate**: the constant return that would have produced the same final wealth, that is, the geometric mean of chapter 1, $G$. It is not the same as the mean of the log returns, $g$, although they are linked by $G = e^{g} - 1$: 10% compound equals 9.53% in log terms. For moderate rates they almost coincide, which is why this chapter treats them as roughly equal.
 
 ### A worked example
 
 An asset alternates, year after year, a 25% rise and a 20% fall. Its arithmetic mean return is $(25 - 20)/2 = 2.5\%$ a year, an apparently positive figure. But every pair of years wealth is multiplied by $1.25 \times 0.80 = 1$: after twenty years, the investor has exactly what they started with. Its compound growth rate is zero.
 
-The approximation presented below, $g \approx \mu - \tfrac12\sigma^2$, anticipates it. The standard deviation of those two returns is 22.5%, so
+The approximation presented below, $g \approx \mu - \tfrac12\sigma^2$, anticipates it. The standard deviation of those two scenarios, dividing by 2 (the population one, not the sample one of chapter 7), is 22.5%, so
 
 $$g \approx 2.5\% - \tfrac12 \times (22.5\%)^2 = 2.5\% - 2.53\% \approx 0\%.$$
 
@@ -1061,7 +1061,7 @@ and the loss, $s^2$, grows with the square of the size of the swing. In general,
 
 $$g \approx \mu - \tfrac12\,\sigma^2.$$
 
-The approximation is good when the returns of each period are moderate, and exact for the continuous-time price model described in the Going further section. Its reading is simple: doubling volatility quadruples the drag.
+The approximation is good when the returns of each period are moderate, and, in the continuous-time price model described in the Going further section, exact for the log growth rate. Its reading is simple: doubling volatility quadruples the drag.
 
 ### Interactive chart
 
@@ -1108,7 +1108,7 @@ where the last step neglects $\mu^2/2$, small for moderate returns. By Jensen's 
 - **expected** wealth grows at the rate $\mu$: $E[S_t] = S_0 e^{\mu t}$;
 - **median** wealth (and that of almost every path in the long run) grows at the rate $\mu - \frac12\sigma^2$.
 
-If $\sigma^2 > 2\mu$, expected wealth grows while almost every path tends to zero: the mean is propped up by an ever smaller fraction of extraordinarily lucky paths. The «median investor» of chapter 14 is the right way to think about it.
+If $0 < \mu < \tfrac12\sigma^2$, expected wealth grows while almost every path tends to zero: the mean is propped up by an ever smaller fraction of extraordinarily lucky paths. The «median investor» of chapter 14 is the right way to think about it.
 
 #### Leveraged products with daily rebalancing
 
@@ -1285,7 +1285,7 @@ For $N$ assets with the same volatility $\sigma$, the same correlation $\rho$ be
 
 $$\sigma_p^2 = \sigma^2\left[\frac{1}{N} + \left(1 - \frac{1}{N}\right)\rho\right] \;\xrightarrow{\;N \to \infty\;}\; \rho\,\sigma^2.$$
 
-The first term, the specific part, fades away as $1/N$; the second, the common part, remains. The minimum attainable volatility is $\sigma\sqrt{\rho}$.
+The first term, the specific part, fades away as $1/N$; the second, the common part, remains. With a positive common correlation, the minimum attainable volatility is $\sigma\sqrt{\rho}$. A negative common correlation cannot be sustained with many assets, because it must satisfy $\rho \ge -1/(N - 1)$.
 
 ### Interactive chart
 
@@ -1614,7 +1614,7 @@ The last part deals with two practical questions. The first is how much to risk 
 
 Having an edge is not enough: one must also decide how much to risk. Whoever bets very little wastes their edge and their capital barely grows. Whoever bets too much is exposed to a losing streak, which sooner or later comes, leaving them without capital to carry on. Since each loss reduces the base on which the following bets are calculated, losses weigh more than their probability suggests: it is the volatility drag of chapter 9 in another form.
 
-The **Kelly criterion** answers precisely: when the probabilities are known and winnings are reinvested, there is a fraction of capital that maximizes the long-run growth rate. Betting more than that fraction increases risk and also reduces growth; betting twice as much wipes it out.
+The **Kelly criterion** answers precisely: when the probabilities are known and winnings are reinvested, there is a fraction of capital that maximizes the long-run growth rate. Betting more than that fraction increases risk and also reduces growth; betting twice as much brings it practically to zero.
 
 To understand the criterion it helps to look at the **median** player, the one in the middle of the distribution of outcomes, and not at the average. With aggressive bets, average wealth can be enormous thanks to a few very lucky players, while most end up ruined.
 
@@ -1629,7 +1629,7 @@ With the formula derived below, the Kelly fraction is $f^* = 2 \times 0.53 - 1 =
 | Growth per play | 0.00135 | 0.00180 | −0.00002 | −0.00231 |
 | Median wealth after 1,000 plays | ×3.9 | ×6.1 | ×0.98 | ×0.10 |
 
-Betting half Kelly keeps about three quarters of the growth with much less fluctuation. Betting twice Kelly (12%) leaves the median player where they started, even though each play has a positive expected value. And above twice Kelly, the median player gets poorer.
+Betting half Kelly keeps about three quarters of the growth with much less fluctuation. Betting twice Kelly (12%) leaves the median player practically where they started (×0.98), even though each play has a positive expected value. And above twice Kelly, the median player gets poorer.
 
 ### Formalization
 
@@ -1865,11 +1865,11 @@ If returns instead followed a $t$ with 4 degrees of freedom with the same volati
 
 ### Formalization
 
-Let $L$ be the loss of the portfolio over the chosen horizon and $c$ the confidence level. VaR is the loss that is only exceeded with probability $1 - c$:
+Let $L$ be the loss of the portfolio over the chosen horizon and $c$ the confidence level. If the loss distribution is continuous, VaR is the loss that is only exceeded with probability $1 - c$:
 
 $$P\big(L > \text{VaR}_c\big) = 1 - c,$$
 
-that is, the $c$ quantile of the loss distribution. Expected shortfall is the average loss when VaR is exceeded, $\text{ES}_c = E\big[L \mid L \ge \text{VaR}_c\big]$. If returns are normal with zero mean and volatility $\sigma$ over the chosen horizon, and the portfolio is worth $V$,
+that is, the $c$ quantile of the loss distribution. Expected shortfall is the average loss when VaR is exceeded, $\text{ES}_c = E\big[L \mid L \ge \text{VaR}_c\big]$ (the Going further section gives the general definition, which also holds for discrete losses). If returns are normal with zero mean and volatility $\sigma$ over the chosen horizon, and the portfolio is worth $V$,
 
 $$\text{VaR}_c = z_c\,\sigma\,V, \qquad \text{ES}_c = \frac{\varphi(z_c)}{1 - c}\,\sigma\,V,$$
 
@@ -2010,7 +2010,7 @@ $$\Delta = \frac{V_u - V_d}{(u - d)\,S_0}, \qquad q = \frac{1 + r - d}{u - d}, \
 
 *Example:* $S_0 = 100$ euros, $u = 1.2$, $d = 0.8$, $r = 5\%$ and a call option with strike price €100, which pays $V_u = 20$ euros or $V_d = 0$. Then $q = 0.25/0.4 = 0.625$ and $V_0 = 0.625 \times 20/1.05 = 11.90$ euros. Check: buying $\Delta = 0.5$ shares costs €50, financed by borrowing $0.5 \times 80/1.05 = 38.10$ euros; the net cost, €11.90, is the price of the option.
 
-The surprising thing is that the real probability of an up move does not appear: the price comes from replication, not from preferences. $q$ is the risk-neutral measure $Q$ of chapter 3. Chaining many periods with $u = e^{\sigma\sqrt{\Delta t}}$ and $d = 1/u$, the tree converges to the Black–Scholes formula (chapter 6). A useful relationship that does not depend on any model is **put-call parity**: $C - P = S_0 - K e^{-rT}$.
+The surprising thing is that the real probability of an up move does not appear: the price comes from replication, not from preferences. $q$ is the risk-neutral measure $Q$ of chapter 3. Chaining many periods with $u = e^{\sigma\sqrt{\Delta t}}$ and $d = 1/u$, the tree converges to the Black–Scholes formula (chapter 6). A useful relationship that does not depend on the price model, only on the absence of arbitrage, is **put-call parity**: for European call and put options with the same strike and maturity, on a stock that pays no dividends, $C - P = S_0 - K e^{-rT}$. With a continuous dividend yield $q$, $S_0$ is replaced by $S_0 e^{-qT}$.
 
 **The Black–Scholes formula.** If the stock price follows the geometric Brownian motion of chapter 4, with constant volatility $\sigma$, and one can trade without costs and borrow at rate $r$, the limit of the tree gives the price of a European call option (Black and Scholes, 1973):
 
@@ -2036,7 +2036,7 @@ The assumptions are strong. Volatility is not constant (chapter 7) and returns h
 
 ## Topic D · Stationarity and cointegration
 
-A series is **stationary** if its distribution does not change over time. Prices are not (their variance grows over time, chapter 4), but returns approximately are; that is why statistics is done with returns (chapter 10). The Dickey–Fuller test (1979) checks whether a series has a **unit root**, that is, whether it behaves like a random walk.
+A series is **stationary** if its distribution does not change over time. The prices of most assets are not (their variance grows over time, chapter 4), while their returns usually are, approximately, something worth testing in each case; that is why statistics is done with returns (chapter 10). The Dickey–Fuller test (1979) checks whether a series has a **unit root**, that is, whether it behaves like a random walk.
 
 Two non-stationary prices are **cointegrated** if some linear combination of them, $s_t = P^A_t - \beta P^B_t$, is stationary (Engle and Granger, 1987): they can drift apart, but they tend to return to their relationship. This is the basis of **pairs trading**. Cointegration and correlation are different things: two assets can have highly correlated returns and prices that separate without limit, or the other way round.
 

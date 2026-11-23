@@ -176,7 +176,7 @@
     correcta: 1
     explicacion: 'For an even-odds bet, $f^* = p - q = 0.6 - 0.4 = 0.2$.'
   - pregunta: 'In the continuous version, what growth rate is obtained by betting **twice** the Kelly fraction?'
-    opciones: ['Twice that of Kelly', 'The same as with Kelly', 'Approximately zero', 'Infinite']
+    opciones: ['Twice that of Kelly', 'The same as with Kelly', 'Zero', 'Infinite']
     correcta: 2
     explicacion: 'With $g(f) = f\mu - f^2\sigma^2/2$ and $f^* = \mu/\sigma^2$, $g(2f^*) = 0$. Betting even more gives negative growth: risking too much destroys capital.'
   - pregunta: 'What share of the maximum growth does «half Kelly» (betting $f^*/2$) keep, in the continuous version?'

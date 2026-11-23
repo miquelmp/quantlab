@@ -176,7 +176,7 @@
     correcta: 1
     explicacion: 'Para una apuesta a la par, $f^* = p - q = 0{,}6 - 0{,}4 = 0{,}2$.'
   - pregunta: 'En la versión continua, ¿qué tasa de crecimiento se obtiene apostando el **doble** de la fracción de Kelly?'
-    opciones: ['El doble que con Kelly', 'La misma que con Kelly', 'Aproximadamente cero', 'Infinita']
+    opciones: ['El doble que con Kelly', 'La misma que con Kelly', 'Cero', 'Infinita']
     correcta: 2
     explicacion: 'Con $g(f) = f\mu - f^2\sigma^2/2$ y $f^* = \mu/\sigma^2$, $g(2f^*) = 0$. Apostar aún más da crecimiento negativo: arriesgar de más destruye capital.'
   - pregunta: '¿Qué parte del crecimiento máximo conserva el «medio Kelly» (apostar $f^*/2$), en la versión continua?'
