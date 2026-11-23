@@ -9,7 +9,7 @@
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
 import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
-import { fmtPct, fmtNum } from '../lib/format';
+import { fmtPct, fmtNum, fmtEur } from '../lib/format';
 
 export interface S3 extends Record<string, number> { n: number; prize: number; seed: number }
 
@@ -95,7 +95,7 @@ function steps(n: number): number[] {
 }
 
 const M = { top: 12, right: 16, bottom: 44, left: 56 };
-const eur = (v: number, ctx: ChartCtx, d = 0) => fmtNum(v, d, ctx.fmt) + ' €';
+const eur = (v: number, ctx: ChartCtx, d = 0) => fmtEur(v, d, ctx.fmt);
 const pct = (v: number, ctx: ChartCtx, d = 0) => fmtPct(v, d, ctx.fmt);
 
 export const chart03: ChartDef<S3, D3> = {

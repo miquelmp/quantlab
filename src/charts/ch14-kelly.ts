@@ -11,7 +11,7 @@
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
 import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
-import { fmtPct, fmtNum, fmtEur } from '../lib/format';
+import { fmtPct, fmtNum, fmtEur, withEur } from '../lib/format';
 
 export interface S14 extends Record<string, number> { p: number; b: number; f: number; seed: number }
 
@@ -129,12 +129,12 @@ const SUP: Record<string, string> = { '-': '⁻', '0': '⁰', '1': '¹', '2': '�
 
 /** Riqueza a partir de su log10, legible: 1.234 €, 0,05 €, 10¹⁵ €. */
 export function wealthFromLog10(l: number, ctx: ChartCtx): string {
-  if (!Number.isFinite(l)) return l > 0 ? '∞' : '0 €';
+  if (!Number.isFinite(l)) return l > 0 ? '∞' : withEur('0', ctx.fmt);
   if (l > 9 || l < -3) {
     const e = Math.floor(l);
     const m = 10 ** (l - e);
     const exp = String(e).split('').map((ch) => SUP[ch]).join('');
-    return `${fmtNum(m, 1, ctx.fmt)}·10${exp} €`;
+    return withEur(`${fmtNum(m, 1, ctx.fmt)}·10${exp}`, ctx.fmt);
   }
   const v = 10 ** l;
   return fmtEur(v, v < 10 ? 2 : 0, ctx.fmt);
@@ -142,7 +142,7 @@ export function wealthFromLog10(l: number, ctx: ChartCtx): string {
 
 function tickLabel(e: number, ctx: ChartCtx): string {
   if (e >= -2 && e <= 6) return fmtEur(10 ** e, e < 0 ? -e : 0, ctx.fmt);
-  return `10${String(e).split('').map((ch) => SUP[ch]).join('')} €`;
+  return withEur(`10${String(e).split('').map((ch) => SUP[ch]).join('')}`, ctx.fmt);
 }
 
 const ML = { top: 10, right: 14, bottom: 42, left: 62 };

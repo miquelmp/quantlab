@@ -1,0 +1,110 @@
+# Website metadata for each chapter of the book (English).
+# The text of the chapters is NOT here: it always comes from libro.md (single source).
+# - slug: last part of the URL. Do not change it once published (it breaks links).
+# - publicado: true if the chapter is already on the website; false = «coming soon».
+# - descripcion: summary for search engines and social networks (max. ~160 characters).
+# - requisitos: chapters worth reading first.
+
+capitulos:
+  - numero: 1
+    slug: 1-measuring-what-an-investment-earns
+    publicado: true
+    descripcion: Simple and log returns, how to chain returns without mistakes and why a loss then requires a larger gain.
+    requisitos: []
+  - numero: 2
+    slug: 2-time-value-of-money
+    publicado: true
+    descripcion: Simple and compound interest, present value and discount factor, with an interactive chart to compound and discount in the browser.
+    requisitos: [1]
+  - numero: 3
+    slug: 3-expectation-law-of-large-numbers
+    publicado: true
+    descripcion: What expected value is, what it means and why the law of large numbers turns a small edge into an almost certain result.
+    requisitos: []
+  - numero: 4
+    slug: 4-random-walks-square-root-of-time
+    publicado: true
+    descripcion: The random walk and the square-root-of-time rule, with a fan of simulated paths to see how uncertainty grows.
+    requisitos: [3]
+  - numero: 5
+    slug: 5-normal-distribution-central-limit-theorem
+    publicado: true
+    descripcion: The normal distribution and the central limit theorem, with an animated Galton board and a sum of dice turning into a bell curve.
+    requisitos: [4]
+  - numero: 6
+    slug: 6-monte-carlo
+    publicado: true
+    descripcion: Monte Carlo simulation explained step by step, with standard error, seeds and a simulated savings plan in the browser.
+    requisitos: [1, 3, 5]
+  - numero: 7
+    slug: 7-volatility
+    publicado: true
+    descripcion: What volatility is, how it is calculated from returns and how it is annualized, with two paths with the same trend and different risk.
+    requisitos: [4]
+  - numero: 8
+    slug: 8-sharpe-ratio
+    publicado: true
+    descripcion: "The Sharpe ratio: how much extra return each unit of risk pays, and why the steepest line dominates the others. Chart with draggable funds."
+    requisitos: [7]
+  - numero: 9
+    slug: 9-compound-growth-volatility-drag
+    publicado: true
+    descripcion: "Why the mean return is misleading: volatility drag, the formula g ≈ μ − σ²/2 and 300 simulated wealth paths over 20 years."
+    requisitos: [1, 7]
+  - numero: 10
+    slug: 10-covariance-correlation
+    publicado: true
+    descripcion: "Covariance and correlation between returns, with an interactive scatter plot and the effect of correlation on the volatility of a portfolio."
+    requisitos: [4]
+  - numero: 11
+    slug: 11-diversification
+    publicado: true
+    descripcion: "How and how far diversification reduces risk: the formula for the variance of a portfolio and the floor set by the common correlation."
+    requisitos: [10]
+  - numero: 12
+    slug: 12-efficient-frontier
+    publicado: true
+    descripcion: "Markowitz's efficient frontier: 5,000 random portfolios, the minimum variance portfolio and the maximum Sharpe ratio portfolio, with an editable three-asset table."
+    requisitos: [11]
+  - numero: 13
+    slug: 13-beta-capm-factors
+    publicado: true
+    descripcion: "Beta, the CAPM and the security market line: why, according to the model, only risk linked to the market is rewarded."
+    requisitos: [12]
+  - numero: 14
+    slug: 14-kelly-criterion
+    publicado: true
+    descripcion: "The Kelly criterion with simulations of 1,000 players: how much to risk with an edge and why betting too much leads to ruin."
+    requisitos: [3, 6, 9]
+  - numero: 15
+    slug: 15-fat-tails
+    publicado: true
+    descripcion: "Fat tails: why extreme days are much more frequent than the normal predicts, with 50 years of simulated returns and the Student t."
+    requisitos: [5]
+  - numero: 16
+    slug: 16-value-at-risk-expected-shortfall
+    publicado: true
+    descripcion: "Value at risk and expected shortfall: how much a portfolio can lose on a bad day, what lies beyond the threshold and how a model is checked with its exceptions."
+    requisitos: [5, 15]
+
+temas:
+  - letra: A
+    descripcion: "Backtesting and overfitting: the mistakes that make a strategy look good on past data and how to avoid them."
+    slug: topic-a-backtesting-overfitting
+    publicado: true
+  - letra: B
+    descripcion: "Transaction costs, liquidity and market impact: how much trading costs and why a large order moves the price."
+    slug: topic-b-transaction-costs
+    publicado: true
+  - letra: C
+    descripcion: "The binomial tree: how an option is valued by replicating it, without needing to know the real probability of an up move."
+    slug: topic-c-binomial-tree
+    publicado: true
+  - letra: D
+    descripcion: "Stationarity and cointegration: which series can be modelled directly and how two prices can keep an equilibrium relationship."
+    slug: topic-d-stationarity-cointegration
+    publicado: true
+  - letra: E
+    descripcion: "Maximum drawdown: how much a portfolio can lose from its best moment and why drawdowns must be compared with care."
+    slug: topic-e-maximum-drawdown
+    publicado: true

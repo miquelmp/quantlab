@@ -23,7 +23,7 @@ const html = renderBlocks(extra.nodes, ctx);
 const pageUrl = new URL(url(ctx, `${lang}/proyecto/`), SITE.url).toString();
 const issueUrl = `${SITE.repo}/issues/new?` + new URLSearchParams({
   title: `[Errata] ${extra.title}: `,
-  body: `${extra.title}\n${pageUrl}\n\nSección:\n\nQué está mal:\n\nQué debería decir:\n`,
+  body: `${extra.title}\n${pageUrl}\n\n${t(lang, 'chapter.reportBody')}`,
 }).toString();
 const lastTopic = [...book.topics].reverse().find((x) => x.published);
 ---

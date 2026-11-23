@@ -10,7 +10,7 @@
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
 import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
-import { fmtPct, fmtNum } from '../lib/format';
+import { fmtPct, fmtNum, fmtEur } from '../lib/format';
 
 export interface S4 extends Record<string, number> { p: number; n: number; m: number; seed: number }
 
@@ -97,7 +97,7 @@ export function computeWalk(s: S4): D4 {
 }
 
 const M = { top: 12, right: 16, bottom: 44, left: 52 };
-const eur = (v: number, ctx: ChartCtx, d = 0) => fmtNum(v, d, ctx.fmt) + ' €';
+const eur = (v: number, ctx: ChartCtx, d = 0) => fmtEur(v, d, ctx.fmt);
 const num = (v: number, ctx: ChartCtx, d = 2) => fmtNum(v, d, ctx.fmt);
 
 export const chart04: ChartDef<S4, D4> = {
@@ -152,7 +152,7 @@ export const chart04: ChartDef<S4, D4> = {
       hover(d, s, w, xpx, ctx) {
         const sx = linear([0, d.n], [M.left, w - M.right]);
         const t = Math.round(Math.min(d.n, Math.max(0, sx.invert(xpx))));
-        return { x: sx(t), lines: [ctx.tr('c4.afterN', { n: t }), `${ctx.tr('c4.legendDrift')}: ${eur(S0 + t * d.mu, ctx, 1)}`, `σ√n = ${num(d.sd * Math.sqrt(t), ctx, 2)} €`] };
+        return { x: sx(t), lines: [ctx.tr('c4.afterN', { n: t }), `${ctx.tr('c4.legendDrift')}: ${eur(S0 + t * d.mu, ctx, 1)}`, `σ√n = ${fmtEur(d.sd * Math.sqrt(t), 2, ctx.fmt)}`] };
       },
     },
     {
@@ -192,8 +192,8 @@ export const chart04: ChartDef<S4, D4> = {
   ],
   stats: (d, s, ctx) => [
     { label: ctx.tr('c4.statDrift', { n: d.n }), value: eur(S0 + d.n * d.mu, ctx, 1) },
-    { label: ctx.tr('c4.statSdTheory', { n: d.n }), value: `${num(d.sd * Math.sqrt(d.n), ctx)} €` },
-    { label: ctx.tr('c4.statSdObs'), value: Number.isFinite(d.finalSd) ? `${num(d.finalSd, ctx)} €` : '—' },
+    { label: ctx.tr('c4.statSdTheory', { n: d.n }), value: `${fmtEur(d.sd * Math.sqrt(d.n), 2, ctx.fmt)}` },
+    { label: ctx.tr('c4.statSdObs'), value: Number.isFinite(d.finalSd) ? `${fmtEur(d.finalSd, 2, ctx.fmt)}` : '—' },
     { label: ctx.tr('c4.statAbove'), value: fmtPct(d.above, 0, ctx.fmt) },
   ],
   describe: (d, s, ctx) => ctx.tr('c4.describe', {
@@ -206,7 +206,7 @@ export const chart04: ChartDef<S4, D4> = {
     rows: d.sdN.filter((_, i) => i % 4 === 0 || i === d.sdN.length - 1).map((t) => {
       const i = d.sdN.indexOf(t);
       const v = d.sdObs[i];
-      return [fmtNum(t, 0, ctx.fmt), eur(S0 + t * d.mu, ctx, 1), `${num(d.sd * Math.sqrt(t), ctx)} €`, Number.isFinite(v) ? `${num(v, ctx)} €` : '—'];
+      return [fmtNum(t, 0, ctx.fmt), eur(S0 + t * d.mu, ctx, 1), `${fmtEur(d.sd * Math.sqrt(t), 2, ctx.fmt)}`, Number.isFinite(v) ? `${fmtEur(v, 2, ctx.fmt)}` : '—'];
     }),
   }),
 };

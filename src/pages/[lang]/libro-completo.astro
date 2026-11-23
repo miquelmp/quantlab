@@ -94,7 +94,7 @@ const today = new Date().toLocaleDateString(lang, { year: 'numeric', month: 'lon
       <ol>
         <li><a href="#prefacio">{t(lang, 'full.preface')}</a></li>
         {book.parts.map((p) => (
-          <li><a href={`#parte-${p.number}`}>Parte {p.roman} · {p.title}</a>
+          <li><a href={`#parte-${p.number}`}>{t(lang, 'nav.part')} {p.roman} · {p.title}</a>
             <ol>{chapters.filter((x) => x.c.part === p.number).map((x) => <li><a href={`#capitulo-${x.c.number}`}>{x.c.number}. {x.c.title}</a></li>)}</ol>
           </li>
         ))}
@@ -117,7 +117,7 @@ const today = new Date().toLocaleDateString(lang, { year: 'numeric', month: 'lon
     {book.parts.map((p) => (
       <>
         <section id={`parte-${p.number}`} class="pb-block pb-part">
-          <p class="pb-kicker">Parte {p.roman}</p>
+          <p class="pb-kicker">{t(lang, 'nav.part')} {p.roman}</p>
           <h1>{p.title}</h1>
           {p.question && <p class="pb-question">{p.question}</p>}
           <Fragment set:html={renderBlocks(p.intro, ctx)} />
@@ -204,7 +204,7 @@ const today = new Date().toLocaleDateString(lang, { year: 'numeric', month: 'lon
     <section id="glosario" class="pb-block">
       <h1>{t(lang, 'full.glossary')}</h1>
       <dl class="pb-glossary">
-        {book.glossary.map((g) => <><dt>{g.term}{g.english && <span class="pb-en"> ({g.english})</span>}</dt><dd set:html={renderInline(g.definition, ctx)} /></>)}
+        {[...book.glossary].sort((a, b) => a.term.localeCompare(b.term, lang, { sensitivity: 'base' })).map((g) => <><dt>{g.term}{g.english && <span class="pb-en"> ({g.english})</span>}</dt><dd set:html={renderInline(g.definition, ctx)} /></>)}
       </dl>
     </section>
 

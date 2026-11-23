@@ -13,7 +13,7 @@ export function ogCards(lang: string): { name: string; card: OgCard }[] {
   const list = [{ name: 'portada', card: { site, kicker: t(lang, 'site.pilot'), title: book.title.split(':')[0], footer: t(lang, 'site.tagline') } }];
   for (const c of publishedChapters(book)) {
     const part = book.parts.find((p) => p.number === c.part)!;
-    list.push({ name: c.slug, card: { site, kicker: `${t(lang, 'nav.chapter')} ${c.number} · Parte ${part.roman}`, title: c.title, footer } });
+    list.push({ name: c.slug, card: { site, kicker: `${t(lang, 'nav.chapter')} ${c.number} · ${t(lang, 'nav.part')} ${part.roman}`, title: c.title, footer } });
   }
   for (const tp of book.topics.filter((x) => x.published)) {
     list.push({ name: tp.slug, card: { site, kicker: `${t(lang, 'nav.topic')} ${tp.letter}`, title: tp.title.replace(/\*/g, ''), footer } });

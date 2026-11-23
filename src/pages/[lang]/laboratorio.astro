@@ -59,7 +59,7 @@ const total = groups.reduce((n, g) => n + g.items.length, 0) + topicItems.length
   </div>
   {groups.filter((g) => g.items.length).map((g) => (
     <section class="lab-part" aria-labelledby={`lab-parte-${g.part.number}`}>
-      <h2 id={`lab-parte-${g.part.number}`}>Parte {g.part.roman} · {g.part.title}</h2>
+      <h2 id={`lab-parte-${g.part.number}`}>{t(lang, 'nav.part')} {g.part.roman} · {g.part.title}</h2>
       <ul class="lab-grid">
         {g.items.map((it) => (
           <li class="lab-card">

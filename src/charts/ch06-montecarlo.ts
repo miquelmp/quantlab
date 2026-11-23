@@ -10,7 +10,7 @@
 import type { ChartDef, ChartCtx } from './types';
 import { Rng, normCdf, quantileSorted } from './rng';
 import { linear, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
-import { fmtPct, fmtEur, fmtNum } from '../lib/format';
+import { fmtPct, fmtEur, fmtNum, withEur } from '../lib/format';
 
 export interface S6 extends Record<string, number> { mu: number; sigma: number; years: number; M: number; seed: number }
 
@@ -118,9 +118,9 @@ const pct = (v: number, c: ChartCtx, k = 1) => fmtPct(v, k, c.fmt);
 const eur = (v: number, c: ChartCtx) => fmtEur(v, 0, c.fmt);
 
 function compactEur(v: number, c: ChartCtx): string {
-  if (v >= 1e6) return fmtNum(v / 1e6, 1, c.fmt) + ' M€';
-  if (v >= 1e3) return fmtNum(v / 1e3, 0, c.fmt) + ' k€';
-  return fmtNum(v, 0, c.fmt) + ' €';
+  if (v >= 1e6) return withEur(fmtNum(v / 1e6, 1, c.fmt), c.fmt, 'M');
+  if (v >= 1e3) return withEur(fmtNum(v / 1e3, 0, c.fmt), c.fmt, 'k');
+  return withEur(fmtNum(v, 0, c.fmt), c.fmt);
 }
 
 const MS = { top: 10, right: 12, bottom: 40, left: 40 };

@@ -132,6 +132,12 @@ html.js .no-js-only { display: none !important; }
 }
 .nav-toggle { display: none; }
 .settings { position: relative; }
+.lang-switch { list-style: none; display: flex; gap: 0.25rem; margin: 0; padding: 0; }
+.lang-switch a {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px;
+  border: 1px solid var(--border); border-radius: 8px; color: var(--text-2); text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
+}
+.lang-switch a:hover { background: var(--surface-2); color: var(--text); }
 .settings > summary { list-style: none; }
 .settings > summary::-webkit-details-marker { display: none; }
 .settings-panel {

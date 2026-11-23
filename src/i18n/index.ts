@@ -1,7 +1,8 @@
 import es from './es.json';
+import en from './en.json';
 import { getLang } from './config';
 
-const DICTS: Record<string, Record<string, string>> = { es };
+const DICTS: Record<string, Record<string, string>> = { es, en };
 
 /** Devuelve el texto de interfaz `key` en el idioma `lang`, sustituyendo {variables}. */
 export function t(lang: string, key: string, vars: Record<string, string | number> = {}): string {

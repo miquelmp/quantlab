@@ -8,7 +8,7 @@
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
 import { linear, ticks, pathFrom, areaFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
-import { fmtNum, fmtPct } from '../lib/format';
+import { fmtNum, fmtPct, fmtEur } from '../lib/format';
 
 export interface SE extends Record<string, number> { mu: number; sigma: number; years: number; seed: number }
 export const STEPS_PER_YEAR = 52;
@@ -85,7 +85,7 @@ export const chartE: ChartDef<SE, DE> = {
         const mx = sx(d.ts[d.mddAt]);
         return svgOpen(w, h, ctx.tr('tE.panelTop'), ctx.tr('tE.descTop', { n: s.years, f: fmtNum(d.W[d.W.length - 1], 0, ctx.fmt) }), 'tEa') +
           legend(items, M.left, M.top + 10, w - M.left - M.right) +
-          axisY(sy, M.left, w - M.right, { fmt: ctx.fmt, ticks: ticks(lo * 0.95, hi * 1.05, 3), format: (v) => fmtNum(v, 0, ctx.fmt) + ' €' }) +
+          axisY(sy, M.left, w - M.right, { fmt: ctx.fmt, ticks: ticks(lo * 0.95, hi * 1.05, 3), format: (v) => fmtEur(v, 0, ctx.fmt) }) +
           axisX(sx, h - M.bottom, M.top, { fmt: ctx.fmt, label: ctx.tr('tE.axisYears') }) +
           `<path class="band" d="${areaFrom(d.ts, d.W, d.peak, sx, sy)}"/>` +
           `<path class="muted line dash" d="${pathFrom(d.ts, d.peak, sx, sy)}"/>` +
@@ -96,7 +96,7 @@ export const chartE: ChartDef<SE, DE> = {
       hover(d, s, w, xpx, ctx) {
         const sx = linear([0, s.years], [M.left, w - M.right]);
         const i = Math.round(Math.min(d.ts.length - 1, Math.max(0, sx.invert(xpx) * STEPS_PER_YEAR)));
-        return { x: sx(d.ts[i]), lines: [yrs(d.ts[i], ctx), `${ctx.tr('tE.legendValue')}: ${fmtNum(d.W[i], 1, ctx.fmt)} €`, `${ctx.tr('tE.legendDd')}: ${pct(d.dd[i], ctx)}`] };
+        return { x: sx(d.ts[i]), lines: [yrs(d.ts[i], ctx), `${ctx.tr('tE.legendValue')}: ${fmtEur(d.W[i], 1, ctx.fmt)}`, `${ctx.tr('tE.legendDd')}: ${pct(d.dd[i], ctx)}`] };
       },
     },
     {
@@ -146,7 +146,7 @@ export const chartE: ChartDef<SE, DE> = {
     const rows: string[][] = [];
     for (let y = 0; y <= s.years; y += Math.max(1, Math.round(s.years / 10))) {
       const i = y * STEPS_PER_YEAR;
-      rows.push([String(y), fmtNum(d.W[i], 1, ctx.fmt) + ' €', fmtNum(d.peak[i], 1, ctx.fmt) + ' €', pct(d.dd[i], ctx)]);
+      rows.push([String(y), fmtEur(d.W[i], 1, ctx.fmt), fmtEur(d.peak[i], 1, ctx.fmt), pct(d.dd[i], ctx)]);
     }
     return { caption: ctx.tr('tE.tableCaption'), head: [ctx.tr('tE.axisYears'), ctx.tr('tE.legendValue'), ctx.tr('tE.legendPeak'), ctx.tr('tE.legendDd')], rows };
   },

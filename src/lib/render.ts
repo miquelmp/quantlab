@@ -148,7 +148,7 @@ function transformMd(root: Root, ctx: RenderCtx): void {
     if (node.type === 'text' && parent && index !== undefined && parent.type !== 'link' && parent.type !== 'heading') {
       // Referencias cruzadas «capítulo 9» / «tema B» → enlace, solo a páginas publicadas.
       const value = (node as Text).value;
-      const re = /\b(?:[Cc]ap[ií]tulo\s+(\d{1,2})|[Tt]ema\s+([A-E])|((?:1[6-9]|20)\d\d[a-z]?))\b/g;
+      const re = /\b(?:(?:[Cc]ap[ií]tulo|[Cc]hapter)\s+(\d{1,2})|(?:[Tt]ema|[Tt]opic)\s+([A-E])|((?:1[6-9]|20)\d\d[a-z]?))\b/g;
       let before: string | null = null;
       const pieces: PhrasingContent[] = [];
       let last = 0;

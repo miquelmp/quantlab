@@ -9,7 +9,7 @@
 import type { ChartDef, ChartCtx } from './types';
 import { Rng } from './rng';
 import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
-import { fmtPct, fmtNum } from '../lib/format';
+import { fmtPct, fmtNum, fmtEur } from '../lib/format';
 
 export interface S9 extends Record<string, number> { mu: number; sigma: number; seed: number }
 
@@ -83,7 +83,7 @@ export function computeDrag(s: S9): D9 {
 
 const M = { top: 12, right: 16, bottom: 44, left: 56 };
 const pct = (v: number, ctx: ChartCtx, d = 1) => fmtPct(v, d, ctx.fmt);
-const eur = (v: number, ctx: ChartCtx) => fmtNum(v, 0, ctx.fmt) + ' €';
+const eur = (v: number, ctx: ChartCtx) => fmtEur(v, 0, ctx.fmt);
 const last = (a: number[]) => a[a.length - 1];
 
 export const chart09: ChartDef<S9, D9> = {

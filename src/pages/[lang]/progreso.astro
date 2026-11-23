@@ -34,7 +34,7 @@ const strings = tPrefix(lang, 'progress.');
     <p class="js-only"><a class="btn resume-btn" data-resume hidden href="#">{t(lang, 'progress.resume')}: <span data-resume-label></span></a></p>
     {book.parts.map((p) => (
       <section class="progress-part" aria-labelledby={`pp-${p.number}`}>
-        <h2 id={`pp-${p.number}`}>Parte {p.roman} · {p.title} <span class="progress-pct js-only" data-part-pct={p.number}></span></h2>
+        <h2 id={`pp-${p.number}`}>{t(lang, 'nav.part')} {p.roman} · {p.title} <span class="progress-pct js-only" data-part-pct={p.number}></span></h2>
         <ul class="progress-list">
           {p.chapters.map((n) => {
             const c = book.chapters.find((x) => x.number === n)!;

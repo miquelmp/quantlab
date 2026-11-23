@@ -3,6 +3,7 @@ import 'katex/dist/katex.min.css';
 import '../styles/global.css';
 import { SITE, ANALYTICS_GOATCOUNTER } from '../config';
 import { LANGS, getLang } from '../i18n/config';
+import { pathIn } from '../i18n/paths';
 import { t, tPrefix } from '../i18n';
 import { loadBook } from '../lib/book';
 import { renderInline } from '../lib/render';
@@ -55,7 +56,7 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
   {LANGS.length > 1 && LANGS.map((l) => (
-    <link rel="alternate" hreflang={l.htmlLang} href={new URL(u(`${l.code}/${path}`), SITE.url).toString()} />
+    <link rel="alternate" hreflang={l.htmlLang} href={new URL(u(`${l.code}/${pathIn(path, lang, l.code)}`), SITE.url).toString()} />
   ))}
   <meta property="og:type" content={ogType} />
   <meta property="og:title" content={title} />
@@ -107,6 +108,13 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
           {nav.map((n) => <li><a href={n.href} aria-current={current === n.key ? 'page' : undefined}>{n.label}</a></li>)}
         </ul>
       </nav>
+      {LANGS.length > 1 && (
+        <ul class="lang-switch">
+          {LANGS.filter((l) => l.code !== lang).map((l) => (
+            <li><a href={u(`${l.code}/${pathIn(path, lang, l.code)}`)} hreflang={l.htmlLang} lang={l.htmlLang}><span aria-hidden="true">{l.code.toUpperCase()}</span><span class="sr-only">{l.name}</span></a></li>
+          ))}
+        </ul>
+      )}
       <details class="settings js-only">
         <summary aria-label={t(lang, 'settings.label')} title={t(lang, 'settings.label')}><span aria-hidden="true">Aa</span></summary>
         <div class="settings-panel">

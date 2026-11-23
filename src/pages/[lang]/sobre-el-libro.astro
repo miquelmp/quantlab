@@ -22,7 +22,7 @@ const sections = book.preface.map((s) => ({ ...s, html: renderBlocks(s.nodes, ct
     <h1>{t(lang, 'about.title')}</h1>
     <p class="chapter-intro"><strong>{book.title}</strong>. {book.subtitle}.</p>
     <p class="disclaimer"><Fragment set:html={renderInline(book.disclaimer, ctx)} /></p>
-    <h2 id="prefacio">Prefacio</h2>
+    <h2 id="prefacio">{t(lang, 'full.preface')}</h2>
     <Fragment set:html={intro} />
     {sections.map((s) => (
       <section>

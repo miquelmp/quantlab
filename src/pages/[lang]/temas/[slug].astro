@@ -30,7 +30,7 @@ const pageTitle = `${t(lang, 'nav.topic')} ${letter} · ${tp.title.replace(/\*/g
 const pageUrl = new URL(url(ctx, `${lang}/temas/${tp.slug}/`), SITE.url).toString();
 const issueUrl = `${SITE.repo}/issues/new?` + new URLSearchParams({
   title: `[Errata] ${t(lang, 'nav.topic')} ${letter}: `,
-  body: `${pageTitle}\n${pageUrl}\n\nSección:\n\nQué está mal:\n\nQué debería decir:\n`,
+  body: `${pageTitle}\n${pageUrl}\n\n${t(lang, 'chapter.reportBody')}`,
 }).toString();
 const chartId = CHART_BY_TOPIC[letter];
 const txt = (k: string) => [{ type: 'text', value: t(lang, `t${letter}.${k}`) }] as any;

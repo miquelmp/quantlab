@@ -1,0 +1,211 @@
+# Quick check questions (RF-EJ-07): 2 to 4 per chapter, multiple choice and different from the
+# book's exercises. «correcta» is the position of the right option, counting from 0. Markdown and
+# formulas between $…$ are allowed; write each text between single quotes.
+1:
+  - pregunta: 'A stock falls 50%. What rise does it then need to get back to the initial price?'
+    opciones: ['50%', '75%', '100%', '150%']
+    correcta: 2
+    explicacion: 'After falling to half, to get back you must double: $0.5 \times (1 + 1) = 1$, a rise of 100%.'
+  - pregunta: 'Which returns can be **added** to obtain the return over several consecutive periods?'
+    opciones: ['Simple returns', 'Log returns', 'Both', 'Neither: you always have to multiply']
+    correcta: 1
+    explicacion: 'Log returns add up over time, because $\ln(P_2/P_0) = \ln(P_1/P_0) + \ln(P_2/P_1)$. Simple returns are chained by multiplying factors $(1 + R)$.'
+  - pregunta: 'A portfolio has 60% in A, which gains 10%, and 40% in B, which loses 5%. What simple return does the portfolio obtain?'
+    opciones: ['2.5%', '4%', '5%', '7%']
+    correcta: 1
+    explicacion: 'Simple returns are combined across assets with the weighted average: $0.6 \times 10\% + 0.4 \times (-5\%) = 4\%$.'
+2:
+  - pregunta: 'You invest €1,000 at 5% a year, reinvesting the interest. How much do you have after two years?'
+    opciones: ['€1,050.00', '€1,100.00', '€1,102.50', '€1,105.00']
+    correcta: 2
+    explicacion: '$1{,}000 \times 1.05^2 = 1{,}102.50$ euros. The extra €2.50 compared with simple interest is the interest on the interest.'
+  - pregunta: 'With a rate of 4% a year, how much is a certain payment of €1,000 in one year worth today?'
+    opciones: ['€960.00', '€961.54', '€996.00', '€1,040.00']
+    correcta: 1
+    explicacion: 'You discount by dividing: $1{,}000 / 1.04 = 961.54$ euros. Subtracting 4% (€960) is not the same.'
+  - pregunta: 'If the interest rate rises, what happens to the present value of a fixed future payment?'
+    opciones: ['It rises', 'It falls', 'It does not change', 'It depends on whether the payment is in euros or dollars']
+    correcta: 1
+    explicacion: 'The present value is $C/(1 + i)^n$: a larger denominator gives a smaller value. That is why bonds lose value when rates rise.'
+3:
+  - pregunta: 'A bet makes you win €10 with probability 0.3 and lose €5 with probability 0.7. What is its expected value?'
+    opciones: ['+€5', '+€0.50', '−€0.50', '−€3.50']
+    correcta: 2
+    explicacion: '$0.3 \times 10 + 0.7 \times (-5) = 3 - 3.5 = -0.50$ euros. Although you win twice what you lose, you lose more often.'
+  - pregunta: 'A fair coin has come up heads five times in a row. What is the probability of heads on the next toss?'
+    opciones: ['Less than 50%, because tails is «due»', '50%', 'More than 50%, because there is a streak', 'It cannot be known']
+    correcta: 1
+    explicacion: 'Tosses are independent: the coin has no memory. The law of large numbers is about long-run averages, not about making up for streaks (the «gambler''s fallacy»).'
+  - pregunta: 'What does the law of large numbers say?'
+    opciones: ['That after many losses come gains', 'That the average of many independent repetitions approaches the expected value', 'That every result ends up being normal', 'That the expected value is the most likely result']
+    correcta: 1
+    explicacion: 'The sample mean converges to the expected value as the number of independent repetitions grows. It says nothing about what will happen in a particular play.'
+4:
+  - pregunta: 'With a daily volatility of 1% and independent daily returns, what is the volatility over 100 sessions?'
+    opciones: ['1%', '10%', '50%', '100%']
+    correcta: 1
+    explicacion: 'Volatility grows with the square root of time: $1\% \times \sqrt{100} = 10\%$.'
+  - pregunta: 'By how much must the horizon be multiplied for the cumulative volatility to double?'
+    opciones: ['By 2', 'By $\sqrt{2}$', 'By 4', 'By 8']
+    correcta: 2
+    explicacion: 'If $\sigma_T = \sigma\sqrt{T}$, doubling $\sigma_T$ requires $\sqrt{T}$ to double, that is, $T$ four times larger.'
+  - pregunta: 'In a random walk without drift that starts at 100, what is the **expected** position after 1,000 steps?'
+    opciones: ['100', 'More than 100, because time is on your side', 'Less than 100', 'Impossible to say']
+    correcta: 0
+    explicacion: 'Without drift, each step has zero mean, so the expected position does not change. What grows with the steps is the spread around 100.'
+5:
+  - pregunta: 'In a normal distribution, roughly what proportion of the values lies within two standard deviations of the mean?'
+    opciones: ['68%', '90%', '95%', '99.7%']
+    correcta: 2
+    explicacion: 'It is the 68-95-99.7 rule: 68% within one standard deviation, 95% within two and 99.7% within three.'
+  - pregunta: 'An asset has a normal annual return with mean 8% and standard deviation 20%. Roughly what is the probability of losing more than 32% in a year?'
+    opciones: ['0.15%', '2.5%', '5%', '16%']
+    correcta: 1
+    explicacion: '$-32\%$ is $(-32 - 8)/20 = -2$ standard deviations away. Outside ±2 lies 5%, half on each side: 2.5%.'
+  - pregunta: 'What does the central limit theorem guarantee?'
+    opciones: ['That daily returns are normal', 'That the sum of many independent variables with finite variance looks like a normal, even if they are not normal themselves', 'That the mean of a sample is always exact', 'That there are no extreme events']
+    correcta: 1
+    explicacion: 'The theorem is about sums or means of many independent variables. It does not say that each variable is normal, nor that their tails are (chapter 15).'
+6:
+  - pregunta: 'A Monte Carlo simulation with 10,000 scenarios has a standard error of 0.02. How many scenarios are needed to bring it down to 0.01?'
+    opciones: ['20,000', '40,000', '100,000', '1,000,000']
+    correcta: 1
+    explicacion: 'The standard error is proportional to $1/\sqrt{M}$: halving it requires multiplying the scenarios by 4.'
+  - pregunta: 'With 10,000 random points you get an estimate of $\pi$ of 3.15. The standard error with those points is about 0.016. What do you conclude?'
+    opciones: ['The program has a bug', 'The deviation (0.008) is half a standard error: normal chance', 'You should change the seed until you get 3.14', 'The method does not work for computing $\pi$']
+    correcta: 1
+    explicacion: '$3.15 - 3.1416 \approx 0.008$, half a standard error. That is to be expected; looking for the seed that «comes out right» would be cheating.'
+  - pregunta: 'What does the Monte Carlo method consist of?'
+    opciones: ['Solving the exact formula with a computer', 'Estimating a quantity by averaging the results of many random simulations', 'Choosing the best possible scenario', 'Predicting the next price']
+    correcta: 1
+    explicacion: 'Many random scenarios are simulated and the quantity of interest is averaged. By the law of large numbers, the average approaches the value sought.'
+7:
+  - pregunta: 'A stock has a daily volatility of 1.5%. With 252 sessions a year and independent returns, what is its annual volatility?'
+    opciones: ['1.5%', '18%', '23.8%', '378%']
+    correcta: 2
+    explicacion: '$1.5\% \times \sqrt{252} \approx 1.5\% \times 15.87 = 23.8\%$. Multiplying by 252 (378%) confuses the rule for variance with the rule for volatility.'
+  - pregunta: 'When estimating the variance from a sample, why divide by $N - 1$ and not by $N$?'
+    opciones: ['Out of habit, it makes no difference', 'Because the mean has been estimated from the same data and that uses up one degree of freedom', 'To make the volatility come out smaller', 'Because the first data point does not count']
+    correcta: 1
+    explicacion: 'Deviations from the sample mean are somewhat smaller than from the true mean. Dividing by $N - 1$ corrects that bias; with plenty of data the difference is negligible.'
+  - pregunta: 'What does it mean that volatility clusters?'
+    opciones: ['That all stocks have the same volatility', 'That turbulent periods tend to be followed by turbulent periods, and calm ones by calm ones', 'That volatility never changes', 'That rises and falls alternate']
+    correcta: 1
+    explicacion: 'Volatility changes over time and is persistent. That is why an estimate made in calm times can fall short when a crisis arrives.'
+8:
+  - pregunta: 'A fund returns 9% with a volatility of 12%, and the risk-free rate is 3%. What is its Sharpe ratio?'
+    opciones: ['0.25', '0.5', '0.75', '1']
+    correcta: 1
+    explicacion: '$(9\% - 3\%) / 12\% = 0.5$.'
+  - pregunta: 'If you invest twice your capital in that fund, borrowing the rest at the risk-free rate, what happens to the Sharpe ratio?'
+    opciones: ['It doubles', 'It halves', 'It does not change', 'It becomes negative']
+    correcta: 2
+    explicacion: 'Excess return and volatility double at the same time, so the ratio does not change. Leverage does not improve the Sharpe ratio.'
+  - pregunta: 'With four years of annual data, roughly what is the standard error of an annual Sharpe ratio close to zero?'
+    opciones: ['0.125', '0.25', '0.5', '2']
+    correcta: 2
+    explicacion: 'It is approximately $1/\sqrt{T} = 1/\sqrt{4} = 0.5$. A Sharpe ratio of 0.5 measured over four years cannot be told apart from zero.'
+9:
+  - pregunta: 'An investment rises 50% one year and falls 50% the next. What is the cumulative result?'
+    opciones: ['0%', '−25%', '+25%', '−50%']
+    correcta: 1
+    explicacion: '$1.5 \times 0.5 = 0.75$: 25% is lost, even though the arithmetic mean of the two returns is 0%.'
+  - pregunta: 'An asset has a mean annual return of 10% and a volatility of 30%. Roughly what compound growth rate can be expected?'
+    opciones: ['10%', '8.5%', '5.5%', '1%']
+    correcta: 2
+    explicacion: '$g \approx \mu - \sigma^2/2 = 10\% - 0.09/2 = 5.5\%$. Volatility drag eats almost half.'
+  - pregunta: 'How do the geometric and arithmetic means of a set of returns compare?'
+    opciones: ['The geometric mean is never larger than the arithmetic mean', 'The geometric mean is always larger', 'They are always equal', 'It depends on the sign of the mean']
+    correcta: 0
+    explicacion: 'The geometric mean is smaller or equal, and they only coincide if all the returns are equal. The difference grows with variability.'
+10:
+  - pregunta: 'Two assets have volatilities of 10% and 20%, and their covariance is 0.006. What is their correlation?'
+    opciones: ['0.03', '0.3', '0.6', '3']
+    correcta: 1
+    explicacion: '$\rho = 0.006 / (0.10 \times 0.20) = 0.3$.'
+  - pregunta: 'Between which values does a correlation always lie?'
+    opciones: ['Between 0 and 1', 'Between −1 and 1', 'Between 0 and infinity', 'It has no limits']
+    correcta: 1
+    explicacion: 'Correlation is the standardized covariance: it is 1 with a perfect increasing linear relationship, −1 with a perfect decreasing one and 0 with no linear relationship.'
+  - pregunta: 'If the correlation between two variables is zero, what can be said?'
+    opciones: ['That they are independent', 'That there is no linear relationship between them, although there may be another relationship', 'That one never influences the other', 'That they have the same volatility']
+    correcta: 1
+    explicacion: 'Correlation only measures linear relationships. For example, $Y = X^2$ with $X$ symmetric around zero has zero correlation and depends entirely on $X$.'
+11:
+  - pregunta: 'You split your money equally among four independent assets, each with a volatility of 20%. What is the volatility of the portfolio?'
+    opciones: ['5%', '10%', '15%', '20%']
+    correcta: 1
+    explicacion: 'With $N$ identical independent assets, the volatility is $\sigma/\sqrt{N} = 20\% / 2 = 10\%$.'
+  - pregunta: 'If all assets have correlation 1 with each other, how much does spreading money among them reduce volatility?'
+    opciones: ['Not at all', 'By half', 'Depending on the number of assets, as $1/\sqrt{N}$', 'Down to zero']
+    correcta: 0
+    explicacion: 'With correlation 1 they all move together: there is no offsetting and diversification does not reduce risk.'
+  - pregunta: 'Assets with 30% volatility and correlation 0.25 among all of them. With very many assets in equal parts, what volatility does the portfolio tend to?'
+    opciones: ['0%', '7.5%', '15%', '30%']
+    correcta: 2
+    explicacion: 'The variance tends to $\sigma^2\rho$, so the volatility tends to $\sigma\sqrt{\rho} = 30\% \times 0.5 = 15\%$: it is the common risk, which cannot be diversified away.'
+12:
+  - pregunta: 'With two assets with correlation −1, what minimum volatility can a portfolio of the two have (without short positions)?'
+    opciones: ['Zero', 'That of the less volatile asset', 'The average of the two', 'It cannot go below half of the smaller one']
+    correcta: 0
+    explicacion: 'With correlation −1, choosing the weights well ($w\sigma_1 = (1 - w)\sigma_2$) the movements cancel out completely and the portfolio has no risk.'
+  - pregunta: 'What makes a portfolio efficient?'
+    opciones: ['Having the highest possible return', 'That no other portfolio gives more expected return with the same risk', 'Having the lowest possible risk', 'Having equal weights']
+    correcta: 1
+    explicacion: 'Efficient portfolios form the frontier: for their level of risk, there is nothing better. The minimum variance portfolio is just one of them.'
+  - pregunta: 'If you can also lend and borrow at the risk-free rate, which portfolio of risky assets should be combined with it?'
+    opciones: ['The minimum variance one', 'The maximum return one', 'The one with the highest Sharpe ratio (the tangency portfolio)', 'The equal-weight one']
+    correcta: 2
+    explicacion: 'Combining the risk-free asset with the highest Sharpe portfolio gives the steepest line: the best return for each level of risk.'
+13:
+  - pregunta: 'A stock has a beta of 1.5. If the market rises 10%, what rise can be expected from the stock, on average?'
+    opciones: ['6.7%', '10%', '15%', '25%']
+    correcta: 2
+    explicacion: 'Beta measures sensitivity to the market: $1.5 \times 10\% = 15\%$ on average, with deviations due to the stock''s own risk.'
+  - pregunta: 'With a risk-free rate of 3% and a market premium of 6%, what expected return does the CAPM give an asset with beta 0.5?'
+    opciones: ['3%', '4.5%', '6%', '9%']
+    correcta: 2
+    explicacion: '$E[R] = 3\% + 0.5 \times 6\% = 6\%$.'
+  - pregunta: 'What is the beta of the market portfolio itself?'
+    opciones: ['0', '0.5', '1', 'It depends on the year']
+    correcta: 2
+    explicacion: 'Beta is $\operatorname{Cov}(R, R_m)/\operatorname{Var}(R_m)$; for the market itself, the covariance is its variance and the ratio equals 1.'
+14:
+  - pregunta: 'An even-odds bet is won with probability 0.6. What fraction of capital does the Kelly criterion recommend?'
+    opciones: ['10%', '20%', '40%', '60%']
+    correcta: 1
+    explicacion: 'For an even-odds bet, $f^* = p - q = 0.6 - 0.4 = 0.2$.'
+  - pregunta: 'In the continuous version, what growth rate is obtained by betting **twice** the Kelly fraction?'
+    opciones: ['Twice that of Kelly', 'The same as with Kelly', 'Approximately zero', 'Infinite']
+    correcta: 2
+    explicacion: 'With $g(f) = f\mu - f^2\sigma^2/2$ and $f^* = \mu/\sigma^2$, $g(2f^*) = 0$. Betting even more gives negative growth: risking too much destroys capital.'
+  - pregunta: 'What share of the maximum growth does «half Kelly» (betting $f^*/2$) keep, in the continuous version?'
+    opciones: ['25%', '50%', '75%', '100%']
+    correcta: 2
+    explicacion: '$g(f^*/2) = \tfrac{3}{8}\,\mu^2/\sigma^2$, against $\tfrac12\,\mu^2/\sigma^2$ with Kelly: 75% of the growth with half the volatility.'
+15:
+  - pregunta: 'What is the kurtosis of a normal distribution?'
+    opciones: ['0', '1', '3', '10']
+    correcta: 2
+    explicacion: 'The kurtosis $E[(X-\mu)^4]/\sigma^4$ equals 3 for the normal. Daily returns usually have quite a lot more: fat tails.'
+  - pregunta: 'What does it mean that returns have fat tails?'
+    opciones: ['That they are very volatile', 'That extreme moves are much more frequent than a normal with the same volatility predicts', 'That their mean is negative', 'That there are never quiet days']
+    correcta: 1
+    explicacion: 'With the same volatility, events of many standard deviations appear more often than under the normal (and, to compensate, there are more quiet days).'
+  - pregunta: 'Under normality, the probability of a daily fall of more than five standard deviations is about $2.9 \times 10^{-7}$. With 252 sessions a year, how often could one be expected?'
+    opciones: ['Every year', 'Every 100 years', 'Every 1,000 years', 'Every 14,000 years or so']
+    correcta: 3
+    explicacion: '$1 / (2.9 \times 10^{-7} \times 252) \approx 13{,}700$ years. In real markets several have been seen in a few decades: the normal underestimates the tails.'
+16:
+  - pregunta: 'A €1,000,000 portfolio has a daily volatility of 1% and zero mean. What is its one-day 99% VaR, assuming normality?'
+    opciones: ['€10,000', '€16,450', '€23,260', '€30,900']
+    correcta: 2
+    explicacion: '$2.326 \times 1\% \times 1{,}000{,}000 = 23{,}260$ euros. With 1.645 (€16,450) it would be the 95% VaR.'
+  - pregunta: 'What does expected shortfall report that VaR does not?'
+    opciones: ['The average loss on the days when VaR is exceeded', 'The maximum gain', 'The probability of loss', 'The volatility']
+    correcta: 0
+    explicacion: 'VaR is a threshold: it does not say how much is lost beyond it. Expected shortfall is the average of those tail losses.'
+  - pregunta: 'How many times, on average, would a well-calibrated 99% VaR be exceeded in 250 sessions?'
+    opciones: ['Never', '1', '2.5', '25']
+    correcta: 2
+    explicacion: 'Each day there is a 1% probability: $250 \times 0.01 = 2.5$ exceptions on average. Never exceeding it would also be suspicious (too conservative).'

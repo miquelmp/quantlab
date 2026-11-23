@@ -8,7 +8,7 @@
 import type { ChartDef, ChartCtx } from './types';
 import { linear, pathFrom, axisX, axisY, legend, legendHeight, svgOpen, r1, esc, panelH } from './svg';
 import { normCdf } from './rng';
-import { fmtNum, fmtPct } from '../lib/format';
+import { fmtNum, fmtPct, fmtEur } from '../lib/format';
 
 export interface SC extends Record<string, number> { S: number; K: number; sigma: number; T: number; r: number; N: number }
 export interface DC {
@@ -46,7 +46,7 @@ export function binomialCall(S: number, K: number, sigma: number, T: number, r: 
 }
 
 const M = { top: 12, right: 16, bottom: 44, left: 56 };
-const eur = (v: number, ctx: ChartCtx, d = 2) => fmtNum(v, d, ctx.fmt) + ' €';
+const eur = (v: number, ctx: ChartCtx, d = 2) => fmtEur(v, d, ctx.fmt);
 const pct = (v: number, ctx: ChartCtx) => fmtPct(v, 0, ctx.fmt);
 const SAMPLES = 160;
 
@@ -101,7 +101,7 @@ export const chartC: ChartDef<SC, DC> = {
         const px = sx(s.S);
         return svgOpen(w, h, ctx.tr('tC.panelLeft'), ctx.tr('tC.descLeft', { S: eur(s.S, ctx, 0), K: eur(s.K, ctx, 0), c: eur(d.call, ctx), p: eur(d.put, ctx) }), 'tCa') +
           legend(items, M.left, M.top + 10, w - M.left - M.right) +
-          axisY(sy, M.left, w - M.right, { fmt: ctx.fmt, format: (v) => fmtNum(v, 0, ctx.fmt) + ' €' }) +
+          axisY(sy, M.left, w - M.right, { fmt: ctx.fmt, format: (v) => fmtEur(v, 0, ctx.fmt) }) +
           axisX(sx, h - M.bottom, M.top, { fmt: ctx.fmt, label: ctx.tr('tC.axisSpot'), format: (v) => fmtNum(v, 0, ctx.fmt) }) +
           `<line class="ref" x1="${r1(sx(s.K))}" x2="${r1(sx(s.K))}" y1="${M.top + lh + 8}" y2="${h - M.bottom}"/>` +
           `<text class="value-label small" x="${r1(sx(s.K) + 4)}" y="${M.top + lh + 20}">K</text>` +
@@ -142,7 +142,7 @@ export const chartC: ChartDef<SC, DC> = {
         const showDots = s.N <= 40;
         return svgOpen(w, h, ctx.tr('tC.panelRight'), ctx.tr('tC.descRight', { n: s.N, t: Number.isFinite(lastV) ? eur(lastV, ctx) : '—', c: eur(d.call, ctx) }), 'tCb') +
           legend(items, M.left, M.top + 10, w - M.left - M.right) +
-          axisY(sy, M.left, w - M.right, { fmt: ctx.fmt, format: (v) => fmtNum(v, 1, ctx.fmt) + ' €' }) +
+          axisY(sy, M.left, w - M.right, { fmt: ctx.fmt, format: (v) => fmtEur(v, 1, ctx.fmt) }) +
           axisX(sx, h - M.bottom, M.top, { fmt: ctx.fmt, label: ctx.tr('tC.axisSteps'), format: (v) => fmtNum(v, 0, ctx.fmt) }) +
           `<line class="s3 line dash" x1="${M.left}" x2="${w - M.right}" y1="${r1(sy(d.call))}" y2="${r1(sy(d.call))}"/>` +
           `<path class="s1 line" d="${pathFrom(d.steps, d.tree, sx, sy)}"/>` +
@@ -187,7 +187,7 @@ export const chartC: ChartDef<SC, DC> = {
       head: [ctx.tr('tC.axisSteps'), ctx.tr('tC.legendTree'), ctx.tr('tC.colDiff')],
       rows: ns.map((n) => {
         const v = d.tree[n - 1];
-        return [String(n), Number.isFinite(v) ? eur(v, ctx) : '—', Number.isFinite(v) ? fmtNum(v - d.call, 3, ctx.fmt) + ' €' : '—'];
+        return [String(n), Number.isFinite(v) ? eur(v, ctx) : '—', Number.isFinite(v) ? fmtEur(v - d.call, 3, ctx.fmt) : '—'];
       }),
     };
   },
