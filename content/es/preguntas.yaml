@@ -1,0 +1,211 @@
+# Preguntas rápidas de comprobación (RF-EJ-07): de 2 a 4 por capítulo, de opción múltiple y
+# distintas de los ejercicios del libro. «correcta» es la posición de la opción buena, contando
+# desde 0. Admiten Markdown y fórmulas entre $…$; escribe cada texto entre comillas simples.
+1:
+  - pregunta: 'Una acción cae un 50 %. ¿Qué subida necesita después para volver al precio inicial?'
+    opciones: ['50 %', '75 %', '100 %', '150 %']
+    correcta: 2
+    explicacion: 'Tras caer a la mitad, para volver hay que duplicar: $0{,}5 \times (1 + 1) = 1$, una subida del 100 %.'
+  - pregunta: '¿Qué rentabilidades se pueden **sumar** para obtener la de varios periodos seguidos?'
+    opciones: ['Las simples', 'Las logarítmicas', 'Las dos', 'Ninguna: siempre hay que multiplicar']
+    correcta: 1
+    explicacion: 'Las logarítmicas se suman en el tiempo, porque $\ln(P_2/P_0) = \ln(P_1/P_0) + \ln(P_2/P_1)$. Las simples se encadenan multiplicando factores $(1 + R)$.'
+  - pregunta: 'Una cartera tiene un 60 % en A, que gana un 10 %, y un 40 % en B, que pierde un 5 %. ¿Qué rentabilidad simple obtiene la cartera?'
+    opciones: ['2,5 %', '4 %', '5 %', '7 %']
+    correcta: 1
+    explicacion: 'Las rentabilidades simples se combinan entre activos con la media ponderada: $0{,}6 \times 10\,\% + 0{,}4 \times (-5\,\%) = 4\,\%$.'
+2:
+  - pregunta: 'Inviertes 1.000 € al 5 % anual, reinvirtiendo los intereses. ¿Cuánto tienes al cabo de dos años?'
+    opciones: ['1.050,00 €', '1.100,00 €', '1.102,50 €', '1.105,00 €']
+    correcta: 2
+    explicacion: '$1.000 \times 1{,}05^2 = 1.102{,}50$ €. Los 2,50 € de más respecto al interés simple son los intereses de los intereses.'
+  - pregunta: 'Con un tipo del 4 % anual, ¿cuánto vale hoy un pago seguro de 1.000 € dentro de un año?'
+    opciones: ['960,00 €', '961,54 €', '996,00 €', '1.040,00 €']
+    correcta: 1
+    explicacion: 'Se descuenta dividiendo: $1.000 / 1{,}04 = 961{,}54$ €. Restar el 4 % (960 €) no es lo mismo.'
+  - pregunta: 'Si sube el tipo de interés, ¿qué le pasa al valor presente de un pago futuro fijo?'
+    opciones: ['Sube', 'Baja', 'No cambia', 'Depende de si el pago es en euros o en dólares']
+    correcta: 1
+    explicacion: 'El valor presente es $C/(1 + i)^n$: un denominador mayor da un valor menor. Por eso los bonos pierden valor cuando suben los tipos.'
+3:
+  - pregunta: 'Una apuesta te hace ganar 10 € con probabilidad 0,3 y perder 5 € con probabilidad 0,7. ¿Cuál es su valor esperado?'
+    opciones: ['+5 €', '+0,50 €', '−0,50 €', '−3,50 €']
+    correcta: 2
+    explicacion: '$0{,}3 \times 10 + 0{,}7 \times (-5) = 3 - 3{,}5 = -0{,}50$ €. Aunque se gane el doble de lo que se pierde, se pierde más a menudo.'
+  - pregunta: 'Una moneda equilibrada ha salido cara cinco veces seguidas. ¿Qué probabilidad hay de que salga cara en la siguiente tirada?'
+    opciones: ['Menos del 50 %, porque «toca» cruz', 'El 50 %', 'Más del 50 %, porque hay racha', 'No se puede saber']
+    correcta: 1
+    explicacion: 'Las tiradas son independientes: la moneda no recuerda. La ley de los grandes números habla de promedios a largo plazo, no de compensar rachas (la «falacia del jugador»).'
+  - pregunta: '¿Qué dice la ley de los grandes números?'
+    opciones: ['Que tras muchas pérdidas llegan las ganancias', 'Que la media de muchas repeticiones independientes se acerca al valor esperado', 'Que todo resultado acaba siendo normal', 'Que el valor esperado es el resultado más probable']
+    correcta: 1
+    explicacion: 'La media muestral converge al valor esperado cuando crece el número de repeticiones independientes. No dice nada de lo que pasará en una jugada concreta.'
+4:
+  - pregunta: 'Con una volatilidad diaria del 1 % y rentabilidades diarias independientes, ¿cuál es la volatilidad a 100 sesiones?'
+    opciones: ['1 %', '10 %', '50 %', '100 %']
+    correcta: 1
+    explicacion: 'La volatilidad crece con la raíz del tiempo: $1\,\% \times \sqrt{100} = 10\,\%$.'
+  - pregunta: '¿Por cuánto hay que multiplicar el horizonte para que la volatilidad acumulada se duplique?'
+    opciones: ['Por 2', 'Por $\sqrt{2}$', 'Por 4', 'Por 8']
+    correcta: 2
+    explicacion: 'Si $\sigma_T = \sigma\sqrt{T}$, duplicar $\sigma_T$ exige $\sqrt{T}$ doble, es decir, $T$ cuatro veces mayor.'
+  - pregunta: 'En un paseo aleatorio sin tendencia que empieza en 100, ¿cuál es la posición **esperada** tras 1.000 pasos?'
+    opciones: ['100', 'Más de 100, porque el tiempo juega a favor', 'Menos de 100', 'Imposible de decir']
+    correcta: 0
+    explicacion: 'Sin tendencia, cada paso tiene media cero, así que la posición esperada no cambia. Lo que crece con los pasos es la dispersión alrededor de 100.'
+5:
+  - pregunta: 'En una distribución normal, ¿qué proporción de los valores queda, aproximadamente, a menos de dos desviaciones típicas de la media?'
+    opciones: ['68 %', '90 %', '95 %', '99,7 %']
+    correcta: 2
+    explicacion: 'Es la regla 68-95-99,7: un 68 % a una desviación típica, un 95 % a dos y un 99,7 % a tres.'
+  - pregunta: 'Un activo tiene una rentabilidad anual normal con media 8 % y desviación típica 20 %. ¿Qué probabilidad hay, aproximadamente, de perder más de un 32 % en un año?'
+    opciones: ['0,15 %', '2,5 %', '5 %', '16 %']
+    correcta: 1
+    explicacion: '$-32\,\%$ está a $(-32 - 8)/20 = -2$ desviaciones típicas. Fuera de ±2 queda un 5 %, la mitad por cada lado: 2,5 %.'
+  - pregunta: '¿Qué asegura el teorema central del límite?'
+    opciones: ['Que las rentabilidades diarias son normales', 'Que la suma de muchas variables independientes con varianza finita se parece a una normal, aunque ellas no lo sean', 'Que la media de una muestra es siempre exacta', 'Que no hay sucesos extremos']
+    correcta: 1
+    explicacion: 'El teorema habla de sumas o medias de muchas variables independientes. No dice que cada variable sea normal, ni que lo sean sus colas (capítulo 15).'
+6:
+  - pregunta: 'Una simulación de Monte Carlo con 10.000 escenarios tiene un error estándar de 0,02. ¿Cuántos escenarios hacen falta para bajarlo a 0,01?'
+    opciones: ['20.000', '40.000', '100.000', '1.000.000']
+    correcta: 1
+    explicacion: 'El error estándar es proporcional a $1/\sqrt{M}$: reducirlo a la mitad exige multiplicar los escenarios por 4.'
+  - pregunta: 'Con 10.000 puntos al azar sale una estimación de $\pi$ de 3,15. El error estándar con esos puntos es de unos 0,016. ¿Qué concluyes?'
+    opciones: ['El programa tiene un error', 'La desviación (0,008) es de medio error estándar: azar normal', 'Hay que cambiar de semilla hasta que salga 3,14', 'El método no sirve para calcular $\pi$']
+    correcta: 1
+    explicacion: '$3{,}15 - 3{,}1416 \approx 0{,}008$, la mitad de un error estándar. Es lo esperable; buscar la semilla que «sale bien» sería hacer trampa.'
+  - pregunta: '¿En qué consiste el método de Monte Carlo?'
+    opciones: ['En resolver la fórmula exacta con un ordenador', 'En estimar una magnitud promediando los resultados de muchas simulaciones al azar', 'En elegir el mejor escenario posible', 'En predecir el próximo precio']
+    correcta: 1
+    explicacion: 'Se simulan muchos escenarios aleatorios y se promedia lo que interesa. Por la ley de los grandes números, el promedio se acerca al valor buscado.'
+7:
+  - pregunta: 'Una acción tiene una volatilidad diaria del 1,5 %. Con 252 sesiones al año y rentabilidades independientes, ¿cuál es su volatilidad anual?'
+    opciones: ['1,5 %', '18 %', '23,8 %', '378 %']
+    correcta: 2
+    explicacion: '$1{,}5\,\% \times \sqrt{252} \approx 1{,}5\,\% \times 15{,}87 = 23{,}8\,\%$. Multiplicar por 252 (378 %) confunde la regla de la varianza con la de la volatilidad.'
+  - pregunta: 'Al estimar la varianza con una muestra, ¿por qué se divide entre $N - 1$ y no entre $N$?'
+    opciones: ['Por costumbre, da igual', 'Porque la media se ha estimado con los mismos datos y eso consume un grado de libertad', 'Para que la volatilidad salga más pequeña', 'Porque el primer dato no cuenta']
+    correcta: 1
+    explicacion: 'Las desviaciones respecto a la media muestral son algo menores que respecto a la media real. Dividir entre $N - 1$ corrige ese sesgo; con muchos datos la diferencia es despreciable.'
+  - pregunta: '¿Qué significa que la volatilidad se agrupa?'
+    opciones: ['Que todas las acciones tienen la misma volatilidad', 'Que a los periodos agitados suelen seguirles periodos agitados, y a los tranquilos, tranquilos', 'Que la volatilidad nunca cambia', 'Que las subidas y las bajadas se alternan']
+    correcta: 1
+    explicacion: 'La volatilidad cambia con el tiempo y es persistente. Por eso una estimación hecha en calma puede quedarse corta cuando llega una crisis.'
+8:
+  - pregunta: 'Un fondo rinde un 9 % con una volatilidad del 12 %, y el tipo libre de riesgo es del 3 %. ¿Cuál es su ratio de Sharpe?'
+    opciones: ['0,25', '0,5', '0,75', '1']
+    correcta: 1
+    explicacion: '$(9\,\% - 3\,\%) / 12\,\% = 0{,}5$.'
+  - pregunta: 'Si inviertes el doble de tu capital en ese fondo, pidiendo prestado el resto al tipo libre de riesgo, ¿qué le pasa al ratio de Sharpe?'
+    opciones: ['Se duplica', 'Se reduce a la mitad', 'No cambia', 'Se hace negativo']
+    correcta: 2
+    explicacion: 'El exceso de rentabilidad y la volatilidad se duplican a la vez, así que el cociente no cambia. Apalancarse no mejora el Sharpe.'
+  - pregunta: 'Con cuatro años de datos anuales, ¿cuál es aproximadamente el error estándar de un ratio de Sharpe anual cercano a cero?'
+    opciones: ['0,125', '0,25', '0,5', '2']
+    correcta: 2
+    explicacion: 'Es de aproximadamente $1/\sqrt{T} = 1/\sqrt{4} = 0{,}5$. Un Sharpe de 0,5 medido con cuatro años no se distingue de cero.'
+9:
+  - pregunta: 'Una inversión sube un 50 % un año y baja un 50 % el siguiente. ¿Cuál es el resultado acumulado?'
+    opciones: ['0 %', '−25 %', '+25 %', '−50 %']
+    correcta: 1
+    explicacion: '$1{,}5 \times 0{,}5 = 0{,}75$: se pierde un 25 %, aunque la media aritmética de las dos rentabilidades sea 0 %.'
+  - pregunta: 'Un activo tiene una rentabilidad media anual del 10 % y una volatilidad del 30 %. ¿Qué tasa de crecimiento compuesto cabe esperar, aproximadamente?'
+    opciones: ['10 %', '8,5 %', '5,5 %', '1 %']
+    correcta: 2
+    explicacion: '$g \approx \mu - \sigma^2/2 = 10\,\% - 0{,}09/2 = 5{,}5\,\%$. El lastre de la volatilidad se come casi la mitad.'
+  - pregunta: '¿Cómo se comparan la media geométrica y la aritmética de unas rentabilidades?'
+    opciones: ['La geométrica nunca es mayor que la aritmética', 'La geométrica siempre es mayor', 'Son siempre iguales', 'Depende del signo de la media']
+    correcta: 0
+    explicacion: 'La geométrica es menor o igual, y solo coinciden si todas las rentabilidades son iguales. La diferencia crece con la variabilidad.'
+10:
+  - pregunta: 'Dos activos tienen volatilidades del 10 % y del 20 %, y su covarianza es 0,006. ¿Cuál es su correlación?'
+    opciones: ['0,03', '0,3', '0,6', '3']
+    correcta: 1
+    explicacion: '$\rho = 0{,}006 / (0{,}10 \times 0{,}20) = 0{,}3$.'
+  - pregunta: '¿Entre qué valores está siempre una correlación?'
+    opciones: ['Entre 0 y 1', 'Entre −1 y 1', 'Entre 0 e infinito', 'No tiene límites']
+    correcta: 1
+    explicacion: 'La correlación es la covarianza tipificada: vale 1 con relación lineal creciente perfecta, −1 con relación decreciente perfecta y 0 sin relación lineal.'
+  - pregunta: 'Si la correlación entre dos variables es cero, ¿qué se puede afirmar?'
+    opciones: ['Que son independientes', 'Que no hay relación lineal entre ellas, aunque puede haber otra relación', 'Que una no influye nunca en la otra', 'Que tienen la misma volatilidad']
+    correcta: 1
+    explicacion: 'La correlación solo mide relaciones lineales. Por ejemplo, $Y = X^2$ con $X$ simétrica alrededor de cero tiene correlación nula y depende por completo de $X$.'
+11:
+  - pregunta: 'Repartes tu dinero a partes iguales entre cuatro activos independientes, cada uno con una volatilidad del 20 %. ¿Cuál es la volatilidad de la cartera?'
+    opciones: ['5 %', '10 %', '15 %', '20 %']
+    correcta: 1
+    explicacion: 'Con $N$ activos independientes iguales, la volatilidad es $\sigma/\sqrt{N} = 20\,\% / 2 = 10\,\%$.'
+  - pregunta: 'Si todos los activos tienen correlación 1 entre sí, ¿cuánto reduce la volatilidad repartir el dinero entre ellos?'
+    opciones: ['Nada', 'A la mitad', 'Según el número de activos, como $1/\sqrt{N}$', 'Hasta cero']
+    correcta: 0
+    explicacion: 'Con correlación 1 todos se mueven a la vez: no hay compensaciones y la diversificación no reduce el riesgo.'
+  - pregunta: 'Activos con volatilidad del 30 % y correlación 0,25 entre todos. Con muchísimos activos a partes iguales, ¿a qué volatilidad tiende la cartera?'
+    opciones: ['0 %', '7,5 %', '15 %', '30 %']
+    correcta: 2
+    explicacion: 'La varianza tiende a $\sigma^2\rho$, así que la volatilidad tiende a $\sigma\sqrt{\rho} = 30\,\% \times 0{,}5 = 15\,\%$: es el riesgo común, que no se diversifica.'
+12:
+  - pregunta: 'Con dos activos de correlación −1, ¿qué volatilidad mínima puede tener una cartera de los dos (sin posiciones cortas)?'
+    opciones: ['Cero', 'La del activo menos volátil', 'La media de las dos', 'No se puede bajar de la mitad de la menor']
+    correcta: 0
+    explicacion: 'Con correlación −1, eligiendo bien los pesos ($w\sigma_1 = (1 - w)\sigma_2$) los movimientos se anulan por completo y la cartera no tiene riesgo.'
+  - pregunta: '¿Qué hace que una cartera sea eficiente?'
+    opciones: ['Que tenga la mayor rentabilidad posible', 'Que ninguna otra cartera dé más rentabilidad esperada con el mismo riesgo', 'Que tenga el menor riesgo posible', 'Que tenga pesos iguales']
+    correcta: 1
+    explicacion: 'Las carteras eficientes forman la frontera: para su nivel de riesgo, no hay nada mejor. La de mínima varianza es solo una de ellas.'
+  - pregunta: 'Si además se puede prestar y pedir prestado al tipo libre de riesgo, ¿qué cartera de activos con riesgo conviene combinar con él?'
+    opciones: ['La de mínima varianza', 'La de máxima rentabilidad', 'La de mayor ratio de Sharpe (la tangente)', 'La de pesos iguales']
+    correcta: 2
+    explicacion: 'Combinar el activo libre de riesgo con la cartera de mayor Sharpe da la recta con más pendiente: la mejor rentabilidad para cada nivel de riesgo.'
+13:
+  - pregunta: 'Una acción tiene una beta de 1,5. Si el mercado sube un 10 %, ¿qué subida cabe esperar de la acción, de media?'
+    opciones: ['6,7 %', '10 %', '15 %', '25 %']
+    correcta: 2
+    explicacion: 'La beta mide la sensibilidad al mercado: $1{,}5 \times 10\,\% = 15\,\%$ de media, con desviaciones por el riesgo propio de la acción.'
+  - pregunta: 'Con un tipo libre de riesgo del 3 % y una prima de mercado del 6 %, ¿qué rentabilidad esperada da el CAPM a un activo con beta 0,5?'
+    opciones: ['3 %', '4,5 %', '6 %', '9 %']
+    correcta: 2
+    explicacion: '$E[R] = 3\,\% + 0{,}5 \times 6\,\% = 6\,\%$.'
+  - pregunta: '¿Cuál es la beta de la propia cartera de mercado?'
+    opciones: ['0', '0,5', '1', 'Depende del año']
+    correcta: 2
+    explicacion: 'La beta es $\operatorname{Cov}(R, R_m)/\operatorname{Var}(R_m)$; para el propio mercado, la covarianza es su varianza y el cociente vale 1.'
+14:
+  - pregunta: 'Una apuesta a la par se gana con probabilidad 0,6. ¿Qué fracción del capital recomienda el criterio de Kelly?'
+    opciones: ['10 %', '20 %', '40 %', '60 %']
+    correcta: 1
+    explicacion: 'Para una apuesta a la par, $f^* = p - q = 0{,}6 - 0{,}4 = 0{,}2$.'
+  - pregunta: 'En la versión continua, ¿qué tasa de crecimiento se obtiene apostando el **doble** de la fracción de Kelly?'
+    opciones: ['El doble que con Kelly', 'La misma que con Kelly', 'Aproximadamente cero', 'Infinita']
+    correcta: 2
+    explicacion: 'Con $g(f) = f\mu - f^2\sigma^2/2$ y $f^* = \mu/\sigma^2$, $g(2f^*) = 0$. Apostar aún más da crecimiento negativo: arriesgar de más destruye capital.'
+  - pregunta: '¿Qué parte del crecimiento máximo conserva el «medio Kelly» (apostar $f^*/2$), en la versión continua?'
+    opciones: ['25 %', '50 %', '75 %', '100 %']
+    correcta: 2
+    explicacion: '$g(f^*/2) = \tfrac{3}{8}\,\mu^2/\sigma^2$, frente a $\tfrac12\,\mu^2/\sigma^2$ con Kelly: un 75 % del crecimiento con la mitad de volatilidad.'
+15:
+  - pregunta: '¿Cuánto vale la curtosis de una distribución normal?'
+    opciones: ['0', '1', '3', '10']
+    correcta: 2
+    explicacion: 'La curtosis $E[(X-\mu)^4]/\sigma^4$ vale 3 en la normal. Las rentabilidades diarias suelen tener bastante más: colas gruesas.'
+  - pregunta: '¿Qué significa que unas rentabilidades tienen colas gruesas?'
+    opciones: ['Que son muy volátiles', 'Que los movimientos extremos son mucho más frecuentes de lo que predice una normal con la misma volatilidad', 'Que su media es negativa', 'Que nunca hay días tranquilos']
+    correcta: 1
+    explicacion: 'Con la misma volatilidad, los sucesos de muchas desviaciones típicas aparecen con más frecuencia que en la normal (y, en compensación, hay más días tranquilos).'
+  - pregunta: 'Bajo normalidad, la probabilidad de una caída diaria de más de cinco desviaciones típicas es de unos $2{,}9 \times 10^{-7}$. Con 252 sesiones al año, ¿cada cuánto cabría esperar una?'
+    opciones: ['Cada año', 'Cada 100 años', 'Cada 1.000 años', 'Cada 14.000 años, aproximadamente']
+    correcta: 3
+    explicacion: '$1 / (2{,}9 \times 10^{-7} \times 252) \approx 13.700$ años. En los mercados reales se han visto varias en pocas décadas: la normal subestima las colas.'
+16:
+  - pregunta: 'Una cartera de 1.000.000 € tiene una volatilidad diaria del 1 % y media cero. ¿Cuál es su VaR a un día al 99 %, suponiendo normalidad?'
+    opciones: ['10.000 €', '16.450 €', '23.260 €', '30.900 €']
+    correcta: 2
+    explicacion: '$2{,}326 \times 1\,\% \times 1.000.000 = 23.260$ €. Con 1,645 (16.450 €) sería el VaR al 95 %.'
+  - pregunta: '¿Qué informa el déficit esperado que no informa el VaR?'
+    opciones: ['La pérdida media en los días en que se supera el VaR', 'La ganancia máxima', 'La probabilidad de pérdida', 'La volatilidad']
+    correcta: 0
+    explicacion: 'El VaR es un umbral: no dice cuánto se pierde más allá. El déficit esperado es la media de esas pérdidas de la cola.'
+  - pregunta: 'Un VaR al 99 % bien calibrado, ¿cuántas veces se superaría, de media, en 250 sesiones?'
+    opciones: ['Ninguna', '1', '2,5', '25']
+    correcta: 2
+    explicacion: 'Cada día hay un 1 % de probabilidad: $250 \times 0{,}01 = 2{,}5$ excepciones de media. No superarlo nunca también sería sospechoso (demasiado prudente).'

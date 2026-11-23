@@ -135,6 +135,23 @@ function initChapter() {
   }
 }
 
+/* ---------- Preguntas rápidas (RF-EJ-07) ---------- */
+function initQuiz() {
+  document.querySelectorAll<HTMLElement>('.quiz-q').forEach((q) => {
+    const correct = q.dataset.correct;
+    const out = q.querySelector<HTMLElement>('.quiz-result')!;
+    q.querySelectorAll<HTMLInputElement>('input[type=radio]').forEach((r) => r.addEventListener('change', () => {
+      const ok = r.value === correct;
+      if (!q.dataset.first) q.dataset.first = ok ? 'ok' : 'bad';
+      out.className = 'quiz-result ' + (ok ? 'ok' : 'bad');
+      out.textContent = ok ? tr('ex.quizRight') : tr('ex.quizWrong');
+      q.querySelectorAll('.quiz-opt').forEach((l) => l.classList.remove('picked-ok', 'picked-bad'));
+      r.closest('.quiz-opt')!.classList.add(ok ? 'picked-ok' : 'picked-bad');
+      if (ok) q.querySelector<HTMLDetailsElement>('.quiz-solution')!.open = true;
+    }));
+  });
+}
+
 /* ---------- Ejercicios con comprobación (RF-EJ-03) ---------- */
 function initExercises() {
   const store = load();
@@ -291,12 +308,70 @@ function initWideFormulas() {
   window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); });
 }
 
+/**
+ * Símbolos interactivos (RF-FOR-04): en las fórmulas seguidas de una tabla «Símbolo | Significado»,
+ * al pasar el cursor o tocar un símbolo se muestra su significado. La tabla sigue siendo la
+ * referencia accesible (la parte visual de KaTeX está oculta a los lectores de pantalla).
+ */
+function initFormulaSymbols() {
+  const clean = (s: string | null) => (s ?? '').replace(/[\u200b\s]/g, '');
+  let tip: HTMLDivElement | null = null;
+  const hide = () => { if (tip) tip.hidden = true; };
+  const show = (el: HTMLElement) => {
+    if (!tip) { tip = document.createElement('div'); tip.className = 'sym-tip'; tip.setAttribute('aria-hidden', 'true'); document.body.appendChild(tip); }
+    tip.textContent = el.dataset.symTip!;
+    tip.hidden = false;
+    const r = el.getBoundingClientRect();
+    const w = Math.min(280, window.innerWidth - 24);
+    tip.style.maxWidth = w + 'px';
+    tip.style.left = Math.max(12, Math.min(window.innerWidth - w - 12, r.left + r.width / 2 - w / 2)) + window.scrollX + 'px';
+    tip.style.top = r.bottom + 8 + window.scrollY + 'px';
+  };
+  document.querySelectorAll<HTMLTableElement>('table').forEach((table) => {
+    const th = table.querySelector('thead th');
+    if (!th || !/^(s[ií]mbolo|symbol)$/i.test(th.textContent!.trim())) return;
+    const wrap = table.closest('.table-wrap') ?? table;
+    const map = new Map<string, string>();
+    table.querySelectorAll('tbody tr').forEach((tr) => {
+      const [a, b] = tr.querySelectorAll('td');
+      if (!a || !b) return;
+      // «N(⋅)» en la tabla: en la fórmula, N y su argumento son elementos separados; se busca solo «N».
+      a.querySelectorAll('.katex-html').forEach((k) => map.set(clean(k.textContent).replace(/\((⋅|·|\.|…)\)$/, ''), b.textContent!.trim()));
+    });
+    if (!map.size) return;
+    // Las fórmulas en bloque justo antes de la tabla.
+    let prev = wrap.previousElementSibling;
+    for (let i = 0; i < 2 && prev; i++, prev = prev.previousElementSibling) {
+      const displays = prev.matches('.katex-display') ? [prev] : [...prev.querySelectorAll('.katex-display')];
+      if (!displays.length) continue;
+      for (const d of displays) {
+        d.querySelectorAll<HTMLElement>('.katex-html .mord').forEach((m) => {
+          if (m.closest('.sym-hint')) return;
+          const meaning = map.get(clean(m.textContent));
+          if (!meaning) return;
+          m.classList.add('sym-hint');
+          m.dataset.symTip = meaning;
+          m.addEventListener('mouseenter', () => show(m));
+          m.addEventListener('mouseleave', hide);
+          m.addEventListener('click', (ev) => { ev.stopPropagation(); if (tip && !tip.hidden && tip.textContent === meaning) hide(); else show(m); });
+        });
+      }
+      break;
+    }
+  });
+  document.addEventListener('click', hide);
+  window.addEventListener('scroll', hide, { passive: true });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hide(); });
+}
+
 initSettings();
 initWideFormulas();
+initFormulaSymbols();
 initHeaderAutoHide();
 initSearchShortcut();
 initChapter();
 initExercises();
+initQuiz();
 initIndex();
 initChallenges();
 initCharts();

@@ -24,6 +24,11 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Gráficos de los temas**: `CHART_BY_TOPIC` en `src/charts/registry.ts` (`temaA-sobreajuste.ts`, `temaB-costes.ts`, `temaC-blackscholes.ts`, `temaD-cointegracion.ts`, `temaE-caidas.ts`); textos `tX.*` en `es.json` (título, `chartDesc`, `observe`, `heading`). Salen al final de la página del tema y en el Laboratorio.
 - **Exportar gráficos** (RF-GRA-09): menú «Descargar» de cada gráfico → `src/charts/client/export.ts` (PNG/SVG con todos los paneles y estilos del tema copiados en línea; CSV de la tabla con «;»).
 - **Mapa de aprendizaje** (RF-NAV-09): `src/components/LearningMap.astro` en el índice, a partir de `requisitos` de `capitulos.yaml`.
+- **Términos en inglés** (RF-GLO-05): `content/es/glosario-en.yaml` (clave = slug del término); `check:content` exige uno por término.
+- **Símbolos interactivos** (RF-FOR-04): `initFormulaSymbols()` en `src/lib/client/site.ts`; funciona con las tablas «Símbolo | Significado» que siguen a una fórmula destacada.
+- **Pistas** (RF-EJ-05): `content/es/pistas.yaml`, 1–2 por ejercicio publicado (lo exige `check:content`), Markdown con `$…$` entre comillas simples; se muestran antes de la respuesta.
+- **Preguntas rápidas** (RF-EJ-07): `content/es/preguntas.yaml`, 2–4 de opción múltiple por capítulo (`correcta` cuenta desde 0; lo exige `check:content`); `src/components/QuickQuiz.astro` al principio de «Ejercicios», corrección en `initQuiz()` de `site.ts`.
+- **Libro completo y PDF**: `src/pages/[lang]/libro-completo.astro` (todo el libro en una página, con estilos de impresión `.print-book`; gráficos como imagen con valores por defecto) y `scripts/pdf.mjs` (`npm run pdf`, después de compilar: Playwright la guarda como `dist/<idioma>/quantlab-libro.pdf`; en GitHub se ejecuta antes de comprobar enlaces). Ni la página ni el PDF se guardan para uso sin conexión.
 - **Analítica**: GoatCounter (anónima, sin cookies), `ANALYTICS_GOATCOUNTER` en `src/config.ts`; panel del autor en https://miquelmp.goatcounter.com/. Explicada en `content/es/paginas/privacidad.md`.
 
 ## Tareas habituales
@@ -39,10 +44,10 @@ npm ci                    # .npmrc usa legacy-peer-deps
 npm run check:content     # estructura, fórmulas KaTeX, glosario, respuestas, gráficos
 npm run check:python      # ejecuta los 18 fragmentos y compara con los comentarios (necesita numpy)
 npm test                  # vitest: cifras del libro en los gráficos, lectura de respuestas
-npm run build && npm run check:links
+npm run build && npm run pdf && npm run check:links
 npm run preview & npm run check:a11y   # axe-core, temas claro y oscuro (no está en CI)
 ```
 
 ## Pendiente
 
-Hecho todo lo imprescindible (M) y recomendable (S). Quedan funciones opcionales (C) y de la fase 5, a decidir por el autor: pistas y preguntas rápidas (RF-EJ-05/07), símbolos interactivos (RF-FOR-04), términos en inglés (RF-GLO-05), versión en inglés y PDF.
+Hecho todo lo imprescindible (M) y recomendable (S). También las funciones opcionales (C). Queda de la fase 5 la versión en inglés.

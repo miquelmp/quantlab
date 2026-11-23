@@ -289,6 +289,26 @@ pre { margin: 0; }
 .check-result.bad::before { content: "✗ "; }
 .checks .help { font-size: 0.8rem; color: var(--muted); margin: 0; }
 .solution { margin-top: 0.5rem; }
+.quiz { margin: 0 0 2rem; padding: 1rem 1.1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.quiz h3 { margin-top: 0; }
+.quiz-intro { color: var(--muted); margin-top: 0; }
+.quiz-list { list-style: none; padding-left: 0; margin: 0; }
+.quiz-n { color: var(--muted); }
+.quiz-q { margin: 1rem 0; }
+.quiz-q fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.quiz-q legend { font-weight: 600; padding: 0; margin-bottom: 0.4rem; }
+.quiz-opt { display: flex; gap: 0.55rem; align-items: flex-start; padding: 0.4rem 0.6rem; margin: 0.2rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; min-height: 44px; box-sizing: border-box; }
+.quiz-opt input { margin-top: 0.3rem; flex: none; }
+.quiz-opt.picked-ok { border-color: var(--ok); background: var(--surface-2); }
+.quiz-opt.picked-bad { border-color: var(--neg); }
+.quiz-result { font-size: 0.9rem; min-height: 1.4em; margin: 0.3rem 0 0; }
+.quiz-result.ok { color: var(--ok); font-weight: 600; }
+.quiz-result.ok::before { content: "✓ "; }
+.quiz-result.bad { color: var(--neg); }
+.quiz-solution > summary { cursor: pointer; color: var(--accent); font-weight: 600; min-height: 32px; padding: 0.25rem 0; }
+.hint { margin-top: 0.5rem; }
+.hint > summary { cursor: pointer; color: var(--muted); font-weight: 600; min-height: 32px; padding: 0.25rem 0; }
+.hint > p { padding: 0.5rem 0.8rem; border-left: 3px solid var(--border); background: var(--surface-2); border-radius: 0 8px 8px 0; margin: 0.35rem 0; }
 .solution > summary { cursor: pointer; color: var(--accent); font-weight: 600; min-height: 32px; padding: 0.25rem 0; }
 .solution .answer { padding: 0.6rem 0.8rem; border-left: 3px solid var(--ok); background: var(--surface-2); border-radius: 0 8px 8px 0; margin: 0.5rem 0; }
 .solution .answer-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); display: block; }
@@ -438,6 +458,11 @@ pre { margin: 0; }
 .glossary-list { margin: 0 0 1.5rem; }
 .glossary-list dt { font-weight: 700; margin-top: 0.85rem; }
 .glossary-list dd { margin: 0.1rem 0 0; color: var(--text-2); }
+.sym-hint { cursor: help; border-radius: 3px; }
+.sym-hint:hover { background: var(--band); }
+.sym-tip { position: absolute; z-index: 50; padding: 0.4rem 0.6rem; background: var(--text); color: var(--surface); border-radius: 6px; font-size: 0.85rem; line-height: 1.35; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+.term-en { color: var(--text-2); margin: -0.4rem 0 0.8rem; }
+.term-en-inline { font-weight: 400; color: var(--text-2); }
 .glossary-list .ref { font-size: 0.85rem; color: var(--muted); }
 .term-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; background: var(--surface); margin: 1rem 0; font-size: 1.1rem; }
 
@@ -459,6 +484,43 @@ pre { margin: 0; }
   .site-header, .toc, .chapter-nav, .js-only, .site-footer .footer-links, .report { display: none !important; }
   .advanced { border: 0; }
   body { background: #fff; color: #000; }
+}
+
+/* ---------- Libro completo (imprimible y PDF) ---------- */
+.pb-cover { padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); }
+.pb-cover h1 { font-size: 2.4rem; margin: 0.2rem 0; }
+.pb-kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; font-weight: 700; color: var(--text-2); margin: 0; }
+.pb-subtitle { font-size: 1.25rem; color: var(--text-2); margin: 0.25rem 0 1rem; }
+.pb-meta, .pb-license, .pb-online, .pb-hint { font-size: 0.875rem; color: var(--text-2); }
+.pb-online a { overflow-wrap: anywhere; }
+.pb-question { font-style: italic; color: var(--text-2); }
+.pb-block { margin-top: 2.5rem; }
+.pb-chapter { margin-top: 2rem; }
+.pb-chart { margin: 1rem 0; padding: 0.75rem; border: 1px solid var(--border); border-radius: 10px; }
+.pb-panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; margin: 0.5rem 0; }
+.pb-panel.wide { grid-column: 1 / -1; }
+@media (max-width: 600px) { .pb-panels { grid-template-columns: 1fr; } }
+.pb-panel svg { display: block; width: 100%; height: auto; }
+.pb-panel-title { font-size: 0.85rem; font-weight: 600; margin: 0 0 0.2rem; }
+.pb-exercises { list-style: none; padding-left: 0; }
+.pb-exercises li { margin: 0.5rem 0; }
+.pb-solution { margin: 0.75rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--border); }
+.pb-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.pb-table th, .pb-table td { border-bottom: 1px solid var(--border); padding: 0.35rem 0.4rem; text-align: left; vertical-align: top; }
+.pb-toc ol { list-style: none; padding-left: 0; }
+.pb-toc ol ol { padding-left: 1.2rem; }
+.pb-glossary dt { font-weight: 700; margin-top: 0.6rem; }
+.pb-glossary dd { margin: 0.1rem 0 0 1rem; }
+.pb-en { font-weight: 400; font-style: italic; color: var(--text-2); }
+@media print {
+  .no-print, .print-book .py-bar, .print-book .py-out:empty { display: none !important; }
+  .print-book { max-width: none; font-size: 10.5pt; }
+  .print-book .pb-cover { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; border: 0; }
+  .print-book .pb-toc, .print-book .pb-block, .print-book .pb-chapter { break-before: page; }
+  .print-book h1, .print-book h2, .print-book h3, .print-book h4 { break-after: avoid; }
+  .print-book .pb-chart, .print-book .pb-panel, .print-book table, .print-book pre, .print-book .katex-display { break-inside: avoid; }
+  .print-book a { color: inherit; text-decoration: none; }
+  .print-book .pb-online a, .print-book .pb-toc a { color: #1a5fb4; }
 }
 
 /* ---------- Buscador ---------- */

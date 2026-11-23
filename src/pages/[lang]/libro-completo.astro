@@ -1,0 +1,213 @@
+---
+/**
+ * Libro completo en una sola página, pensada para imprimir. scripts/pdf.mjs la convierte en el
+ * PDF descargable (`/<idioma>/quantlab-libro.pdf`) después de compilar. Los gráficos salen como
+ * imagen con los valores por defecto, con el enlace a su versión interactiva.
+ */
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { t, tPrefix, numberFormat } from '../../i18n';
+import { loadBook, publishedChapters, type Chapter } from '../../lib/book';
+import { initRenderer, renderBlocks, renderInline, url, type RenderCtx } from '../../lib/render';
+import { annotateReferences } from '../../lib/biblio';
+import { CHART_BY_CHAPTER, CHART_BY_TOPIC, I18N_PREFIX, loadChart } from '../../charts/registry';
+import type { ChartCtx } from '../../charts/types';
+import { SITE } from '../../config';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+
+await initRenderer();
+const { lang } = Astro.params as { lang: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const usedIds = new Set<string>();
+const pyCounter = { n: 0 };
+const mk = (extra: Partial<RenderCtx> = {}): RenderCtx => ({ lang, base, book, headingShift: 0, usedIds, pyCounter, linkTerms: false, linkCitations: false, ...extra });
+const ctx = mk();
+const abs = (p: string) => new URL(url(ctx, p), SITE.url).toString();
+const fmt = numberFormat(lang);
+
+/** Todos los paneles de un gráfico con los valores por defecto, como imagen. */
+async function chartImage(id: string | undefined): Promise<string> {
+  if (!id) return '';
+  const def = await loadChart(id);
+  const strings = tPrefix(lang, I18N_PREFIX[id], 'chart.');
+  const cctx: ChartCtx = {
+    fmt,
+    tr: (k, vars = {}) => { let s = strings[k] ?? t(lang, k); for (const [a, b] of Object.entries(vars)) s = s.replaceAll(`{${a}}`, String(b)); return s; },
+  };
+  const state = { ...def.defaults };
+  const data = def.compute(state);
+  // Los paneles estrechos van de dos en dos: se dibujan más pequeños para que el texto se lea en papel.
+  const narrow = def.panels.filter((p) => !p.wide).length;
+  return def.panels.map((p) => `<div class="pb-panel${p.wide || narrow < 2 ? ' wide' : ''}"><p class="pb-panel-title">${p.title(cctx)}</p>` +
+    p.render(data, state, p.wide || narrow < 2 ? 760 : 420, cctx).replace(/\sid="[^"]*"/g, '').replace(/\saria-labelledby="[^"]*"/g, '') + '</div>').join('');
+}
+
+const pub = publishedChapters(book);
+const chapters = await Promise.all(pub.map(async (c: Chapter) => {
+  const cx = mk({ chapter: c.number });
+  return {
+    c,
+    intro: renderBlocks(c.intro, cx),
+    sections: c.sections.map((s) => ({
+      s,
+      id: `c${c.number}-${s.id}`,
+      html: s.type === 'ejercicios' || (s.type === 'grafico' && c.chart) ? '' : renderBlocks(s.nodes, cx),
+    })),
+    chart: c.chart ? { title: c.chart.title, description: renderInline(c.chart.description, cx), observe: renderInline(c.chart.observe, cx), svg: await chartImage(CHART_BY_CHAPTER[c.number]) } : null,
+    exercises: c.exercises.map((e) => ({ e, statement: renderInline(e.statement, cx), answer: renderInline(e.answer, cx), solution: renderBlocks(e.solution, cx) })),
+  };
+}));
+const topics = await Promise.all(book.topics.filter((tp) => tp.published).map(async (tp) => ({
+  tp, html: renderBlocks(tp.nodes, mk({ topic: tp.letter })), svg: await chartImage(CHART_BY_TOPIC[tp.letter]),
+  chartTitle: CHART_BY_TOPIC[tp.letter] ? t(lang, `t${tp.letter}.title`) : '',
+})));
+const extra = (k: string) => book.extras.find((e) => e.key === k);
+const proyecto = extra('proyecto');
+const epilogo = extra('epilogo');
+const biblio = extra('bibliografia');
+const preface = book.preface.map((s) => ({ s, html: renderBlocks(s.nodes, ctx) }));
+const prefaceIntro = renderBlocks(book.prefaceIntro, ctx);
+const topicsIntro = renderBlocks(book.topicsIntro, ctx);
+const proyectoHtml = proyecto?.nodes ? renderBlocks(proyecto.nodes, ctx) : '';
+const epilogoHtml = epilogo?.nodes ? renderBlocks(epilogo.nodes.filter((n) => n.type !== 'thematicBreak'), ctx) : '';
+const biblioHtml = biblio?.nodes ? renderBlocks(annotateReferences(biblio.nodes, t(lang, 'biblio.recommended')).nodes, ctx) : '';
+const pdfHref = url(ctx, `${lang}/quantlab-libro.pdf`);
+const today = new Date().toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<Base lang={lang} title={t(lang, 'full.title')} description={t(lang, 'full.description')} path="libro-completo/" searchable={false}>
+  <article class="prose print-book">
+    <header class="pb-cover">
+      <p class="pb-kicker">quantlab</p>
+      <h1>{book.title}</h1>
+      <p class="pb-subtitle">{book.subtitle}</p>
+      <p class="pb-meta">{t(lang, 'full.edition', { date: today })}<br /><a href={abs(`${lang}/`)}>{abs(`${lang}/`)}</a></p>
+      <p class="pb-license">{t(lang, 'full.license')}</p>
+      <p class="pb-actions no-print"><a class="btn btn-primary" href={pdfHref} download>{t(lang, 'full.pdf')}</a> <span class="pb-hint">{t(lang, 'full.hint')}</span></p>
+    </header>
+
+    <nav class="pb-toc" aria-labelledby="pb-toc-h">
+      <h2 id="pb-toc-h">{t(lang, 'full.contents')}</h2>
+      <ol>
+        <li><a href="#prefacio">{t(lang, 'full.preface')}</a></li>
+        {book.parts.map((p) => (
+          <li><a href={`#parte-${p.number}`}>Parte {p.roman} · {p.title}</a>
+            <ol>{chapters.filter((x) => x.c.part === p.number).map((x) => <li><a href={`#capitulo-${x.c.number}`}>{x.c.number}. {x.c.title}</a></li>)}</ol>
+          </li>
+        ))}
+        {topics.length > 0 && <li><a href="#temas">{t(lang, 'index.topics')}</a></li>}
+        {proyecto && <li><a href="#proyecto">{proyecto.title}</a></li>}
+        {epilogo && <li><a href="#epilogo">{epilogo.title}</a></li>}
+        <li><a href="#soluciones">{t(lang, 'full.solutions')}</a></li>
+        <li><a href="#formulas">{t(lang, 'full.formulas')}</a></li>
+        <li><a href="#glosario">{t(lang, 'full.glossary')}</a></li>
+        {biblio && <li><a href="#bibliografia">{biblio.title}</a></li>}
+      </ol>
+    </nav>
+
+    <section id="prefacio" class="pb-block">
+      <h1>{t(lang, 'full.preface')}</h1>
+      <Fragment set:html={prefaceIntro} />
+      {preface.map((x) => <><h2>{x.s.title}</h2><Fragment set:html={x.html} /></>)}
+    </section>
+
+    {book.parts.map((p) => (
+      <>
+        <section id={`parte-${p.number}`} class="pb-block pb-part">
+          <p class="pb-kicker">Parte {p.roman}</p>
+          <h1>{p.title}</h1>
+          {p.question && <p class="pb-question">{p.question}</p>}
+          <Fragment set:html={renderBlocks(p.intro, ctx)} />
+        </section>
+        {chapters.filter((x) => x.c.part === p.number).map((x) => (
+          <section id={`capitulo-${x.c.number}`} class="pb-block pb-chapter">
+            <p class="pb-kicker">{t(lang, 'nav.chapter')} {x.c.number}</p>
+            <h2>{x.c.title}</h2>
+            <p class="pb-online">{t(lang, 'full.online')} <a href={abs(`${lang}/capitulos/${x.c.slug}/`)}>{abs(`${lang}/capitulos/${x.c.slug}/`)}</a></p>
+            <div class="chapter-intro" set:html={x.intro} />
+            {x.sections.map(({ s, id, html }) => (
+              <section id={id}>
+                <h3>{s.title}</h3>
+                {s.type === 'grafico' && x.chart && (
+                  <figure class="pb-chart">
+                    <figcaption><strong>{x.chart.title}.</strong> <span set:html={x.chart.description} /></figcaption>
+                    <div class="pb-panels" set:html={x.chart.svg} />
+                    <p class="pb-observe"><strong>{t(lang, 'chart.observe')}</strong> <span set:html={x.chart.observe} /></p>
+                    <p class="pb-online">{t(lang, 'full.interactive')} <a href={abs(`${lang}/capitulos/${x.c.slug}/#grafico-interactivo`)}>{abs(`${lang}/capitulos/${x.c.slug}/#grafico-interactivo`)}</a></p>
+                  </figure>
+                )}
+                {s.type === 'ejercicios' && (
+                  <ol class="pb-exercises">
+                    {x.exercises.map(({ e, statement }) => (
+                      <li><strong>{e.id}</strong> <em>({t(lang, `ex.level.${e.level}`).toLowerCase()}, {t(lang, `ex.type.${e.kind}`).toLowerCase()})</em> <span set:html={statement} /></li>
+                    ))}
+                  </ol>
+                )}
+                {html && <Fragment set:html={html} />}
+              </section>
+            ))}
+          </section>
+        ))}
+      </>
+    ))}
+
+    {topics.length > 0 && (
+      <section id="temas" class="pb-block pb-part">
+        <h1>{t(lang, 'index.topics')}</h1>
+        <Fragment set:html={topicsIntro} />
+        {topics.map((x) => (
+          <section id={`tema-${x.tp.letter}`} class="pb-chapter">
+            <p class="pb-kicker">{t(lang, 'nav.topic')} {x.tp.letter}</p>
+            <h2>{x.tp.title}</h2>
+            <Fragment set:html={x.html} />
+            {x.svg && (
+              <figure class="pb-chart">
+                <figcaption><strong>{x.chartTitle}.</strong> {t(lang, `t${x.tp.letter}.chartDesc`)}</figcaption>
+                <div class="pb-panels" set:html={x.svg} />
+                <p class="pb-online">{t(lang, 'full.interactive')} <a href={abs(`${lang}/temas/${x.tp.slug}/#grafico-interactivo`)}>{abs(`${lang}/temas/${x.tp.slug}/#grafico-interactivo`)}</a></p>
+              </figure>
+            )}
+          </section>
+        ))}
+      </section>
+    )}
+
+    {proyecto && <section id="proyecto" class="pb-block"><h1>{proyecto.title}</h1><Fragment set:html={proyectoHtml} /></section>}
+    {epilogo && <section id="epilogo" class="pb-block"><h1>{epilogo.title}</h1><Fragment set:html={epilogoHtml} /></section>}
+
+    <section id="soluciones" class="pb-block">
+      <h1>{t(lang, 'full.solutions')}</h1>
+      {chapters.map((x) => (
+        <section>
+          <h2>{t(lang, 'nav.chapter')} {x.c.number} · {x.c.title}</h2>
+          {x.exercises.map(({ e, answer, solution }) => (
+            <div class="pb-solution">
+              <p><strong>{e.id}</strong> <span set:html={answer} /></p>
+              <Fragment set:html={solution} />
+            </div>
+          ))}
+        </section>
+      ))}
+    </section>
+
+    <section id="formulas" class="pb-block">
+      <h1>{t(lang, 'full.formulas')}</h1>
+      <table class="pb-table">
+        <thead><tr><th scope="col">{t(lang, 'full.concept')}</th><th scope="col">{t(lang, 'full.formula')}</th><th scope="col">{t(lang, 'nav.chapter')}</th></tr></thead>
+        <tbody>{book.formulas.map((f) => <tr><td set:html={renderInline(f.concept, ctx)} /><td set:html={renderInline(f.formula, ctx)} /><td>{f.chapter}</td></tr>)}</tbody>
+      </table>
+    </section>
+
+    <section id="glosario" class="pb-block">
+      <h1>{t(lang, 'full.glossary')}</h1>
+      <dl class="pb-glossary">
+        {book.glossary.map((g) => <><dt>{g.term}{g.english && <span class="pb-en"> ({g.english})</span>}</dt><dd set:html={renderInline(g.definition, ctx)} /></>)}
+      </dl>
+    </section>
+
+    {biblio && <section id="bibliografia" class="pb-block biblio"><h1>{biblio.title}</h1><Fragment set:html={biblioHtml} /></section>}
+  </article>
+</Base>

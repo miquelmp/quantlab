@@ -27,6 +27,7 @@ const jsonLd = {
   '@type': 'DefinedTerm',
   name: g.term,
   description: g.definitionText,
+  ...(g.english ? { alternateName: g.english } : {}),
   url: new URL(glossaryUrl(ctx, g.slug), SITE.url).toString(),
   inDefinedTermSet: new URL(url(ctx, `${lang}/glosario/`), SITE.url).toString(),
 };
@@ -41,6 +42,7 @@ const jsonLd = {
       </ol>
     </nav>
     <h1>{Term}</h1>
+    {g.english && <p class="term-en">{t(lang, 'glossary.english')}: <i lang="en">{g.english}</i></p>}
     <p class="term-card"><Fragment set:html={renderInline(g.definition, ctx).replace(/^./, (c) => c.toUpperCase())} />.</p>
     <p>{t(lang, 'glossary.definedIn')}{' '}
       {href ? <a href={href}>{refLabel(lang, g.ref, book)}</a> : <span>{refLabel(lang, g.ref, book)} ({t(lang, 'nav.comingSoon').toLowerCase()})</span>}.

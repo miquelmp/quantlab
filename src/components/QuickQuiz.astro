@@ -1,0 +1,40 @@
+---
+/**
+ * Preguntas rápidas (RF-EJ-07): opción múltiple, antes de los ejercicios. Sin JavaScript se
+ * elige una opción y se abre «Ver la solución»; con JavaScript, al elegir se corrige al momento.
+ */
+import type { QuizQuestion } from '../lib/book';
+import { renderInline, type RenderCtx } from '../lib/render';
+import { t } from '../i18n';
+
+interface Props { quiz: QuizQuestion[]; chapter: number; ctx: RenderCtx }
+const { quiz, chapter, ctx } = Astro.props;
+const lang = ctx.lang;
+const ic = { ...ctx, linkTerms: false };
+---
+{quiz.length > 0 && (
+  <div class="quiz" data-quiz={chapter}>
+    <h3>{t(lang, 'ex.quizTitle')}</h3>
+    <p class="quiz-intro">{t(lang, 'ex.quizIntro')}</p>
+    <ol class="quiz-list">
+      {quiz.map((q, i) => (
+        <li class="quiz-q" data-correct={q.correct}>
+          <fieldset>
+            <legend><span class="quiz-n">{i + 1}.</span> <Fragment set:html={renderInline(q.question, ic)} /></legend>
+            {q.options.map((o, k) => (
+              <label class="quiz-opt">
+                <input type="radio" name={`quiz-${chapter}-${i}`} value={k} />
+                <span set:html={renderInline(o, ic)} />
+              </label>
+            ))}
+          </fieldset>
+          <p class="quiz-result" role="status" aria-live="polite"></p>
+          <details class="quiz-solution">
+            <summary>{t(lang, 'ex.quizShow')}</summary>
+            <p><strong>{t(lang, 'ex.quizAnswer')}</strong> <Fragment set:html={renderInline(q.options[q.correct], ic)} />. <Fragment set:html={renderInline(q.explanation, ic)} /></p>
+          </details>
+        </li>
+      ))}
+    </ol>
+  </div>
+)}
