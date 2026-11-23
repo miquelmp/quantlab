@@ -16,9 +16,14 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   ogType?: string;
   current?: string;
+  /** false: la página no entra en el índice de búsqueda (el propio buscador, la 404). */
+  searchable?: boolean;
 }
 
-const { lang, title, description, path, jsonLd, ogType = 'website', current } = Astro.props;
+const { lang, title, description, path, jsonLd, ogType = 'website', current, searchable = true } = Astro.props;
+// Tipo de página para agrupar los resultados del buscador (RF-BUS-03).
+const searchType = path.startsWith('capitulos/') ? 'chapter' : path.startsWith('temas/') ? 'topic'
+  : /^glosario\/.+/.test(path) ? 'term' : path.startsWith('formulas/') ? 'formulas' : 'other';
 const L = getLang(lang);
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
 const u = (p: string) => base + p.replace(/^\//, '');
@@ -32,6 +37,7 @@ const nav = [
   { key: 'glossary', href: u(`${lang}/glosario/`), label: t(lang, 'nav.glossary') },
   { key: 'formulas', href: u(`${lang}/formulas/`), label: t(lang, 'nav.formulas') },
   { key: 'about', href: u(`${lang}/sobre-el-libro/`), label: t(lang, 'nav.about') },
+  { key: 'search', href: u(`${lang}/buscar/`), label: t(lang, 'nav.search') },
 ];
 const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
@@ -114,7 +120,7 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
       </details>
     </div>
   </header>
-  <main id="main" class="page" tabindex="-1">
+  <main id="main" class="page" tabindex="-1" data-pagefind-body={searchable ? '' : undefined} data-pagefind-meta={searchable ? `tipo:${searchType}` : undefined}>
     <slot />
   </main>
   <footer class="site-footer">

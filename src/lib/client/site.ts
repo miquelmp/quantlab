@@ -194,7 +194,22 @@ function initPython() {
   import('../../python/client').then((m) => m.initPython(tr));
 }
 
+/* ---------- Atajo «/» para abrir el buscador (RF-BUS-04) ---------- */
+function initSearchShortcut() {
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
+    const el = e.target as HTMLElement;
+    if (el.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]')) return;
+    const q = document.getElementById('q') as HTMLInputElement | null;
+    e.preventDefault();
+    if (q) { q.focus(); q.select(); return; }
+    const link = document.querySelector<HTMLAnchorElement>('.main-nav a[href$="/buscar/"]');
+    if (link) location.href = link.href;
+  });
+}
+
 initSettings();
+initSearchShortcut();
 initChapter();
 initExercises();
 initIndex();

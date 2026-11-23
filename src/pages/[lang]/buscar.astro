@@ -1,0 +1,32 @@
+---
+/** Buscador de texto completo (RF-BUS-01 a 05), con el índice que crea Pagefind al compilar. */
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { t, tPrefix } from '../../i18n';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+const { lang } = Astro.params as { lang: string };
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const strings = tPrefix(lang, 'search.');
+---
+<Base lang={lang} title={t(lang, 'search.title')} description={t(lang, 'search.intro')} path="buscar/" current="search" searchable={false}>
+  <div class="prose search-page" style="max-width:48rem">
+    <h1>{t(lang, 'search.title')}</h1>
+    <p>{t(lang, 'search.intro')}</p>
+    <form class="search-form" role="search" action="" method="get">
+      <label for="q">{t(lang, 'search.label')}</label>
+      <input id="q" name="q" type="search" autocomplete="off" spellcheck="false" placeholder={t(lang, 'search.placeholder')} />
+    </form>
+    <p class="search-hint js-only">{t(lang, 'search.shortcut')}</p>
+    <noscript><p>{t(lang, 'search.noJs')}</p></noscript>
+    <p class="search-status" role="status" aria-live="polite"></p>
+    <div class="search-results"></div>
+  </div>
+  <script type="application/json" id="search-cfg" set:html={JSON.stringify({ base, lang, strings })} />
+  <script>
+    import { initSearch } from '../../lib/client/search';
+    initSearch();
+  </script>
+</Base>
