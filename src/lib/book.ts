@@ -54,6 +54,8 @@ export interface Exercise {
   hints?: PhrasingContent[][]; // pistas graduadas (pistas.yaml, RF-EJ-05)
 }
 
+export interface QuizQuestion { question: PhrasingContent[]; options: PhrasingContent[][]; correct: number; explanation: PhrasingContent[] }
+
 export interface Chapter {
   number: number;
   title: string;
@@ -67,6 +69,7 @@ export interface Chapter {
   exercises: Exercise[];
   chart?: ChartSpec;
   challenges: string[];         // retos del gráfico (retos.yaml)
+  quiz: QuizQuestion[];         // preguntas rápidas (preguntas.yaml, RF-EJ-07)
   python: string[];
   minutesLevel1: number;
   minutesAdvanced: number;
@@ -272,6 +275,7 @@ function parseChapterNodes(num: number, title: string, nodes: Node[], meta: any,
     exercises,
     chart,
     challenges: [],
+    quiz: [],
     python,
     minutesLevel1: Math.max(1, Math.round(wl1 / 200)),
     minutesAdvanced: Math.max(1, Math.round(wadv / 200)),
@@ -329,6 +333,9 @@ export function loadBook(lang: string): Book {
     const p = r.children[0];
     return p && p.type === 'paragraph' ? p.children : [];
   };
+  const quizFile = path.join(dir, 'preguntas.yaml');
+  const quizSrc: Record<string, { pregunta: string; opciones: string[]; correcta: number; explicacion: string }[]> =
+    fs.existsSync(quizFile) ? YAML.parse(fs.readFileSync(quizFile, 'utf8')) ?? {} : {};
   const tree = unified().use(remarkParse).use(remarkGfm).use(remarkMath).parse(src) as Root;
 
   const top = splitBy(tree.children, 1);
@@ -442,6 +449,11 @@ export function loadBook(lang: string): Book {
   // Une ejercicios, soluciones y respuestas numéricas.
   for (const ch of chapters) {
     ch.challenges = (retos[ch.number] ?? []).filter((r) => typeof r === 'string');
+    ch.quiz = (quizSrc[ch.number] ?? []).map((q, i) => {
+      if (typeof q?.pregunta !== 'string' || !Array.isArray(q.opciones) || q.opciones.some((o) => typeof o !== 'string') || typeof q.explicacion !== 'string'
+        || !Number.isInteger(q.correcta) || q.correcta < 0 || q.correcta >= q.opciones.length) fail(`preguntas.yaml: la pregunta ${i + 1} del capítulo ${ch.number} está incompleta o su «correcta» no es válida`);
+      return { question: inlineMd(q.pregunta), options: q.opciones.map(inlineMd), correct: q.correcta, explanation: inlineMd(q.explicacion) };
+    });
     for (const ex of ch.exercises) {
       const s = solutions.get(ex.id);
       if (!s) fail(`El ejercicio ${ex.id} no tiene solución`);

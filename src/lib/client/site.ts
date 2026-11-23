@@ -135,6 +135,23 @@ function initChapter() {
   }
 }
 
+/* ---------- Preguntas rápidas (RF-EJ-07) ---------- */
+function initQuiz() {
+  document.querySelectorAll<HTMLElement>('.quiz-q').forEach((q) => {
+    const correct = q.dataset.correct;
+    const out = q.querySelector<HTMLElement>('.quiz-result')!;
+    q.querySelectorAll<HTMLInputElement>('input[type=radio]').forEach((r) => r.addEventListener('change', () => {
+      const ok = r.value === correct;
+      if (!q.dataset.first) q.dataset.first = ok ? 'ok' : 'bad';
+      out.className = 'quiz-result ' + (ok ? 'ok' : 'bad');
+      out.textContent = ok ? tr('ex.quizRight') : tr('ex.quizWrong');
+      q.querySelectorAll('.quiz-opt').forEach((l) => l.classList.remove('picked-ok', 'picked-bad'));
+      r.closest('.quiz-opt')!.classList.add(ok ? 'picked-ok' : 'picked-bad');
+      if (ok) q.querySelector<HTMLDetailsElement>('.quiz-solution')!.open = true;
+    }));
+  });
+}
+
 /* ---------- Ejercicios con comprobación (RF-EJ-03) ---------- */
 function initExercises() {
   const store = load();
@@ -353,6 +370,7 @@ initHeaderAutoHide();
 initSearchShortcut();
 initChapter();
 initExercises();
+initQuiz();
 initIndex();
 initChallenges();
 initCharts();

@@ -66,6 +66,7 @@ for (const { code: lang } of LANGS) {
   for (const c of book.chapters.filter((x) => x.published)) {
     for (const ex of c.exercises) if (ex.kind === 'cálculo' && !answers[ex.id]) err(`[${lang}] Ejercicio de cálculo ${ex.id} (publicado) sin respuesta en respuestas.yaml`);
     for (const ex of c.exercises) if (!ex.hints || ex.hints.length < 1 || ex.hints.length > 2 || ex.hints.some((h) => !h.length)) err(`[${lang}] Ejercicio ${ex.id} (publicado): necesita 1 o 2 pistas en pistas.yaml`);
+    if (c.quiz.length < 2 || c.quiz.length > 4) err(`[${lang}] Capítulo ${c.number}: necesita de 2 a 4 preguntas rápidas en preguntas.yaml (tiene ${c.quiz.length})`);
     if (!c.chart) err(`[${lang}] Capítulo ${c.number}: sin gráfico`);
     else {
       if (!c.chart.observe.length) err(`[${lang}] Capítulo ${c.number}: el gráfico no tiene «Lo que debes observar»`);

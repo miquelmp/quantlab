@@ -27,6 +27,7 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Términos en inglés** (RF-GLO-05): `content/es/glosario-en.yaml` (clave = slug del término); `check:content` exige uno por término.
 - **Símbolos interactivos** (RF-FOR-04): `initFormulaSymbols()` en `src/lib/client/site.ts`; funciona con las tablas «Símbolo | Significado» que siguen a una fórmula destacada.
 - **Pistas** (RF-EJ-05): `content/es/pistas.yaml`, 1–2 por ejercicio publicado (lo exige `check:content`), Markdown con `$…$` entre comillas simples; se muestran antes de la respuesta.
+- **Preguntas rápidas** (RF-EJ-07): `content/es/preguntas.yaml`, 2–4 de opción múltiple por capítulo (`correcta` cuenta desde 0; lo exige `check:content`); `src/components/QuickQuiz.astro` al principio de «Ejercicios», corrección en `initQuiz()` de `site.ts`.
 - **Analítica**: GoatCounter (anónima, sin cookies), `ANALYTICS_GOATCOUNTER` en `src/config.ts`; panel del autor en https://miquelmp.goatcounter.com/. Explicada en `content/es/paginas/privacidad.md`.
 
 ## Tareas habituales
@@ -48,4 +49,4 @@ npm run preview & npm run check:a11y   # axe-core, temas claro y oscuro (no est�
 
 ## Pendiente
 
-Hecho todo lo imprescindible (M) y recomendable (S). Quedan funciones opcionales (C) y de la fase 5, a decidir por el autor: preguntas rápidas (RF-EJ-07), versión en inglés y PDF.
+Hecho todo lo imprescindible (M) y recomendable (S). También las funciones opcionales (C). Quedan las de la fase 5: versión en inglés y PDF.

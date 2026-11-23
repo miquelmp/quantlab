@@ -748,5 +748,11 @@
   "map.intro": "Cada flecha va de un capítulo a otro que conviene leer después. Las columnas son las cinco partes del libro; pulsa un capítulo para abrirlo.",
   "map.after": "conviene leer antes los capítulos",
   "glossary.english": "En inglés",
-  "ex.hint": "Pista {n}"
+  "ex.hint": "Pista {n}",
+  "ex.quizTitle": "Preguntas rápidas",
+  "ex.quizIntro": "Antes de los ejercicios, comprueba en un minuto que has captado las ideas del capítulo.",
+  "ex.quizShow": "Ver la solución",
+  "ex.quizAnswer": "Respuesta:",
+  "ex.quizRight": "Correcto.",
+  "ex.quizWrong": "No es esta. Prueba otra o mira la solución."
 }
