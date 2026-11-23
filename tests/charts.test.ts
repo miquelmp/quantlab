@@ -365,3 +365,14 @@ describe('tema C · Black-Scholes y árbol binomial', () => {
     }
   });
 });
+
+describe('tema C · lo que dice «Lo que debes observar»', () => {
+  it('la compra vale más que su pago inmediato y crece con el plazo; la venta muy dentro del dinero puede valer menos', () => {
+    for (const S of [80, 100, 120, 150]) for (const T of [0.1, 1, 3]) {
+      const c = blackScholes(S, 100, 0.2, T, 0.03).call;
+      expect(c).toBeGreaterThan(Math.max(0, S - 100));
+      expect(blackScholes(S, 100, 0.2, T + 0.5, 0.03).call).toBeGreaterThan(c);
+    }
+    expect(blackScholes(50, 100, 0.2, 1, 0.03).put).toBeLessThan(50);
+  });
+});

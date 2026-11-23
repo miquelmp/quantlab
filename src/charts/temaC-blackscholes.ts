@@ -23,7 +23,8 @@ export function blackScholes(S: number, K: number, sigma: number, T: number, r: 
   const d1 = (Math.log(S / K) + (r + 0.5 * sigma * sigma) * T) / sq;
   const d2 = d1 - sq;
   const disc = K * Math.exp(-r * T);
-  return { call: S * normCdf(d1) - disc * normCdf(d2), put: disc * normCdf(-d2) - S * normCdf(-d1), d1, d2 };
+  // max(0, …): evita valores negativos minúsculos por redondeo muy fuera del dinero.
+  return { call: Math.max(0, S * normCdf(d1) - disc * normCdf(d2)), put: Math.max(0, disc * normCdf(-d2) - S * normCdf(-d1)), d1, d2 };
 }
 
 /**

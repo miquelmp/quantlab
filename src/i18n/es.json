@@ -607,7 +607,7 @@
   "chart.presentExit": "Salir de la presentación",
   "tC.title": "Del árbol binomial a Black-Scholes",
   "tC.chartDesc": "Precio de una opción europea de compra y de venta con la fórmula de Black y Scholes (1973), y precio de la compra con un árbol binomial de 1 a N pasos. Mueve los mandos para ver cómo cambian.",
-  "tC.observe": "Las curvas de precio siempre quedan por encima de lo que paga la opción al vencimiento: esa diferencia es el valor temporal, y crece con la volatilidad y el plazo. En el panel del árbol binomial, el precio oscila alrededor del precio exacto y se acerca a él al añadir pasos.",
+  "tC.observe": "La compra siempre vale más de lo que pagaría si venciera hoy: esa diferencia es el valor temporal, y crece con la volatilidad y el plazo. La venta europea, en cambio, puede valer menos que su pago cuando está muy dentro del dinero, porque cobrar K al vencimiento vale menos que cobrarlo hoy. En el panel del árbol binomial, el precio oscila alrededor del exacto y se acerca a él al añadir pasos.",
   "tC.heading": "Gráfico interactivo",
   "tC.spot": "Precio de la acción S₀",
   "tC.strike": "Precio de ejercicio K",
