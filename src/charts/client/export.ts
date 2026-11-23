@@ -31,11 +31,14 @@ export function chartSvg(api: ChartApi): { svg: string; w: number; h: number } {
   const parts: { x: number; y: number; w: number; h: number; head: string; el: SVGElement }[] = [];
   let x = 0, y = 34, rowH = 0;
   const narrow = api.def.panels.filter((p) => !p.wide).length;
+  // Algunos gráficos dibujan muchos puntos en un lienzo aparte (Monte Carlo): para exportar se
+  // pide la versión en SVG, que lleva los puntos dentro.
+  const data = api.data && typeof api.data === 'object' && 'useCanvas' in api.data ? { ...api.data, useCanvas: false } : api.data;
   for (const p of api.def.panels) {
     const pw = p.wide || narrow < 2 ? 2 * W : W;
     if (x + pw > 2 * W) { x = 0; y += rowH; rowH = 0; }
     const div = document.createElement('div');
-    div.innerHTML = p.render(api.data, api.state, pw, api.ctx);
+    div.innerHTML = p.render(data, api.state, pw, api.ctx);
     host.appendChild(div);
     const src = div.querySelector('svg')!;
     const clone = src.cloneNode(true) as SVGElement;
