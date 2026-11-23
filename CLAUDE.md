@@ -15,7 +15,7 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Búsqueda**: `scripts/search.mjs` (integración que crea el índice Pagefind en `dist/pagefind/` antes de la PWA) + página `src/pages/[lang]/buscar.astro` + `src/lib/client/search.ts` (interfaz propia, sinónimos, agrupación por tipo). Se indexa el `<main data-pagefind-body>` de `Base.astro`; `searchable={false}` lo excluye. Atajo «/».
 - Progreso y preferencias del lector: solo `localStorage` (clave `quantlab:v1`), siempre con try/catch. Página «Mi progreso» en `src/pages/[lang]/progreso.astro` + `src/lib/client/progress.ts` (resumen, exportar/importar fichero, borrar).
 
-- **Temas A–E y proyecto**: páginas `src/pages/[lang]/temas/[slug].astro` (slug y descripción en `temas:` de `capitulos.yaml`) y `src/pages/[lang]/proyecto.astro`. «capítulo N» y «tema X» en el texto se enlazan solos si están publicados.
+- **Temas A–E y proyecto**: páginas `src/pages/[lang]/temas/[slug].astro` (slug y descripción en `temas:` de `capitulos.yaml`) y `src/pages/[lang]/proyecto.astro`. «capítulo N» y «tema X» en el texto se enlazan solos si están publicados; los años de las citas «Autor (año)» enlazan a su obra en la bibliografía (`citationId` en `src/lib/biblio.ts`).
 
 ## Tareas habituales
 
