@@ -599,5 +599,7 @@
   "epilogue.description": "Las tres ideas que conviene llevarse del libro y por dónde seguir aprendiendo.",
   "chart.panels": "Paneles del gráfico",
   "chart.copyLinkShort": "Copiar enlace",
-  "chart.moreControls": "Más ajustes"
+  "chart.moreControls": "Más ajustes",
+  "chart.present": "Presentación",
+  "chart.presentExit": "Salir de la presentación"
 }

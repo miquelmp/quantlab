@@ -6,7 +6,7 @@
 import { loadChart } from '../registry';
 import type { ChartCtx, ChartDef } from '../types';
 import { randomSeed } from '../rng';
-import { esc, setCompact } from '../svg';
+import { esc, setCompact, setPresent } from '../svg';
 
 export interface ChartApi {
   root: HTMLElement;
@@ -202,6 +202,39 @@ export async function mountChart(root: HTMLElement): Promise<void> {
     }
     setTimeout(() => { shareBtn.innerHTML = shareHtml; }, 2000);
   });
+  // Modo presentación (RF-GRA-08): el gráfico ocupa toda la pantalla, con mandos y textos grandes.
+  const presentBtn = root.querySelector<HTMLButtonElement>('[data-act="present"]');
+  const presentHtml = presentBtn?.innerHTML ?? '';
+  const setPresenting = (on: boolean) => {
+    if (root.classList.contains('presenting') === on) return;
+    root.classList.toggle('presenting', on);
+    document.documentElement.classList.toggle('chart-presenting', on);
+    setPresent(on);
+    if (presentBtn) {
+      presentBtn.setAttribute('aria-pressed', String(on));
+      if (on) presentBtn.textContent = tr('chart.presentExit');
+      else presentBtn.innerHTML = presentHtml;
+    }
+    renderPanels();
+    if (!on) root.scrollIntoView({ block: 'start' });
+  };
+  presentBtn?.addEventListener('click', async () => {
+    const on = !root.classList.contains('presenting');
+    if (on) {
+      setPresenting(true);
+      try { await root.requestFullscreen?.(); } catch { /* sin pantalla completa: se queda a toda la ventana */ }
+    } else {
+      if (document.fullscreenElement === root) { try { await document.exitFullscreen(); } catch { /* nada */ } }
+      setPresenting(false);
+    }
+  });
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement && root.classList.contains('presenting')) setPresenting(false);
+  });
+  root.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' && root.classList.contains('presenting') && !document.fullscreenElement) setPresenting(false);
+  });
+
   root.querySelectorAll<HTMLButtonElement>('.chart-controls button').forEach((b) => (b.disabled = false));
   // «Más ajustes»: abierto en pantallas anchas; plegado en el móvil para que todo quepa.
   const more = root.querySelector<HTMLDetailsElement>('[data-more]');

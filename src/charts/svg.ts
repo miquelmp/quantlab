@@ -105,7 +105,7 @@ export function legend(items: { cls: string; label: string; dash?: boolean; box?
   let cx = x;
   let cy = y;
   for (const it of items) {
-    const w = 26 + it.label.length * 6.6 + 14;
+    const w = 26 + it.label.length * (present ? 8.3 : 6.6) + 14;
     if (cx + w > x + maxWidth && cx > x) { cx = x; cy += 18; }
     s += it.box
       ? `<rect class="${it.cls}" x="${cx}" y="${cy - 9}" width="14" height="10" rx="2"/>`
@@ -120,7 +120,7 @@ export function legendHeight(items: { label: string }[], maxWidth: number): numb
   let cx = 0;
   let rows = 1;
   for (const it of items) {
-    const w = 26 + it.label.length * 6.6 + 14;
+    const w = 26 + it.label.length * (present ? 8.3 : 6.6) + 14;
     if (cx + w > maxWidth && cx > 0) { cx = 0; rows++; }
     cx += w;
   }
@@ -139,6 +139,10 @@ export function svgOpen(w: number, h: number, title: string, desc: string, id: s
  */
 let compact = false;
 export function setCompact(v: boolean): void { compact = v; }
+/** Modo presentación (RF-GRA-08): paneles más altos para proyectar a pantalla completa. */
+let present = false;
+export function setPresent(v: boolean): void { present = v; }
 export function panelH(_w: number, base: number): number {
+  if (present) return Math.round(base * 1.35);
   return compact ? Math.round(base * 0.72) : base;
 }

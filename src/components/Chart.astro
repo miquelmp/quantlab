@@ -62,6 +62,7 @@ const sliderHtml = (sl: NonNullable<typeof def>['sliders'][number]) => {
             </>
           )}
           <button type="button" class="btn" data-act="reset" disabled aria-label={t(lang, 'chart.reset')} title={t(lang, 'chart.reset')}><span class="btn-text" aria-hidden="true">{t(lang, 'chart.reset')}</span><span class="btn-icon" aria-hidden="true">↺</span></button>
+          <button type="button" class="btn present-btn" data-act="present" aria-pressed="false" disabled>{t(lang, 'chart.present')}</button>
           <button type="button" class="btn" data-act="share" disabled><span class="share-long">{t(lang, 'chart.copyLink')}</span><span class="share-short">{t(lang, 'chart.copyLinkShort')}</span></button>
           {(id === 'montecarlo' || id === 'campana') && <button type="button" class="btn" data-act="pause" hidden>{t(lang, 'chart.pause')}</button>}
         </div>
