@@ -18,7 +18,6 @@ export const PYODIDE_INDEX_URL = 'https://cdn.jsdelivr.net/pyodide/v0.29.5/full/
 
 /**
  * Analítica anónima y sin cookies (GoatCounter). Vacío = desactivada.
- * Para activarla: crear una cuenta gratuita en goatcounter.com y poner aquí
- * 'https://<código>.goatcounter.com/count'.
+ * Panel de estadísticas: https://miquelmp.goatcounter.com/ (cuenta del autor).
  */
-export const ANALYTICS_GOATCOUNTER = '';
+export const ANALYTICS_GOATCOUNTER = 'https://miquelmp.goatcounter.com/count';
