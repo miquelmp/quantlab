@@ -2,6 +2,8 @@
 import type { APIRoute } from 'astro';
 import type { Code } from 'mdast';
 import { visit } from 'unist-util-visit';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { LANGS } from '../../../i18n/config';
 import { t } from '../../../i18n';
 import { loadBook, publishedChapters, type Node } from '../../../lib/book';
@@ -14,22 +16,24 @@ function pyBlocks(nodes: Node[]): string[] {
   return out;
 }
 
+const LICENSE = readFileSync(join(process.cwd(), 'LICENSE'), 'utf8');
+
 export function codeBundles(lang: string): (CodeBundle & { name: string })[] {
   const book = loadBook(lang);
   const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
   const abs = (p: string) => new URL(base + p, SITE.url).toString();
   const list: (CodeBundle & { name: string })[] = [];
   for (const c of publishedChapters(book)) {
-    if (c.python.length) list.push({ name: c.slug, title: `${t(lang, 'nav.chapter')} ${c.number} · ${c.title}`, url: abs(`${lang}/capitulos/${c.slug}/`), blocks: c.python });
+    if (c.python.length) list.push({ name: c.slug, title: `${t(lang, 'nav.chapter')} ${c.number} · ${c.title}`, url: abs(`${lang}/capitulos/${c.slug}/`), blocks: c.python, license: LICENSE });
   }
   for (const tp of book.topics.filter((x) => x.published)) {
     const blocks = pyBlocks(tp.nodes);
-    if (blocks.length) list.push({ name: tp.slug, title: `${t(lang, 'nav.topic')} ${tp.letter} · ${tp.title}`, url: abs(`${lang}/temas/${tp.slug}/`), blocks });
+    if (blocks.length) list.push({ name: tp.slug, title: `${t(lang, 'nav.topic')} ${tp.letter} · ${tp.title}`, url: abs(`${lang}/temas/${tp.slug}/`), blocks, license: LICENSE });
   }
   const proj = book.extras.find((e) => e.key === 'proyecto');
   if (proj?.nodes) {
     const blocks = pyBlocks(proj.nodes);
-    if (blocks.length) list.push({ name: 'proyecto', title: proj.title, url: abs(`${lang}/proyecto/`), blocks });
+    if (blocks.length) list.push({ name: 'proyecto', title: proj.title, url: abs(`${lang}/proyecto/`), blocks, license: LICENSE });
   }
   return list;
 }
