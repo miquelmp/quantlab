@@ -25,7 +25,11 @@ export const CHART_BY_CHAPTER: Record<number, string> = {
 
 /** Gráficos de los temas complementarios (por letra). */
 export const CHART_BY_TOPIC: Record<string, string> = {
+  A: 'sobreajuste',
+  B: 'costes',
   C: 'blackscholes',
+  D: 'cointegracion',
+  E: 'caidas',
 };
 
 /** Prefijo de los textos de interfaz de cada gráfico en src/i18n/<idioma>.json. */
@@ -47,6 +51,10 @@ export const I18N_PREFIX: Record<string, string> = {
   montecarlo: 'c6.',
   kelly: 'c14.',
   blackscholes: 'tC.',
+  sobreajuste: 'tA.',
+  costes: 'tB.',
+  cointegracion: 'tD.',
+  caidas: 'tE.',
 };
 
 export async function loadChart(id: string): Promise<ChartDef<any, any>> {
@@ -68,6 +76,10 @@ export async function loadChart(id: string): Promise<ChartDef<any, any>> {
     case 'colas': return (await import('./ch15-colas')).chart15;
     case 'var': return (await import('./ch16-var')).chart16;
     case 'blackscholes': return (await import('./temaC-blackscholes')).chartC;
+    case 'sobreajuste': return (await import('./temaA-sobreajuste')).chartA;
+    case 'costes': return (await import('./temaB-costes')).chartB;
+    case 'cointegracion': return (await import('./temaD-cointegracion')).chartD;
+    case 'caidas': return (await import('./temaE-caidas')).chartE;
     default: throw new Error(`Gráfico desconocido: ${id}`);
   }
 }
