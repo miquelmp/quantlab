@@ -1,0 +1,83 @@
+---
+/**
+ * Mapa de aprendizaje (RF-NAV-09): los capítulos por partes (columnas) y flechas desde los
+ * capítulos que conviene leer antes (`requisitos` de capitulos.yaml). Cada caja enlaza al capítulo.
+ * En pantallas estrechas el mapa se desplaza en horizontal dentro de su recuadro.
+ */
+import type { Book } from '../lib/book';
+import { chapterUrl, type RenderCtx } from '../lib/render';
+import { t } from '../i18n';
+
+interface Props { book: Book; ctx: RenderCtx }
+const { book, ctx } = Astro.props;
+const lang = ctx.lang;
+const BW = 160, BH = 62, GX = 44, GY = 22, PAD = 18, HEAD = 34;
+const pos = new Map<number, { x: number; y: number }>();
+book.parts.forEach((p, i) => p.chapters.forEach((n, j) => pos.set(n, { x: PAD + i * (BW + GX), y: HEAD + j * (BH + GY) })));
+const W = PAD * 2 + book.parts.length * BW + (book.parts.length - 1) * GX;
+const H = HEAD + Math.max(...book.parts.map((p) => p.chapters.length)) * (BH + GY) + 4;
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+// Parte el título en líneas cortas (cajas estrechas).
+function lines(title: string, max = 20): string[] {
+  const out: string[] = [];
+  let cur = '';
+  for (const w of title.split(/\s+/)) {
+    if ((cur + ' ' + w).trim().length > max && cur) { out.push(cur); cur = w; } else cur = (cur + ' ' + w).trim();
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+let edges = '';
+for (const c of book.chapters) {
+  const b = pos.get(c.number);
+  if (!b) continue;
+  for (const r of c.prerequisites) {
+    const a = pos.get(r);
+    if (!a) continue;
+    if (a.x === b.x) {
+      // Misma parte: curva por la izquierda de las cajas.
+      const x = a.x, y1 = a.y + BH / 2, y2 = b.y + BH / 2;
+      edges += `<path class="map-edge" data-from="${r}" data-to="${c.number}" d="M${x},${y1} C${x - 22},${y1} ${x - 22},${y2} ${x - 4},${y2}"/>`;
+    } else {
+      const x1 = a.x + BW, y1 = a.y + BH / 2, x2 = b.x - 4, y2 = b.y + BH / 2, mx = (x1 + x2) / 2;
+      edges += `<path class="map-edge" data-from="${r}" data-to="${c.number}" d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}"/>`;
+    }
+  }
+}
+const heads = book.parts.map((p, i) => `<text class="map-part" x="${PAD + i * (BW + GX) + BW / 2}" y="20" text-anchor="middle">Parte ${p.roman}</text>`).join('');
+const nodes = book.chapters.filter((c) => pos.has(c.number)).map((c) => {
+  const { x, y } = pos.get(c.number)!;
+  const href = chapterUrl(ctx, c.number);
+  const ls = lines(c.title);
+  const text = `<text class="map-num" x="${x + 10}" y="${y + 20}">${c.number} </text>` +
+    ls.map((l, k) => `<text class="map-title" x="${x + 30}" y="${y + BH / 2 + 4 + (k - (ls.length - 1) / 2) * 15}">${esc(l)} </text>`).join('');
+  const box = `<rect class="map-node" x="${x}" y="${y}" width="${BW}" height="${BH}" rx="8"/>`;
+  const label = `${c.number} ${c.title}` + (c.prerequisites.length ? `. ${t(lang, 'map.after')} ${c.prerequisites.join(', ')}` : '');
+  return href ? `<a href="${href}" data-node="${c.number}" aria-label="${esc(label)}">${box}${text}</a>` : `<g data-node="${c.number}" aria-label="${esc(label)}">${box}${text}</g>`;
+}).join('');
+const svg = `<svg class="learning-map-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="group" aria-label="${esc(t(lang, 'map.title'))}" xmlns="http://www.w3.org/2000/svg">` +
+  `<defs><marker id="map-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" class="map-arrowhead"/></marker></defs>` +
+  heads + edges + nodes + '</svg>';
+---
+<section class="learning-map" aria-labelledby="mapa-aprendizaje">
+  <h2 id="mapa-aprendizaje">{t(lang, 'map.title')}</h2>
+  <p>{t(lang, 'map.intro')}</p>
+  <div class="learning-map-wrap" tabindex="0" role="region" aria-label={t(lang, 'map.title')} set:html={svg} />
+  <script>
+    // Al señalar un capítulo, resalta sus flechas (de dónde viene y adónde lleva).
+    const svg = document.querySelector<SVGSVGElement>('.learning-map-svg');
+    if (svg) {
+      const on = (n: string | null) => svg.querySelectorAll<SVGPathElement>('.map-edge').forEach((e) => {
+        const hit = !!n && (e.dataset.from === n || e.dataset.to === n);
+        e.classList.toggle('hl', hit);
+        svg.classList.toggle('has-hl', !!n);
+      });
+      svg.querySelectorAll<SVGElement>('[data-node]').forEach((el) => {
+        el.addEventListener('mouseenter', () => on(el.dataset.node!));
+        el.addEventListener('focus', () => on(el.dataset.node!));
+        el.addEventListener('mouseleave', () => on(null));
+        el.addEventListener('blur', () => on(null));
+      });
+    }
+  </script>
+</section>

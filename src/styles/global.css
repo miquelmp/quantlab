@@ -302,6 +302,28 @@ pre { margin: 0; }
 .control output { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent); }
 .control input[type="range"] { width: 100%; height: 44px; margin: 0; accent-color: var(--accent); cursor: pointer; }
 .control-seed { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-end; grid-column: 1 / -1; }
+.learning-map { margin: 1.5rem 0 2rem; }
+.learning-map-wrap { width: min(980px, calc(100vw - 32px)); position: relative; left: 50%; transform: translateX(-50%); overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 0.5rem; }
+.learning-map-svg { display: block; margin: 0 auto; font-family: inherit; max-width: none; }
+.learning-map-svg .map-part { fill: var(--text-2); font-size: 13px; font-weight: 600; }
+.learning-map-svg .map-node { fill: var(--surface-2); stroke: var(--border); stroke-width: 1; }
+.learning-map-svg a:hover .map-node, .learning-map-svg a:focus .map-node { stroke: var(--series-1); stroke-width: 2; }
+.learning-map-svg a:focus { outline: none; }
+.learning-map-svg a:focus-visible .map-node { stroke: var(--accent); stroke-width: 3; }
+.learning-map-svg .map-num { fill: var(--series-1); font-size: 15px; font-weight: 700; }
+.learning-map-svg .map-title { fill: var(--text); font-size: 12.5px; }
+.learning-map-svg .map-edge { fill: none; stroke: var(--muted); stroke-width: 1.3; opacity: 0.6; marker-end: url(#map-arrow); transition: opacity 0.15s; }
+.learning-map-svg.has-hl .map-edge { opacity: 0.12; }
+.learning-map-svg.has-hl .map-edge.hl { opacity: 1; stroke: var(--series-1); stroke-width: 2.2; }
+.learning-map-svg .map-arrowhead { fill: var(--muted); }
+.export-menu { position: relative; }
+.export-menu > summary { list-style: none; cursor: pointer; }
+.export-menu > summary::-webkit-details-marker { display: none; }
+.export-menu > summary .btn-text::after { content: ' ▾'; }
+@media (max-width: 759px) { .export-items { left: auto; right: 0; } }
+.export-items { position: absolute; z-index: 5; top: calc(100% + 4px); left: 0; display: grid; gap: 0.35rem; padding: 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 6px 20px rgba(0,0,0,0.12); min-width: 11rem; }
+.export-items .btn { width: 100%; justify-content: flex-start; }
+.chart.presenting .export-menu { display: none; }
 .control-seed label { font-size: 0.88rem; font-weight: 600; display: grid; gap: 0.2rem; }
 .control-seed input { width: 7rem; min-height: 40px; padding: 0.3rem 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; }
 .chart-panels { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
@@ -536,7 +558,7 @@ pre { margin: 0; }
   .chart-edit th, .chart-edit td { padding: 0.15rem 0.25rem; }
   .chart-edit tbody th { white-space: nowrap; }
   .chart-edit input { width: 3.4rem; padding: 0.15rem 0.3rem; }
-  .control-seed input { width: 3.8rem; }
+  .control-seed input { width: 4.4rem; }
 }
 
 /* En el móvil la cabecera se esconde al bajar y vuelve al subir: deja más pantalla al contenido. */
