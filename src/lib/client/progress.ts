@@ -137,6 +137,7 @@ export function initProgress() {
     const cur = load();
     for (const [k, v] of Object.entries(data.read)) cur.read[k] = [...new Set([...(cur.read[k] ?? []), ...v])];
     Object.assign(cur.ex, data.ex);
+    if (data.ch) { cur.ch ??= {}; for (const [k, v] of Object.entries(data.ch)) cur.ch[k] = [...new Set([...(cur.ch[k] ?? []), ...v])].sort((a, b) => a - b); }
     if (data.last && (!cur.last || data.last.ts > cur.last.ts)) cur.last = data.last;
     msg.textContent = save(cur) ? tr('imported') : tr('noStorage');
     render();
