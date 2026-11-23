@@ -13,7 +13,7 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Idiomas**: `src/i18n/config.ts` + `src/i18n/<idioma>.json` (textos de interfaz, también los de los gráficos) + `content/<idioma>/`. URLs `/<idioma>/…`; hreflang automático con más de un idioma.
 - **App instalable (PWA)**: `src/pages/manifest.webmanifest.ts` + `scripts/pwa.mjs` (integración que escribe `dist/sw.js` con todas las páginas para leer sin conexión; Pyodide se guarda al usarse). Iconos en `public/icons/` (`node scripts/make-icons.cjs` si cambia el logo).
 - **Búsqueda**: `scripts/search.mjs` (integración que crea el índice Pagefind en `dist/pagefind/` antes de la PWA) + página `src/pages/[lang]/buscar.astro` + `src/lib/client/search.ts` (interfaz propia, sinónimos, agrupación por tipo). Se indexa el `<main data-pagefind-body>` de `Base.astro`; `searchable={false}` lo excluye. Atajo «/».
-- Progreso y preferencias del lector: solo `localStorage` (clave `quantlab:v1`), siempre con try/catch.
+- Progreso y preferencias del lector: solo `localStorage` (clave `quantlab:v1`), siempre con try/catch. Página «Mi progreso» en `src/pages/[lang]/progreso.astro` + `src/lib/client/progress.ts` (resumen, exportar/importar fichero, borrar).
 
 ## Tareas habituales
 
@@ -34,4 +34,4 @@ npm run preview & npm run check:a11y   # axe-core, temas claro y oscuro (no est�
 
 ## Pendiente (fases siguientes del análisis funcional)
 
-«Mi progreso», galería Laboratorio, modo presentación, retos, descargas .py/.ipynb, imágenes de vista previa por capítulo, analítica (GoatCounter: poner la URL en `src/config.ts` cuando el autor cree la cuenta).
+Galería Laboratorio, modo presentación, retos, descargas .py/.ipynb, imágenes de vista previa por capítulo, analítica (GoatCounter: poner la URL en `src/config.ts` cuando el autor cree la cuenta).

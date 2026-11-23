@@ -1,0 +1,76 @@
+---
+/**
+ * «Mi progreso» (RF-PRO-02, 04 y 05): avance por parte y capítulo, ejercicios resueltos, exportar e
+ * importar el progreso como fichero y borrarlo. Todo vive en el navegador (localStorage); la página
+ * solo trae la estructura del libro y el script la rellena.
+ */
+import Base from '../../layouts/Base.astro';
+import { LANGS } from '../../i18n/config';
+import { t, tPrefix } from '../../i18n';
+import { loadBook } from '../../lib/book';
+import { chapterUrl, type RenderCtx } from '../../lib/render';
+
+export function getStaticPaths() {
+  return LANGS.map((l) => ({ params: { lang: l.code } }));
+}
+const { lang } = Astro.params as { lang: string };
+const book = loadBook(lang);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const ctx: RenderCtx = { lang, base, book, linkTerms: false };
+const strings = tPrefix(lang, 'progress.');
+---
+<Base lang={lang} title={t(lang, 'progress.title')} description={t(lang, 'progress.intro')} path="progreso/" current="progress" searchable={false}>
+  <div class="prose progress-page" style="max-width:56rem">
+    <h1>{t(lang, 'progress.title')}</h1>
+    <p>{t(lang, 'progress.intro')}</p>
+    <noscript><p>{t(lang, 'progress.noJs')}</p></noscript>
+    <p class="progress-nostore" hidden>{t(lang, 'progress.noStorage')}</p>
+    <div class="progress-summary js-only" aria-live="polite">
+      <div class="stat"><span class="stat-label">{t(lang, 'progress.sections')}</span><span class="stat-value" data-sum="sections">0</span></div>
+      <div class="stat"><span class="stat-label">{t(lang, 'progress.chaptersRead')}</span><span class="stat-value" data-sum="chapters">0</span></div>
+      <div class="stat"><span class="stat-label">{t(lang, 'progress.exercises')}</span><span class="stat-value" data-sum="exercises">0</span></div>
+    </div>
+    <p class="js-only"><a class="btn resume-btn" data-resume hidden href="#">{t(lang, 'progress.resume')}: <span data-resume-label></span></a></p>
+    {book.parts.map((p) => (
+      <section class="progress-part" aria-labelledby={`pp-${p.number}`}>
+        <h2 id={`pp-${p.number}`}>Parte {p.roman} · {p.title} <span class="progress-pct js-only" data-part-pct={p.number}></span></h2>
+        <ul class="progress-list">
+          {p.chapters.map((n) => {
+            const c = book.chapters.find((x) => x.number === n)!;
+            const href = chapterUrl(ctx, n);
+            const checkable = c.exercises.filter((e) => e.checks?.length).map((e) => e.id);
+            return (
+              <li class="progress-ch" data-ch={`${lang}/${n}`} data-part={p.number} data-total={c.sections.length} data-ex={checkable.join(' ')} data-published={href ? '1' : '0'}>
+                <div class="progress-ch-head">
+                  <span class="num">{n}</span>
+                  {href ? <a href={href}>{c.title}</a> : <span>{c.title} <span class="soon">({t(lang, 'nav.comingSoon')})</span></span>}
+                </div>
+                {href && (
+                  <div class="progress-ch-body js-only">
+                    <div class="bar" role="progressbar" aria-label={t(lang, 'progress.barLabel').replace('{n}', String(n))} aria-valuemin="0" aria-valuemax={c.sections.length} aria-valuenow="0"><span></span></div>
+                    <span class="progress-detail" data-detail></span>
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))}
+    <section class="progress-tools js-only" aria-labelledby="pt-h">
+      <h2 id="pt-h">{t(lang, 'progress.toolsTitle')}</h2>
+      <p>{t(lang, 'progress.toolsIntro')}</p>
+      <div class="progress-buttons">
+        <button type="button" class="btn" data-act="export">{t(lang, 'progress.export')}</button>
+        <label class="btn file-btn">{t(lang, 'progress.import')}<input type="file" accept="application/json,.json" data-act="import" /></label>
+        <button type="button" class="btn danger" data-act="clear">{t(lang, 'progress.clear')}</button>
+      </div>
+      <p class="progress-msg" role="status" aria-live="polite"></p>
+    </section>
+  </div>
+  <script type="application/json" id="progress-cfg" set:html={JSON.stringify({ lang, strings })} />
+  <script>
+    import { initProgress } from '../../lib/client/progress';
+    initProgress();
+  </script>
+</Base>
