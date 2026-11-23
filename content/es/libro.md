@@ -277,7 +277,7 @@ Cuando $m \to \infty$, usando $\lim_{m\to\infty}(1 + x/m)^m = e^x$, se obtiene l
 
 $$VF = VP\,e^{iT}, \qquad VP = VF\,e^{-iT}.$$
 
-El **tipo anual efectivo** (TAE) equivalente es $(1 + i/m)^m - 1$. Para $i = 5\,\%$: con capitalización anual, 5,000 %; mensual, 5,116 %; continua, $e^{0{,}05} - 1 = 5{,}127\,\%$. La composición continua es la convención estándar en la valoración de derivados porque simplifica el cálculo (los factores de descuento se multiplican sumando exponentes).
+El **tipo anual efectivo** equivalente es $(1 + i/m)^m - 1$ (es la base de la TAE, que además incluye comisiones y gastos). Para $i = 5\,\%$: con capitalización anual, 5,000 %; mensual, 5,116 %; continua, $e^{0{,}05} - 1 = 5{,}127\,\%$. La composición continua es la convención estándar en la valoración de derivados porque simplifica el cálculo (los factores de descuento se multiplican sumando exponentes).
 
 #### Valor presente de una corriente de flujos
 
@@ -688,7 +688,7 @@ La media supera a la mediana: la distribución de la riqueza futura es asimétri
 
 #### Cuándo falla la campana
 
-El TCL requiere varianza finita y una dependencia débil. Si la varianza es infinita, las sumas normalizadas convergen a una **distribución estable de Lévy** no gaussiana; Mandelbrot (1963) propuso este modelo para los precios del algodón. Hoy se sabe que las rentabilidades diarias tienen varianza finita pero colas de tipo potencia con un índice de cola $\alpha$ que la mayoría de estudios sitúa entre 2 y 5, con valores típicos cercanos a 3 para acciones e índices (la «ley cúbica inversa»: Gopikrishnan *et al.*, 1999; Cont, 2001; véase el capítulo 15), de modo que:
+El TCL requiere varianza finita y una dependencia débil. Si la varianza es infinita, el TCL clásico deja de aplicarse. Cuando las colas decrecen como una potencia de índice $\alpha < 2$, las sumas, normalizadas de otra forma, convergen a una **distribución estable de Lévy** no gaussiana, pero no es un resultado universal; Mandelbrot (1963) propuso este modelo para los precios del algodón. Hoy se sabe que las rentabilidades diarias tienen varianza finita pero colas de tipo potencia con un índice de cola $\alpha$ que la mayoría de estudios sitúa entre 2 y 5, con valores típicos cercanos a 3 para acciones e índices (la «ley cúbica inversa»: Gopikrishnan *et al.*, 1999; Cont, 2001; véase el capítulo 15), de modo que:
 
 - A horizontes cortos (diarios o intradía) la normal infravalora mucho los extremos: un movimiento de más de $4\sigma$ (en cualquier sentido) debería ocurrir con probabilidad $6{,}3 \times 10^{-5}$, unas 1,6 veces cada cien años bursátiles, y se observa con mucha mayor frecuencia.
 - A horizontes largos (mensuales, anuales) la distribución se acerca a la normal, el fenómeno llamado **gaussianidad agregacional** (Cont, 2001), aunque la convergencia es lenta por la dependencia de la volatilidad.
@@ -1037,13 +1037,13 @@ El ratio de Sharpe determina así cuánto puede crecer la riqueza con un apalanc
 
 Si un activo sube un 10 % y después baja un 10 %, no vuelve al punto de partida: termina un 1 % por debajo, porque la bajada se aplica sobre una cantidad mayor que la subida. Las rentabilidades se componen multiplicando, no sumando, y esa asimetría hace que la volatilidad tenga un coste: cuanto más oscila una inversión, más se aleja su crecimiento real de su rentabilidad media. Esa diferencia se conoce como **lastre de la volatilidad**.
 
-La magnitud relevante para el inversor a largo plazo no es la media aritmética de las rentabilidades, sino la **tasa de crecimiento compuesto**: la rentabilidad constante que habría producido la misma riqueza final, es decir, la media geométrica del capítulo 1 o, equivalentemente, la media de las rentabilidades logarítmicas.
+La magnitud relevante para el inversor a largo plazo no es la media aritmética de las rentabilidades, sino la **tasa de crecimiento compuesto**: la rentabilidad constante que habría producido la misma riqueza final, es decir, la media geométrica del capítulo 1, $G$. No es lo mismo que la media de las rentabilidades logarítmicas, $g$, aunque están ligadas por $G = e^{g} - 1$: un 10 % compuesto equivale a un 9,53 % logarítmico. Para tasas moderadas casi coinciden, y por eso este capítulo las trata como aproximadamente iguales.
 
 ### Un ejemplo resuelto
 
 Un activo alterna, año tras año, una subida del 25 % y una caída del 20 %. Su rentabilidad media aritmética es $(25 - 20)/2 = 2{,}5\,\%$ anual, una cifra aparentemente positiva. Pero cada par de años la riqueza se multiplica por $1{,}25 \times 0{,}80 = 1$: al cabo de veinte años, el inversor tiene exactamente lo mismo que al principio. Su tasa de crecimiento compuesto es cero.
 
-La aproximación que se presenta a continuación, $g \approx \mu - \tfrac12\sigma^2$, lo anticipa. La desviación típica de esas dos rentabilidades es del 22,5 %, así que
+La aproximación que se presenta a continuación, $g \approx \mu - \tfrac12\sigma^2$, lo anticipa. La desviación típica de esos dos escenarios, dividiendo por 2 (la poblacional, no la muestral del capítulo 7), es del 22,5 %, así que
 
 $$g \approx 2{,}5\,\% - \tfrac12 \times (22{,}5\,\%)^2 = 2{,}5\,\% - 2{,}53\,\% \approx 0\,\%.$$
 
@@ -1059,7 +1059,7 @@ y la pérdida, $s^2$, crece con el cuadrado del tamaño de la oscilación. De fo
 
 $$g \approx \mu - \tfrac12\,\sigma^2.$$
 
-La aproximación es buena cuando las rentabilidades de cada periodo son moderadas, y exacta para el modelo de precios en tiempo continuo que describe la Ampliación. Su lectura es sencilla: duplicar la volatilidad cuadruplica el lastre.
+La aproximación es buena cuando las rentabilidades de cada periodo son moderadas, y, en el modelo de precios en tiempo continuo que describe la Ampliación, exacta para la tasa de crecimiento logarítmica. Su lectura es sencilla: duplicar la volatilidad cuadruplica el lastre.
 
 ### Gráfico interactivo
 
@@ -1106,7 +1106,7 @@ donde el último paso desprecia $\mu^2/2$, pequeño para rentabilidades moderada
 - la riqueza **esperada** crece a la tasa $\mu$: $E[S_t] = S_0 e^{\mu t}$;
 - la riqueza **mediana** (y la de casi todas las trayectorias a largo plazo) crece a la tasa $\mu - \frac12\sigma^2$.
 
-Si $\sigma^2 > 2\mu$, la riqueza esperada crece mientras que casi todas las trayectorias tienden a cero: la media está sostenida por una fracción cada vez más pequeña de trayectorias extraordinariamente afortunadas. El «inversor mediano» del capítulo 14 es la forma correcta de pensar en ello.
+Si $0 < \mu < \tfrac12\sigma^2$, la riqueza esperada crece mientras que casi todas las trayectorias tienden a cero: la media está sostenida por una fracción cada vez más pequeña de trayectorias extraordinariamente afortunadas. El «inversor mediano» del capítulo 14 es la forma correcta de pensar en ello.
 
 #### Productos apalancados con reequilibrio diario
 
@@ -1283,7 +1283,7 @@ Para $N$ activos con la misma volatilidad $\sigma$, la misma correlación $\rho$
 
 $$\sigma_p^2 = \sigma^2\left[\frac{1}{N} + \left(1 - \frac{1}{N}\right)\rho\right] \;\xrightarrow{\;N \to \infty\;}\; \rho\,\sigma^2.$$
 
-El primer sumando, la parte específica, se desvanece como $1/N$; el segundo, la parte común, permanece. La volatilidad mínima alcanzable es $\sigma\sqrt{\rho}$.
+El primer sumando, la parte específica, se desvanece como $1/N$; el segundo, la parte común, permanece. Con correlación común positiva, la volatilidad mínima alcanzable es $\sigma\sqrt{\rho}$. Una correlación común negativa no puede mantenerse con muchos activos, porque tiene que cumplir $\rho \ge -1/(N - 1)$.
 
 ### Gráfico interactivo
 
@@ -1612,7 +1612,7 @@ La última parte trata dos preguntas prácticas. La primera es cuánto arriesgar
 
 Tener una ventaja no basta: también hay que decidir cuánto arriesgar. Quien apuesta muy poco desaprovecha su ventaja y su capital apenas crece. Quien apuesta demasiado se expone a que una racha de pérdidas, que tarde o temprano llega, lo deje sin capital para seguir. Como cada pérdida reduce la base sobre la que se calculan las apuestas siguientes, las pérdidas pesan más de lo que su probabilidad sugiere: es el lastre de la volatilidad del capítulo 9 en otra forma.
 
-El **criterio de Kelly** responde con precisión: cuando se conocen las probabilidades y se reinvierten las ganancias, existe una fracción del capital que maximiza la tasa de crecimiento a largo plazo. Apostar más que esa fracción aumenta el riesgo y además reduce el crecimiento; apostar el doble lo anula.
+El **criterio de Kelly** responde con precisión: cuando se conocen las probabilidades y se reinvierten las ganancias, existe una fracción del capital que maximiza la tasa de crecimiento a largo plazo. Apostar más que esa fracción aumenta el riesgo y además reduce el crecimiento; apostar el doble lo deja prácticamente en cero.
 
 Para entender el criterio conviene fijarse en el jugador **mediano**, el que queda en el centro de la distribución de resultados, y no en el promedio. Con apuestas agresivas, el promedio de la riqueza puede ser enorme gracias a unos pocos jugadores muy afortunados, mientras que la mayoría termina arruinada.
 
@@ -1627,7 +1627,7 @@ Con la fórmula que se deduce más abajo, la fracción de Kelly es $f^* = 2 \tim
 | Crecimiento por jugada | 0,00135 | 0,00180 | −0,00002 | −0,00231 |
 | Riqueza mediana tras 1.000 jugadas | ×3,9 | ×6,1 | ×0,98 | ×0,10 |
 
-Apostar la mitad de Kelly conserva unas tres cuartas partes del crecimiento con mucha menos oscilación. Apostar el doble de Kelly (12 %) deja al jugador mediano donde empezó, a pesar de que cada jugada tiene valor esperado positivo. Y por encima del doble, el jugador mediano se empobrece.
+Apostar la mitad de Kelly conserva unas tres cuartas partes del crecimiento con mucha menos oscilación. Apostar el doble de Kelly (12 %) deja al jugador mediano prácticamente donde empezó (×0,98), a pesar de que cada jugada tiene valor esperado positivo. Y por encima del doble, el jugador mediano se empobrece.
 
 ### Formalización
 
@@ -1863,11 +1863,11 @@ Si las rentabilidades siguieran en cambio una $t$ de 4 grados de libertad con la
 
 ### Formalización
 
-Sea $L$ la pérdida de la cartera en el horizonte elegido y $c$ el nivel de confianza. El VaR es la pérdida que solo se supera con probabilidad $1 - c$:
+Sea $L$ la pérdida de la cartera en el horizonte elegido y $c$ el nivel de confianza. Si la distribución de pérdidas es continua, el VaR es la pérdida que solo se supera con probabilidad $1 - c$:
 
 $$P\big(L > \text{VaR}_c\big) = 1 - c,$$
 
-es decir, el cuantil $c$ de la distribución de pérdidas. El déficit esperado es la pérdida media cuando se supera el VaR, $\text{ES}_c = E\big[L \mid L \ge \text{VaR}_c\big]$. Si las rentabilidades son normales con media cero y volatilidad $\sigma$ en el horizonte elegido, y la cartera vale $V$,
+es decir, el cuantil $c$ de la distribución de pérdidas. El déficit esperado es la pérdida media cuando se supera el VaR, $\text{ES}_c = E\big[L \mid L \ge \text{VaR}_c\big]$ (la Ampliación da la definición general, válida también para pérdidas discretas). Si las rentabilidades son normales con media cero y volatilidad $\sigma$ en el horizonte elegido, y la cartera vale $V$,
 
 $$\text{VaR}_c = z_c\,\sigma\,V, \qquad \text{ES}_c = \frac{\varphi(z_c)}{1 - c}\,\sigma\,V,$$
 
@@ -2008,7 +2008,7 @@ $$\Delta = \frac{V_u - V_d}{(u - d)\,S_0}, \qquad q = \frac{1 + r - d}{u - d}, \
 
 *Ejemplo:* $S_0 = 100$ €, $u = 1{,}2$, $d = 0{,}8$, $r = 5\,\%$ y una opción de compra con precio de ejercicio 100 €, que paga $V_u = 20$ € o $V_d = 0$. Entonces $q = 0{,}25/0{,}4 = 0{,}625$ y $V_0 = 0{,}625 \times 20/1{,}05 = 11{,}90$ €. Comprobación: comprar $\Delta = 0{,}5$ acciones cuesta 50 € y se financian pidiendo prestados $0{,}5 \times 80/1{,}05 = 38{,}10$ €; el coste neto, 11,90 €, es el precio de la opción.
 
-Lo sorprendente es que la probabilidad real de subida no aparece: el precio sale de la réplica, no de las preferencias. $q$ es la medida neutral al riesgo $Q$ del capítulo 3. Encadenando muchos periodos con $u = e^{\sigma\sqrt{\Delta t}}$ y $d = 1/u$, el árbol converge a la fórmula de Black y Scholes (capítulo 6). Una relación útil que no depende de ningún modelo es la **paridad put-call**: $C - P = S_0 - K e^{-rT}$.
+Lo sorprendente es que la probabilidad real de subida no aparece: el precio sale de la réplica, no de las preferencias. $q$ es la medida neutral al riesgo $Q$ del capítulo 3. Encadenando muchos periodos con $u = e^{\sigma\sqrt{\Delta t}}$ y $d = 1/u$, el árbol converge a la fórmula de Black y Scholes (capítulo 6). Una relación útil que no depende del modelo de precios, sino solo de la ausencia de arbitraje, es la **paridad put-call**: para opciones europeas de compra y de venta con el mismo precio de ejercicio y vencimiento, sobre una acción que no paga dividendos, $C - P = S_0 - K e^{-rT}$. Con una rentabilidad por dividendo continua $q$, $S_0$ se sustituye por $S_0 e^{-qT}$.
 
 **La fórmula de Black y Scholes.** Si el precio de la acción sigue el movimiento browniano geométrico del capítulo 4, con volatilidad constante $\sigma$, y se puede negociar sin costes y pedir prestado al tipo $r$, el límite del árbol da el precio de una opción europea de compra (Black y Scholes, 1973):
 
@@ -2034,7 +2034,7 @@ Las hipótesis son fuertes. La volatilidad no es constante (capítulo 7) y los r
 
 ## Tema D · Estacionariedad y cointegración
 
-Una serie es **estacionaria** si su distribución no cambia con el tiempo. Los precios no lo son (su varianza crece con el tiempo, capítulo 4), pero las rentabilidades lo son aproximadamente; por eso la estadística se hace con rentabilidades (capítulo 10). El contraste de Dickey y Fuller (1979) comprueba si una serie tiene una **raíz unitaria**, es decir, si se comporta como un paseo aleatorio.
+Una serie es **estacionaria** si su distribución no cambia con el tiempo. Los precios de la mayoría de activos no lo son (su varianza crece con el tiempo, capítulo 4), mientras que sus rentabilidades suelen serlo de forma aproximada, algo que conviene contrastar en cada caso; por eso la estadística se hace con rentabilidades (capítulo 10). El contraste de Dickey y Fuller (1979) comprueba si una serie tiene una **raíz unitaria**, es decir, si se comporta como un paseo aleatorio.
 
 Dos precios no estacionarios están **cointegrados** si alguna combinación lineal de ellos, $s_t = P^A_t - \beta P^B_t$, sí es estacionaria (Engle y Granger, 1987): pueden alejarse, pero tienden a volver a su relación. Es la base de la **negociación por pares** (*pairs trading*). Cointegración y correlación son cosas distintas: dos activos pueden tener rentabilidades muy correlacionadas y precios que se separan sin límite, o al revés.
 
