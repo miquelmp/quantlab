@@ -216,7 +216,7 @@ export async function mountChart(root: HTMLElement): Promise<void> {
       else presentBtn.innerHTML = presentHtml;
     }
     renderPanels();
-    if (!on) root.scrollIntoView({ block: 'start' });
+    if (!on) { root.scrollIntoView({ block: 'start' }); presentBtn?.focus({ preventScroll: true }); }
   };
   presentBtn?.addEventListener('click', async () => {
     const on = !root.classList.contains('presenting');
@@ -231,7 +231,8 @@ export async function mountChart(root: HTMLElement): Promise<void> {
   document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement && root.classList.contains('presenting')) setPresenting(false);
   });
-  root.addEventListener('keydown', (ev) => {
+  // Sin pantalla completa (modo de respaldo), Esc debe funcionar aunque el foco haya salido del gráfico.
+  document.addEventListener('keydown', (ev) => {
     if (ev.key === 'Escape' && root.classList.contains('presenting') && !document.fullscreenElement) setPresenting(false);
   });
 
