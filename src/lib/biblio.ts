@@ -77,12 +77,17 @@ export function bibEntries(book: { extras: { key: string; nodes?: Node[] }[] }):
 }
 
 const UP = 'A-ZÁÉÍÓÚÑ';
-const NAME_FIRST = String.raw`[${UP}][\p{L}'’-]+(?:\s+(?:de|del|van|von|der|la|du)\s+[${UP}][\p{L}'’-]+)*`;
-const NAME_ANY = String.raw`(?:(?:de|del|van|von|der|du)\s+)*${NAME_FIRST}`;
+const PART = String.raw`(?:[Vv]an|[Vv]on|[Dd]e|[Dd]el|[Dd]er|[Dd]u|[Ll]a)`;
+const WORD = String.raw`[${UP}][\p{L}'’-]+`;
+// Admite «López de Prado», «Von Neumann», «Van Ness»; las etiquetas como «Modelo de Black» se
+// recortan después, al buscar en la bibliografía.
+const NAME_CORE = String.raw`${WORD}(?:\s+${PART}\s+${WORD})*`;
+const NAME_FIRST = String.raw`(?:${PART}\s+)*${NAME_CORE}`;
+const NAME_ANY = String.raw`(?:${PART}\s+)*${NAME_CORE}`;
 const SEP = String.raw`\s*(?:,|\by\b|&)\s*`;
 const CHAIN_AT_END = new RegExp(String.raw`(${NAME_FIRST}(?:${SEP}${NAME_ANY})*)(\s+et\s+al\.)?\s*,?\s*\(?\s*$`, 'u');
 
-/** Autores de la cita que termina justo antes del año: «… de Harvey, Liu y Zhu (» → Harvey, Liu, Zhu. */
+/** Autores de la cita que termina justo antes del año: «… von Neumann y Morgenstern (» → von Neumann, Morgenstern. */
 export function citedAuthors(before: string): { authors: string[]; etAl: boolean } | null {
   const m = before.slice(-160).match(CHAIN_AT_END);
   if (!m) return null;
@@ -93,12 +98,18 @@ export function citedAuthors(before: string): { authors: string[]; etAl: boolean
 export function citationId(book: Parameters<typeof bibEntries>[0], before: string, year: string): string | null {
   const c = citedAuthors(before);
   if (!c) return null;
-  const names = c.authors.map(slugify);
-  let cands = bibEntries(book).filter((e) => e.year === year && e.authors[0] === names[0]);
-  if (cands.length > 1) {
-    cands = c.etAl
-      ? cands.filter((e) => e.authors.length >= 3)
-      : cands.filter((e) => e.authors.length === names.length && names.every((n, i) => e.authors[i] === n));
+  // «Ratio de Treynor», «DCC de Engle»: se prueba el nombre completo y luego cada final.
+  const words = c.authors[0].split(/\s+/);
+  for (let i = 0; i < words.length; i++) {
+    const names = [slugify(words.slice(i).join(' ')), ...c.authors.slice(1).map(slugify)];
+    let cands = bibEntries(book).filter((e) => e.year === year && e.authors[0] === names[0]);
+    if (cands.length > 1) {
+      cands = c.etAl
+        ? cands.filter((e) => e.authors.length >= 3)
+        : cands.filter((e) => e.authors.length === names.length && names.every((n, k) => e.authors[k] === n));
+    }
+    if (cands.length === 1) return cands[0].id;
+    if (cands.length > 1) return null;
   }
-  return cands.length === 1 ? cands[0].id : null;
+  return null;
 }
