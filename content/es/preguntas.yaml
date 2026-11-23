@@ -202,7 +202,7 @@
     correcta: 2
     explicacion: '$2{,}326 \times 1\,\% \times 1.000.000 = 23.260$ €. Con 1,645 (16.450 €) sería el VaR al 95 %.'
   - pregunta: '¿Qué informa el déficit esperado que no informa el VaR?'
-    opciones: ['La pérdida media en los días en que se supera el VaR', 'La ganancia máxima', 'La probabilidad de pérdida', 'La volatilidad']
+    opciones: ['La pérdida media en los peores casos, más allá del VaR', 'La ganancia máxima', 'La probabilidad de pérdida', 'La volatilidad']
     correcta: 0
     explicacion: 'El VaR es un umbral: no dice cuánto se pierde más allá. El déficit esperado es la media de esas pérdidas de la cola.'
   - pregunta: 'Un VaR al 99 % bien calibrado, ¿cuántas veces se superaría, de media, en 250 sesiones?'

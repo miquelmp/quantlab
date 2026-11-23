@@ -287,7 +287,7 @@ $$VP = \sum_{t=1}^{T} \frac{C_t}{(1+i)^t}.$$
 
 Usando la suma de una progresión geométrica se obtienen fórmulas cerradas muy usadas:
 
-- **Renta constante (anualidad)** de $C$ durante $T$ periodos: $VP = C\,\dfrac{1 - (1+i)^{-T}}{i}$. Ejemplo: 100 € anuales durante 10 años al 5 % valen hoy 772,17 €.
+- **Renta constante (anualidad)** de $C$ durante $T$ periodos: $VP = C\,\dfrac{1 - (1+i)^{-T}}{i}$ (si $i = 0$, simplemente $VP = C\,T$). Ejemplo: 100 € anuales durante 10 años al 5 % valen hoy 772,17 €.
 - **Renta perpetua**: $VP = C/i$ (límite $T \to \infty$).
 - **Renta perpetua creciente** a una tasa $g < i$: $VP = \dfrac{C_1}{i - g}$, base del modelo de dividendos de Gordon para valorar acciones.
 
@@ -1055,7 +1055,7 @@ Si en un periodo la inversión sube una proporción $s$ y en el siguiente baja l
 
 $$(1 + s)(1 - s) = 1 - s^2 < 1,$$
 
-y la pérdida, $s^2$, crece con el cuadrado del tamaño de la oscilación. De forma general, si una inversión tiene una rentabilidad media anual $\mu$ y una volatilidad anual $\sigma$, su tasa de crecimiento compuesto es aproximadamente
+y la pérdida, $s^2$, crece con el cuadrado del tamaño de la oscilación. De forma general, si una inversión tiene una rentabilidad media anual $\mu$ y una volatilidad anual $\sigma$, su tasa de crecimiento logarítmica es aproximadamente
 
 $$g \approx \mu - \tfrac12\,\sigma^2.$$
 
@@ -1122,7 +1122,7 @@ Para una cartera reequilibrada con pesos fijos $w_i$, la tasa de crecimiento es
 
 $$g_p = \sum_i w_i\,g_i + \tfrac12\left(\sum_i w_i\,\sigma_i^2 - \sigma_p^2\right).$$
 
-El término entre paréntesis, la **tasa de crecimiento excedente** de Fernholz (Fernholz y Shay, 1982; Fernholz, 2002), es positivo siempre que los activos no estén perfectamente correlacionados. Booth y Fama (1992) lo llaman *diversification return*. *Ejemplo:* dos activos incorrelados, cada uno con $\mu = 10\,\%$ y $\sigma = 40\,\%$, crecen individualmente al $10 - 8 = 2\,\%$. Una cartera 50/50 reequilibrada tiene $\sigma_p^2 = 0{,}08$ y crece al $10 - 4 = 6\,\%$: la diversificación reduce el lastre y triplica el crecimiento sin cambiar la rentabilidad media.
+El término entre paréntesis, la **tasa de crecimiento excedente** de Fernholz (Fernholz y Shay, 1982; Fernholz, 2002), es positivo en una cartera sin posiciones cortas (pesos positivos que suman 1) siempre que los activos no estén perfectamente correlacionados; con posiciones cortas o apalancamiento puede ser negativo. Booth y Fama (1992) lo llaman *diversification return*. *Ejemplo:* dos activos incorrelados, cada uno con $\mu = 10\,\%$ y $\sigma = 40\,\%$, crecen individualmente al $10 - 8 = 2\,\%$. Una cartera 50/50 reequilibrada tiene $\sigma_p^2 = 0{,}08$ y crece al $10 - 4 = 6\,\%$: la diversificación reduce el lastre y triplica el crecimiento sin cambiar la rentabilidad media.
 
 #### Medir el crecimiento
 
@@ -1710,7 +1710,7 @@ y con varios activos $\mathbf{f}^* = \Sigma^{-1}(\boldsymbol\mu - r\mathbf{1})$,
 
 Apostar una fracción $c f^*$ con $0 < c \le 1$ da, en el modelo continuo, un crecimiento $c(2 - c)\,g^*_{\text{exceso}}$ y una volatilidad $c$ veces la de Kelly completo. Con medio Kelly ($c = 1/2$) se conserva el 75 % del crecimiento con la mitad de volatilidad, el resultado que la solución del ejercicio 14.2 obtiene numéricamente para una apuesta discreta ($0{,}00486/0{,}00640 \approx 0{,}76$). Kelly fraccionario equivale a una utilidad isoelástica con aversión relativa al riesgo $1/c$ (MacLean, Thorp y Ziemba, 2011).
 
-Las **caídas** son importantes incluso con Kelly completo: en el modelo continuo, la probabilidad de que la riqueza llegue a caer alguna vez hasta una fracción $x$ de su valor inicial es $x$ con Kelly completo y $x^{2/c - 1}$ con Kelly fraccionario (Thorp, 2006). Con Kelly completo hay un 50 % de probabilidad de perder alguna vez la mitad del capital; con medio Kelly, un 12,5 %.
+Las **caídas** son importantes incluso con Kelly completo. En el modelo continuo con tipo libre de riesgo nulo (o midiendo la riqueza descontada al tipo sin riesgo), la probabilidad de que la riqueza llegue a caer alguna vez hasta una fracción $x$ de su valor *inicial* es $x$ con Kelly completo y $x^{2/c - 1}$ con Kelly fraccionario (Thorp, 2006). Con Kelly completo hay un 50 % de probabilidad de llegar alguna vez a la mitad del capital inicial; con medio Kelly, un 12,5 %. Con un tipo positivo y la riqueza nominal, estas probabilidades son menores. No es lo mismo que una caída del 50 % desde un máximo anterior (tema E), que es más probable: una cartera que pasa de 100 a 200 y vuelve a 100 nunca baja de la mitad de su capital inicial, pero sí cae un 50 % desde su máximo.
 
 #### Críticas y limitaciones
 
@@ -1846,7 +1846,7 @@ $$z_{CF} = z + \frac{(z^2 - 1)\,S}{6} + \frac{(z^3 - 3z)(K - 3)}{24} - \frac{(2z
 
 Un gestor de riesgos necesita resumir en una cifra cuánto puede perder una cartera en un mal periodo. El **valor en riesgo** (VaR) lo hace así: fija un horizonte (un día, diez días, un año) y un **nivel de confianza** (por ejemplo, el 99 %), y busca la pérdida que solo se supera con la probabilidad restante (el 1 %). Un VaR diario al 99 % de 50.000 € significa que, en condiciones normales del modelo, la pérdida de un día solo debería superar los 50.000 € uno de cada cien días.
 
-Es importante entender lo que el VaR no dice. No es la pérdida máxima posible: es el umbral a partir del cual empiezan los peores casos, y no informa de cuánto se pierde cuando se cruza. Dos carteras con el mismo VaR pueden tener peores días muy distintos. El **déficit esperado** (ES, por sus siglas en inglés), también llamado VaR condicional, completa la información: es la pérdida media en los casos que superan el VaR.
+Es importante entender lo que el VaR no dice. No es la pérdida máxima posible: es el umbral a partir del cual empiezan los peores casos, y no informa de cuánto se pierde cuando se cruza. Dos carteras con el mismo VaR pueden tener peores días muy distintos. El **déficit esperado** (ES, por sus siglas en inglés), también llamado VaR condicional, completa la información: es la pérdida media en ese 1 % de peores casos (con distribuciones continuas, la pérdida media cuando se supera el VaR).
 
 ### Un ejemplo resuelto
 
@@ -1867,7 +1867,7 @@ Sea $L$ la pérdida de la cartera en el horizonte elegido y $c$ el nivel de conf
 
 $$P\big(L > \text{VaR}_c\big) = 1 - c,$$
 
-es decir, el cuantil $c$ de la distribución de pérdidas. El déficit esperado es la pérdida media cuando se supera el VaR, $\text{ES}_c = E\big[L \mid L \ge \text{VaR}_c\big]$ (la Ampliación da la definición general, válida también para pérdidas discretas). Si las rentabilidades son normales con media cero y volatilidad $\sigma$ en el horizonte elegido, y la cartera vale $V$,
+es decir, el cuantil $c$ de la distribución de pérdidas. En ese caso continuo, el déficit esperado es la pérdida media cuando se supera el VaR, $\text{ES}_c = E\big[L \mid L \ge \text{VaR}_c\big]$ (la Ampliación da la definición general, válida también para pérdidas discretas). Si las rentabilidades son normales con media cero y volatilidad $\sigma$ en el horizonte elegido, y la cartera vale $V$,
 
 $$\text{VaR}_c = z_c\,\sigma\,V, \qquad \text{ES}_c = \frac{\varphi(z_c)}{1 - c}\,\sigma\,V,$$
 
@@ -2056,7 +2056,7 @@ dd = 1 - W / np.maximum.accumulate(W)               # caída en cada fecha
 print(dd.max())                                     # caída máxima: 0.20 (de 115 a 92)
 ```
 
-Recuperar una caída $D$ exige una subida de $D/(1 - D)$: un 25 % tras perder un 20 %, y un 100 % tras perder un 50 % (capítulo 1). Muchos inversores juzgan una estrategia por su caída máxima más que por su volatilidad, y el **ratio de Calmar** divide la tasa de crecimiento anual compuesta por la caída máxima. Hay que compararlas con cuidado: la caída máxima esperada crece con la duración de la muestra (Magdon-Ismail *et al.*, 2004), así que una serie más larga tendrá, casi siempre, una caída máxima peor. El capítulo 14 da un resultado relacionado: en su modelo continuo, con Kelly completo, la probabilidad de caer alguna vez a la mitad es del 50 %.
+Recuperar una caída $D$ exige una subida de $D/(1 - D)$: un 25 % tras perder un 20 %, y un 100 % tras perder un 50 % (capítulo 1). Muchos inversores juzgan una estrategia por su caída máxima más que por su volatilidad, y el **ratio de Calmar** divide la tasa de crecimiento anual compuesta por la caída máxima. Hay que compararlas con cuidado: la caída máxima esperada crece con la duración de la muestra (Magdon-Ismail *et al.*, 2004), así que una serie más larga tendrá, casi siempre, una caída máxima peor. El capítulo 14 da un resultado relacionado, pero distinto: en su modelo continuo con tipo libre de riesgo nulo, con Kelly completo, la probabilidad de llegar alguna vez a la mitad del capital *inicial* es del 50 %. No es la probabilidad de una caída del 50 % desde un máximo, que es mayor.
 
 ---
 
@@ -2275,8 +2275,8 @@ $\text{EE} \approx \sqrt{(1 + 0{,}5 \times 0{,}6^2)/8} = \sqrt{0{,}1475} = 0{,}3
 **9.1 Media aritmética +10 %; rentabilidad acumulada −4 %.**
 $(60 - 40)/2 = 10\,\%$, pero $1{,}6 \times 0{,}6 = 0{,}96$.
 
-**9.2 Alrededor del 5,9 % con volatilidad del 15 % y del 2,5 % con volatilidad del 30 %.**
-$7 - \tfrac12 \times 15^2/100 = 7 - 1{,}125 = 5{,}875\,\%$ y $7 - \tfrac12 \times 30^2/100 = 7 - 4{,}5 = 2{,}5\,\%$. Al duplicar la volatilidad, el lastre se cuadruplica.
+**9.2 Alrededor del 5,9 % con volatilidad del 15 % y del 2,5 % con volatilidad del 30 % (tasas logarítmicas; en tasa compuesta, 6,05 % y 2,53 %).**
+$7 - \tfrac12 \times 15^2/100 = 7 - 1{,}125 = 5{,}875\,\%$ y $7 - \tfrac12 \times 30^2/100 = 7 - 4{,}5 = 2{,}5\,\%$. Como tasas compuestas, $e^{0{,}05875} - 1 = 6{,}05\,\%$ y $e^{0{,}025} - 1 = 2{,}53\,\%$. Al duplicar la volatilidad, el lastre se cuadruplica.
 
 **9.3 El índice crece en torno al 4,4 % anual y el producto triplicado, solo un 3,4 %.**
 Índice: $6 - \tfrac12 \times 0{,}18^2 \times 100 = 4{,}38\,\%$. Producto: $3 \times 6 - \tfrac12 \times 9 \times 0{,}18^2 \times 100 = 18 - 14{,}58 = 3{,}42\,\%$. A pesar de triplicar la rentabilidad media, crece menos que el índice, porque el lastre se multiplica por nueve.
@@ -2369,7 +2369,7 @@ El VaR solo dice dónde empieza la cola, así que dos carteras con colas muy dis
 | Ganancia que recupera una pérdida $L$ | $L/(1 - L)$ | 1 |
 | Valor futuro | $VF = VP\,(1 + i)^T$ | 2 |
 | Valor presente de un flujo de pagos | $VP = \sum_t C_t/(1 + i)^t$ | 2 |
-| Renta constante | $VP = C\,[1 - (1+i)^{-T}]/i$ | 2 |
+| Renta constante | $VP = C\,[1 - (1+i)^{-T}]/i$; si $i = 0$, $VP = C\,T$ | 2 |
 | Valor esperado | $E[X] = \sum_k p_k x_k$ | 3 |
 | Paseo aleatorio | $S_n = S_0 + \sum_{i=1}^{n} X_i$, $\quad E[S_n] = S_0 + n\mu$ | 4 |
 | Varianza | $\operatorname{Var}(X) = E[(X - \mu)^2]$ | 4 |
@@ -2420,7 +2420,7 @@ Términos ordenados alfabéticamente, con el capítulo o tema donde se definen.
 | **correlación** | covarianza normalizada, entre −1 y +1, que mide la relación lineal entre dos variables | 10 |
 | **covarianza** | valor esperado del producto de las desviaciones de dos variables respecto a sus medias | 10 |
 | **curtosis** | cuarto momento tipificado; mide el peso de las colas (3 en la normal) | 15 |
-| **déficit esperado** | pérdida media en los casos que superan el valor en riesgo | 16 |
+| **déficit esperado** | pérdida media en la fracción de peores casos que fija el nivel de confianza; con distribuciones continuas, la pérdida media cuando se supera el valor en riesgo | 16 |
 | **delta** | número de acciones que replica una opción; en Black-Scholes, $N(d_1)$ para la compra | C |
 | **deriva** | tendencia media por paso de un paseo aleatorio | 4 |
 | **descontar** | calcular el valor actual de un pago futuro | 2 |
@@ -2455,7 +2455,7 @@ Términos ordenados alfabéticamente, con el capítulo o tema donde se definen.
 | **sobreajuste** | ajuste de una estrategia o modelo al ruido de los datos históricos | A |
 | **tasa anual equivalente (TAE)** | tipo anual compuesto que resume el coste o el rendimiento total de una operación | 2 |
 | **tasa de crecimiento compuesto** | rentabilidad constante que produciría la misma riqueza final | 9 |
-| **teorema central del límite** | resultado según el cual la suma de muchas variables independientes tiende a la normal | 5 |
+| **teorema central del límite** | resultado según el cual la suma de muchas variables independientes e idénticamente distribuidas, con varianza finita, una vez centrada y normalizada, tiende a la normal | 5 |
 | **tipificar** | expresar un valor como distancia a la media medida en desviaciones típicas | 5 |
 | **tipo de interés** | rentabilidad que se paga por unidad de tiempo por disponer de dinero | 2 |
 | **tipo libre de riesgo** | rentabilidad que se obtiene sin asumir riesgo, como la de una letra del Tesoro | 8 |

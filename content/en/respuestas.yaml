@@ -228,7 +228,7 @@
   - etiqueta: Growth rate with 15% volatility
     valor: 0.05875
     tipo: porcentaje
-    tolerancia: 0.0015
+    tolerancia: 0.0025
   - etiqueta: Growth rate with 30% volatility
     valor: 0.025
     tipo: porcentaje
