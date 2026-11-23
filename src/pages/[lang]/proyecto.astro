@@ -1,6 +1,7 @@
 ---
 /** Proyecto práctico · Laboratorio de carteras (RF-PRY-01/02): fase 1 ejecutable y fases siguientes. */
 import Base from '../../layouts/Base.astro';
+import CodeDownload from '../../components/CodeDownload.astro';
 import { LANGS } from '../../i18n/config';
 import { t } from '../../i18n';
 import { loadBook } from '../../lib/book';
@@ -30,6 +31,7 @@ const lastTopic = [...book.topics].reverse().find((x) => x.published);
   <article class="prose">
     <h1>{extra.title}</h1>
     <Fragment set:html={html} />
+    <CodeDownload lang={lang} base={base} name="proyecto" />
     <p class="py-shared js-only">{t(lang, 'py.sharedNote')} <button type="button" class="btn" data-py-reset>{t(lang, 'py.resetEnv')}</button></p>
     <nav class="chapter-nav" aria-label={`${t(lang, 'nav.prev')} / ${t(lang, 'nav.next')}`}>
       {lastTopic ? <a class="prev" href={url(ctx, `${lang}/temas/${lastTopic.slug}/`)} rel="prev"><small>← {t(lang, 'nav.prev')}</small>{t(lang, 'nav.topic')} {lastTopic.letter} · {lastTopic.title.replace(/\*/g, '')}</a> : <span></span>}

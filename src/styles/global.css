@@ -561,3 +561,5 @@ pre { margin: 0; }
 .lab-thumb svg { display: block; width: 100%; height: auto; }
 .lab-observe { margin: 0; font-size: 0.88rem; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .lab-observe a { position: relative; z-index: 1; }
+
+.code-download { font-size: 0.93rem; margin: 0.75rem 0; }
