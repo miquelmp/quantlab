@@ -417,3 +417,15 @@ describe('temas A, B, D y E · cifras del libro', () => {
     }
   });
 });
+
+describe('tema A · escala', () => {
+  it('con N = 1 y un Sharpe negativo, el punto de la simulación sigue dentro del gráfico', () => {
+    const st = { N: 1, Y: 5, seed: 7 };
+    const d = chartA.compute(st);
+    expect(d.best).toBeLessThan(0);
+    const svg = chartA.panels[1].render(d, st, 400, { tr: (k: string) => k, fmt: { decimal: ',', group: '.' } } as never);
+    const ys = [...svg.matchAll(/<circle class="s2 dot" cx="[\d.]+" cy="([-\d.]+)"/g)].map((m) => Number(m[1]));
+    expect(ys.length).toBe(1);
+    expect(ys[0]).toBeGreaterThan(0); expect(ys[0]).toBeLessThan(300);
+  });
+});

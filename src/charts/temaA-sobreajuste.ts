@@ -113,7 +113,8 @@ export const chartA: ChartDef<SA, DA> = {
         const lh = legendHeight(items, w - M.left - M.right);
         const lx = d.ns.map((n) => Math.log10(n));
         const sx = linear([0, 3], [M.left, w - M.right]);
-        const sy = linear([0, Math.max(...d.approx, d.best) * 1.1], [h - M.bottom, M.top + lh + 8]);
+        // Con pocas estrategias la mejor puede tener un Sharpe negativo: la escala lo incluye.
+        const sy = linear([Math.min(0, d.best * 1.15), Math.max(...d.approx, d.best) * 1.1], [h - M.bottom, M.top + lh + 8]);
         const px = sx(Math.log10(s.N));
         return svgOpen(w, h, ctx.tr('tA.panelRight'), ctx.tr('tA.descRight', { N: s.N, e: num(d.expBest, ctx), b: num(d.best, ctx) }), 'tAb') +
           legend(items, M.left, M.top + 10, w - M.left - M.right) +
