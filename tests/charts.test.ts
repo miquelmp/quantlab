@@ -23,6 +23,10 @@ import { chart12, computeFrontier, minVarWeight2, portStats, covMatrix } from '.
 import { chart13, computeCapm, betaFrom, capm, totalVol } from '../src/charts/ch13-capm';
 import { chart15, computeTails, tTail, tailNormal, tailT } from '../src/charts/ch15-colas';
 import { chartC, blackScholes, binomialCall } from '../src/charts/temaC-blackscholes';
+import { chartA, sharpeSe, expectedMaxNormal } from '../src/charts/temaA-sobreajuste';
+import { chartB, sharpeAfterCosts, breakevenTurnover, sqrtImpact } from '../src/charts/temaB-costes';
+import { chartD, halfLife } from '../src/charts/temaD-cointegracion';
+import { chartE, drawdowns, recoveryNeeded } from '../src/charts/temaE-caidas';
 import { chart16, computeVar, normalVaR, normalES, tVaR, tES, binomTail, kupiec } from '../src/charts/ch16-var';
 import { ES } from '../src/lib/format';
 
@@ -374,5 +378,42 @@ describe('tema C · lo que dice «Lo que debes observar»', () => {
       expect(blackScholes(S, 100, 0.2, T + 0.5, 0.03).call).toBeGreaterThan(c);
     }
     expect(blackScholes(50, 100, 0.2, 1, 0.03).put).toBeLessThan(50);
+  });
+});
+
+describe('temas A, B, D y E · cifras del libro', () => {
+  const ctx = { tr: (k: string) => k, fmt: { decimal: ',', group: '.' } } as never;
+  it('A: con 5 años, el error del Sharpe es 0,45 y la mejor de 100 estrategias ronda 1,1', () => {
+    expect(sharpeSe(5)).toBeCloseTo(0.447, 3);
+    expect(expectedMaxNormal(100)).toBeCloseTo(2.508, 2);
+    expect(sharpeSe(5) * expectedMaxNormal(100)).toBeCloseTo(1.1, 1);
+    expect(expectedMaxNormal(1)).toBe(0);
+  });
+  it('B: rotación 10 y coste 0,20 % → pierde un 2 % y el Sharpe baja de 0,5 a 0,3; impacto 0,2 %', () => {
+    expect(sharpeAfterCosts(0.05, 0.1, 0.002, 0)).toBeCloseTo(0.5, 10);
+    expect(sharpeAfterCosts(0.05, 0.1, 0.002, 10)).toBeCloseTo(0.3, 10);
+    expect(breakevenTurnover(0.05, 0.002)).toBeCloseTo(25, 10);
+    expect(sqrtImpact(0.02, 0.01)).toBeCloseTo(0.002, 10);
+  });
+  it('D: con φ = 0,95 la semivida es de unos 13,5 días', () => {
+    expect(halfLife(0.95)).toBeCloseTo(13.5, 1);
+    expect(halfLife(1)).toBe(Infinity);
+  });
+  it('E: la caída máxima del ejemplo es del 20 % (de 115 a 92) y recuperarla exige un 25 %', () => {
+    expect(Math.max(...drawdowns([100, 108, 103, 115, 92, 97, 121]))).toBeCloseTo(0.2, 10);
+    expect(recoveryNeeded(0.2)).toBeCloseTo(0.25, 10);
+    expect(recoveryNeeded(0.5)).toBeCloseTo(1, 10);
+  });
+  it('los cuatro gráficos se dibujan sin NaN en los extremos de los mandos', () => {
+    for (const def of [chartA, chartB, chartD, chartE] as never as import('../src/charts/types').ChartDef<any, any>[]) {
+      const states = [def.defaults, Object.fromEntries(Object.entries(def.defaults).map(([k, v]) => [k, def.sliders.find((x) => x.key === k)?.min ?? v])),
+        Object.fromEntries(Object.entries(def.defaults).map(([k, v]) => [k, def.sliders.find((x) => x.key === k)?.max ?? v]))];
+      for (const st of states) {
+        const d = def.compute(st);
+        for (const p of def.panels) expect(p.render(d, st, 400, ctx)).not.toMatch(/NaN|Infinity/);
+        expect(def.describe(d, st, ctx)).not.toMatch(/NaN/);
+        def.stats(d, st, ctx); def.table(d, st, ctx);
+      }
+    }
   });
 });
