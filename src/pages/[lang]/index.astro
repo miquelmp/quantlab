@@ -40,7 +40,7 @@ const introText = plain((book.prefaceIntro.find((n) => n.type === 'paragraph') a
     <div class="cta">
       <a class="btn btn-primary" href={chapterUrl(ctx, first.number)!}>{t(lang, 'home.start')}</a>
       <a class="btn js-only" href="#" data-resume hidden>{t(lang, 'home.resume')}: <span data-resume-label></span></a>
-      <a class="btn" href="#graficos">{t(lang, 'home.charts')}</a>
+      <a class="btn" href={url(ctx, `${lang}/laboratorio/`)}>{t(lang, 'home.charts')}</a>
     </div>
   </section>
 
