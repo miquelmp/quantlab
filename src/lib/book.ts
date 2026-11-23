@@ -65,6 +65,7 @@ export interface Chapter {
   sections: Section[];
   exercises: Exercise[];
   chart?: ChartSpec;
+  challenges: string[];         // retos del gráfico (retos.yaml)
   python: string[];
   minutesLevel1: number;
   minutesAdvanced: number;
@@ -268,6 +269,7 @@ function parseChapterNodes(num: number, title: string, nodes: Node[], meta: any,
     sections,
     exercises,
     chart,
+    challenges: [],
     python,
     minutesLevel1: Math.max(1, Math.round(wl1 / 200)),
     minutesAdvanced: Math.max(1, Math.round(wadv / 200)),
@@ -314,6 +316,8 @@ export function loadBook(lang: string): Book {
   const src = fs.readFileSync(path.join(dir, 'libro.md'), 'utf8');
   const meta = YAML.parse(fs.readFileSync(path.join(dir, 'capitulos.yaml'), 'utf8'));
   const answers: Record<string, AnswerPart[]> = YAML.parse(fs.readFileSync(path.join(dir, 'respuestas.yaml'), 'utf8')) ?? {};
+  const retosFile = path.join(dir, 'retos.yaml');
+  const retos: Record<string, string[]> = fs.existsSync(retosFile) ? YAML.parse(fs.readFileSync(retosFile, 'utf8')) ?? {} : {};
   const tree = unified().use(remarkParse).use(remarkGfm).use(remarkMath).parse(src) as Root;
 
   const top = splitBy(tree.children, 1);
@@ -425,6 +429,7 @@ export function loadBook(lang: string): Book {
 
   // Une ejercicios, soluciones y respuestas numéricas.
   for (const ch of chapters) {
+    ch.challenges = (retos[ch.number] ?? []).filter((r) => typeof r === 'string');
     for (const ex of ch.exercises) {
       const s = solutions.get(ex.id);
       if (!s) fail(`El ejercicio ${ex.id} no tiene solución`);

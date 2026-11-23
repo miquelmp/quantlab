@@ -29,6 +29,7 @@ const strings = tPrefix(lang, 'progress.');
       <div class="stat"><span class="stat-label">{t(lang, 'progress.sections')}</span><span class="stat-value" data-sum="sections">0</span></div>
       <div class="stat"><span class="stat-label">{t(lang, 'progress.chaptersRead')}</span><span class="stat-value" data-sum="chapters">0</span></div>
       <div class="stat"><span class="stat-label">{t(lang, 'progress.exercises')}</span><span class="stat-value" data-sum="exercises">0</span></div>
+      <div class="stat"><span class="stat-label">{t(lang, 'progress.challenges')}</span><span class="stat-value" data-sum="challenges" data-totals={JSON.stringify(Object.fromEntries(book.chapters.filter((c) => c.published && c.challenges.length).map((c) => [`${lang}/${c.number}`, c.challenges.length])))}>0</span></div>
     </div>
     <p class="js-only"><a class="btn resume-btn" data-resume hidden href="#">{t(lang, 'progress.resume')}: <span data-resume-label></span></a></p>
     {book.parts.map((p) => (

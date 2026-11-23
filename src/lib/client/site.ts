@@ -11,6 +11,7 @@ const KEY = 'quantlab:v1';
 interface Store {
   read: Record<string, string[]>;          // «es/1» → secciones leídas
   ex: Record<string, 'ok'>;                // ejercicios comprobados
+  ch?: Record<string, number[]>;           // retos conseguidos: «es/14» → índices
   last?: { url: string; title: string; section?: string; ts: number };
   advancedOpen?: boolean;
 }
@@ -169,6 +170,28 @@ function initExercises() {
 }
 
 /* ---------- Índice y portada: estado de lectura ---------- */
+/** Retos de los gráficos (RF-GRA-03): casillas que se guardan en el progreso del lector. */
+function initChallenges() {
+  document.querySelectorAll<HTMLElement>('[data-challenges]').forEach((box) => {
+    const key = box.dataset.challenges!;
+    const done = new Set(load().ch?.[key] ?? []);
+    box.querySelectorAll<HTMLInputElement>('input[data-challenge]').forEach((cb) => {
+      const i = Number(cb.dataset.challenge);
+      cb.checked = done.has(i);
+      cb.closest('li')?.classList.toggle('done', cb.checked);
+      cb.addEventListener('change', () => {
+        const s = load();
+        const set = new Set(s.ch?.[key] ?? []);
+        if (cb.checked) set.add(i); else set.delete(i);
+        s.ch = { ...(s.ch ?? {}), [key]: [...set].sort() };
+        if (!set.size) delete s.ch[key];
+        save(s);
+        cb.closest('li')?.classList.toggle('done', cb.checked);
+      });
+    });
+  });
+}
+
 function initIndex() {
   const store = load();
   document.querySelectorAll<HTMLElement>('[data-progress-of]').forEach((el) => {
@@ -275,6 +298,7 @@ initSearchShortcut();
 initChapter();
 initExercises();
 initIndex();
+initChallenges();
 initCharts();
 initPython();
 
