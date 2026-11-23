@@ -8,6 +8,13 @@ let pyodide: any = null;
 let ns: any = null;
 let loading: Promise<any> | null = null;
 
+/** Espacio global nuevo, como el de un programa: con «__name__ == '__main__'» se ejecuta main(). */
+function freshNamespace(py: any) {
+  const d = py.globals.get('dict')();
+  d.set('__name__', '__main__');
+  return d;
+}
+
 const post = (m: any) => (self as any).postMessage(m);
 
 async function ensure(indexURL: string, id: string) {
@@ -17,7 +24,7 @@ async function ensure(indexURL: string, id: string) {
       post({ type: 'status', id, status: 'loading' });
       const mod = await import(/* @vite-ignore */ indexURL + 'pyodide.mjs');
       const py = await mod.loadPyodide({ indexURL });
-      ns = py.globals.get('dict')();
+      ns = freshNamespace(py);
       pyodide = py;
       return py;
     })();
@@ -28,7 +35,7 @@ async function ensure(indexURL: string, id: string) {
 self.onmessage = async (e: MessageEvent) => {
   const msg = e.data;
   if (msg.type === 'reset') {
-    if (pyodide && ns) { ns.destroy(); ns = pyodide.globals.get('dict')(); }
+    if (pyodide && ns) { ns.destroy(); ns = freshNamespace(pyodide); }
     post({ type: 'reset-done' });
     return;
   }
