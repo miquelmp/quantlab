@@ -27,6 +27,7 @@ const extraLink: Record<string, string> = {
   <div class="prose">
     <h1>{t(lang, 'index.title')}</h1>
     <p>{t(lang, 'index.intro')}</p>
+    <p class="full-book-links"><a href={url(ctx, `${lang}/libro-completo/`)}>{t(lang, 'full.read')}</a> · <a href={url(ctx, `${lang}/quantlab-libro.pdf`)} download>{t(lang, 'full.pdf')}</a></p>
     <LearningMap book={book} ctx={ctx} />
     <ol class="book-index">
       {book.parts.map((p) => (

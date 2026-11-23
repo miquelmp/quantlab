@@ -28,6 +28,7 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Símbolos interactivos** (RF-FOR-04): `initFormulaSymbols()` en `src/lib/client/site.ts`; funciona con las tablas «Símbolo | Significado» que siguen a una fórmula destacada.
 - **Pistas** (RF-EJ-05): `content/es/pistas.yaml`, 1–2 por ejercicio publicado (lo exige `check:content`), Markdown con `$…$` entre comillas simples; se muestran antes de la respuesta.
 - **Preguntas rápidas** (RF-EJ-07): `content/es/preguntas.yaml`, 2–4 de opción múltiple por capítulo (`correcta` cuenta desde 0; lo exige `check:content`); `src/components/QuickQuiz.astro` al principio de «Ejercicios», corrección en `initQuiz()` de `site.ts`.
+- **Libro completo y PDF**: `src/pages/[lang]/libro-completo.astro` (todo el libro en una página, con estilos de impresión `.print-book`; gráficos como imagen con valores por defecto) y `scripts/pdf.mjs` (`npm run pdf`, después de compilar: Playwright la guarda como `dist/<idioma>/quantlab-libro.pdf`; en GitHub se ejecuta antes de comprobar enlaces). Ni la página ni el PDF se guardan para uso sin conexión.
 - **Analítica**: GoatCounter (anónima, sin cookies), `ANALYTICS_GOATCOUNTER` en `src/config.ts`; panel del autor en https://miquelmp.goatcounter.com/. Explicada en `content/es/paginas/privacidad.md`.
 
 ## Tareas habituales
@@ -43,10 +44,10 @@ npm ci                    # .npmrc usa legacy-peer-deps
 npm run check:content     # estructura, fórmulas KaTeX, glosario, respuestas, gráficos
 npm run check:python      # ejecuta los 18 fragmentos y compara con los comentarios (necesita numpy)
 npm test                  # vitest: cifras del libro en los gráficos, lectura de respuestas
-npm run build && npm run check:links
+npm run build && npm run pdf && npm run check:links
 npm run preview & npm run check:a11y   # axe-core, temas claro y oscuro (no está en CI)
 ```
 
 ## Pendiente
 
-Hecho todo lo imprescindible (M) y recomendable (S). También las funciones opcionales (C). Quedan las de la fase 5: versión en inglés y PDF.
+Hecho todo lo imprescindible (M) y recomendable (S). También las funciones opcionales (C). Queda de la fase 5 la versión en inglés.

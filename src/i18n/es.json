@@ -754,5 +754,22 @@
   "ex.quizShow": "Ver la solución",
   "ex.quizAnswer": "Respuesta:",
   "ex.quizRight": "Correcto.",
-  "ex.quizWrong": "No es esta. Prueba otra o mira la solución."
+  "ex.quizWrong": "No es esta. Prueba otra o mira la solución.",
+  "full.title": "Libro completo",
+  "full.description": "Todo el libro en una sola página, lista para imprimir o descargar en PDF: capítulos, temas, soluciones, fórmulas y glosario.",
+  "full.edition": "Edición web del {date}",
+  "full.license": "Licencia Creative Commons Reconocimiento-CompartirIgual 4.0 (CC BY-SA 4.0).",
+  "full.pdf": "Descargar en PDF",
+  "full.hint": "También puedes imprimir esta página directamente desde el navegador.",
+  "full.contents": "Índice",
+  "full.preface": "Prefacio",
+  "full.solutions": "Soluciones de los ejercicios",
+  "full.formulas": "Resumen de fórmulas",
+  "full.glossary": "Glosario",
+  "full.online": "En la web, con gráficos interactivos y código ejecutable:",
+  "full.interactive": "Versión interactiva:",
+  "full.concept": "Concepto",
+  "full.formula": "Fórmula",
+  "full.read": "Leer el libro completo en una página",
+  "footer.fullBook": "Libro completo y PDF"
 }

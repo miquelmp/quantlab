@@ -41,6 +41,10 @@ jobs:
         run: npm test
       - name: Generar la web
         run: npm run build
+      - name: Generar el libro en PDF
+        run: |
+          npx playwright install --with-deps chromium
+          npm run pdf
       - name: Comprobar enlaces internos
         run: npm run check:links
       - uses: actions/upload-pages-artifact@v3

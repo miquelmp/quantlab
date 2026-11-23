@@ -335,7 +335,8 @@ function initFormulaSymbols() {
     table.querySelectorAll('tbody tr').forEach((tr) => {
       const [a, b] = tr.querySelectorAll('td');
       if (!a || !b) return;
-      a.querySelectorAll('.katex-html').forEach((k) => map.set(clean(k.textContent), b.textContent!.trim()));
+      // «N(⋅)» en la tabla: en la fórmula, N y su argumento son elementos separados; se busca solo «N».
+      a.querySelectorAll('.katex-html').forEach((k) => map.set(clean(k.textContent).replace(/\((⋅|·|\.|…)\)$/, ''), b.textContent!.trim()));
     });
     if (!map.size) return;
     // Las fórmulas en bloque justo antes de la tabla.

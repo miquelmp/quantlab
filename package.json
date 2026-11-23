@@ -11,6 +11,7 @@
     "test": "vitest run",
     "check:content": "tsx scripts/check-content.ts",
     "check:python": "python3 scripts/check_python.py",
+    "pdf": "node scripts/pdf.mjs",
     "check:links": "node scripts/check-links.mjs",
     "check": "npm run check:content && npm run check:python && npm test && npm run build && npm run check:links",
     "check:a11y": "node scripts/check-a11y.cjs"
@@ -37,6 +38,7 @@
     "@types/mdast": "4.0.4",
     "axe-core": "4.14.0",
     "pagefind": "1.6.0",
+    "playwright": "1.63.0",
     "sharp": "0.35.5",
     "tsx": "4.20.6",
     "vitest": "5.1.0"
