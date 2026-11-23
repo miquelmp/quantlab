@@ -610,7 +610,7 @@
   "chart.presentExit": "Exit presentation",
   "tC.title": "From the binomial tree to Black-Scholes",
   "tC.chartDesc": "Price of a European call and put with the Black and Scholes (1973) formula, and price of the call with a binomial tree of 1 to N steps. Move the controls to see how they change.",
-  "tC.observe": "The call is always worth more than it would pay if it expired today: that difference is the time value, and it grows with volatility and maturity. The European put, by contrast, can be worth less than its payoff when it is deep in the money, because receiving K at expiry is worth less than receiving it today. In the binomial tree panel, the price oscillates around the exact one and approaches it as steps are added.",
+  "tC.observe": "With no dividends and non-negative rates, as here, the call is always worth more than it would pay if it expired today: that difference is the time value, and it grows with volatility and maturity. The European put, by contrast, can be worth less than its payoff when it is deep in the money, because receiving K at expiry is worth less than receiving it today. In the binomial tree panel, the price oscillates around the exact one and approaches it as steps are added.",
   "tC.heading": "Interactive chart",
   "tC.spot": "Stock price S₀",
   "tC.strike": "Strike price K",

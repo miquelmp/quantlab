@@ -592,7 +592,7 @@ La varianza muestral insesgada divide por $n - 1$ (corrección de Bessel), $s^2 
 
 ### La idea
 
-Lanza un dado: todos los resultados del 1 al 6 son igual de probables, y el histograma es plano. Lanza dos y suma: el 7 es el resultado más frecuente y los extremos (2 y 12) son raros, así que el histograma tiene forma de tejado. Lanza diez y suma: el histograma ya tiene una forma de campana casi perfecta. No importa que cada dado tenga una distribución plana: la suma de muchos efectos aleatorios pequeños e independientes tiende siempre a la misma forma, la **distribución normal** o **campana de Gauss**. Este resultado es el **teorema central del límite**, y explica por qué la normal aparece en errores de medida, en alturas de personas y, como primera aproximación, en rentabilidades acumuladas a lo largo de muchos días.
+Lanza un dado: todos los resultados del 1 al 6 son igual de probables, y el histograma es plano. Lanza dos y suma: el 7 es el resultado más frecuente y los extremos (2 y 12) son raros, así que el histograma tiene forma de tejado. Lanza diez y suma: el histograma ya tiene una forma de campana casi perfecta. No importa que cada dado tenga una distribución plana: la suma de muchos efectos aleatorios pequeños e independientes tiende a la misma forma, la **distribución normal** o **campana de Gauss**. Este resultado es el **teorema central del límite**, y explica por qué la normal aparece en errores de medida, en alturas de personas y, como primera aproximación, en rentabilidades acumuladas a lo largo de muchos días.
 
 La normal queda descrita por dos números: su media, que marca el centro, y su desviación típica, que marca la anchura. La mayor parte de la probabilidad se concentra cerca de la media y cae muy deprisa al alejarse: las **colas**, las zonas de valores extremos, son finas.
 
@@ -688,7 +688,7 @@ La media supera a la mediana: la distribución de la riqueza futura es asimétri
 
 #### Cuándo falla la campana
 
-El TCL requiere varianza finita y una dependencia débil. Si la varianza es infinita, el TCL clásico deja de aplicarse. Cuando las colas decrecen como una potencia de índice $\alpha < 2$, las sumas, normalizadas de otra forma, convergen a una **distribución estable de Lévy** no gaussiana, pero no es un resultado universal; Mandelbrot (1963) propuso este modelo para los precios del algodón. Hoy se sabe que las rentabilidades diarias tienen varianza finita pero colas de tipo potencia con un índice de cola $\alpha$ que la mayoría de estudios sitúa entre 2 y 5, con valores típicos cercanos a 3 para acciones e índices (la «ley cúbica inversa»: Gopikrishnan *et al.*, 1999; Cont, 2001; véase el capítulo 15), de modo que:
+El TCL requiere varianza finita y una dependencia débil. Si la varianza es infinita, el TCL clásico deja de aplicarse. Cuando las colas decrecen como una potencia de índice $\alpha < 2$, las sumas, normalizadas de otra forma, convergen a una **distribución estable de Lévy** no gaussiana, pero no es un resultado universal: hay incluso distribuciones de varianza infinita cuyas sumas tienden a la normal con otra normalización; Mandelbrot (1963) propuso este modelo para los precios del algodón. La mayoría de estudios encuentra en las rentabilidades diarias colas de tipo potencia con un índice de cola $\alpha$ entre 2 y 5, con valores típicos cercanos a 3 para acciones e índices (la «ley cúbica inversa»: Gopikrishnan *et al.*, 1999; Cont, 2001; véase el capítulo 15), compatibles con una varianza finita, aunque una muestra finita no puede demostrarlo del todo, de modo que:
 
 - A horizontes cortos (diarios o intradía) la normal infravalora mucho los extremos: un movimiento de más de $4\sigma$ (en cualquier sentido) debería ocurrir con probabilidad $6{,}3 \times 10^{-5}$, unas 1,6 veces cada cien años bursátiles, y se observa con mucha mayor frecuencia.
 - A horizontes largos (mensuales, anuales) la distribución se acerca a la normal, el fenómeno llamado **gaussianidad agregacional** (Cont, 2001), aunque la convergencia es lenta por la dependencia de la volatilidad.
@@ -1494,7 +1494,7 @@ El tipo libre de riesgo es del 2,5 % y la prima de riesgo del mercado, del 5,5 %
 - Una eléctrica tiene una volatilidad del 15 % y una correlación de 0,6 con el mercado. Su beta es $0{,}6 \times 15/15 = 0{,}6$, y el CAPM le asigna una rentabilidad esperada de $2{,}5 + 0{,}6 \times 5{,}5 = 5{,}8\,\%$.
 - Una tecnológica tiene una volatilidad del 30 % y una correlación de 0,75. Su beta es $0{,}75 \times 30/15 = 1{,}5$, y su rentabilidad esperada, $2{,}5 + 1{,}5 \times 5{,}5 = 10{,}75\,\%$.
 
-La tecnológica tiene el doble de volatilidad que la eléctrica, pero lo que determina su prima no es la volatilidad total, sino la parte ligada al mercado. Si el mercado cayera un 4 % en un día, cabría esperar, de media, una caída del 2,4 % en la eléctrica y del 6 % en la tecnológica.
+La tecnológica tiene el doble de volatilidad que la eléctrica, pero lo que determina su prima no es la volatilidad total, sino la parte ligada al mercado. Si el mercado cayera un 4 % en un día, cabría esperar, de media y con alfa nula, una caída del 2,4 % en la eléctrica y del 6 % en la tecnológica.
 
 ### Formalización
 
@@ -1970,7 +1970,7 @@ Un **backtest** simula una estrategia con datos pasados. Es la herramienta más 
 - **Ignorar los costes** (tema B).
 - **Sobreajuste**: probar muchas variantes y quedarse con la mejor.
 
-El último es el más traicionero. Si se prueban $N$ estrategias sin ninguna habilidad, el ratio de Sharpe máximo observado crece aproximadamente como $\sqrt{2\ln N}$ veces su error estándar. *Ejemplo:* con 5 años de datos, el error estándar de un Sharpe anual es $\approx\sqrt{1/5} = 0{,}45$ (capítulo 8). La mejor de 100 estrategias puramente aleatorias tendrá, de media, un Sharpe de $0{,}45 \times 2{,}5 \approx 1{,}1$, un valor que parecería excelente.
+El último es el más traicionero. Si se prueban $N$ estrategias independientes y sin ninguna habilidad, el ratio de Sharpe máximo observado crece aproximadamente como $\sqrt{2\ln N}$ veces su error estándar. *Ejemplo:* con 5 años de datos, el error estándar de un Sharpe anual es $\approx\sqrt{1/5} = 0{,}45$ (capítulo 8). La mejor de 100 estrategias puramente aleatorias tendrá, de media, un Sharpe de $0{,}45 \times 2{,}5 \approx 1{,}1$, un valor que parecería excelente. Si las estrategias son variantes parecidas, cuenta el número efectivo de pruebas independientes, que es menor.
 
 Buenas prácticas:
 
@@ -2008,7 +2008,7 @@ $$\Delta = \frac{V_u - V_d}{(u - d)\,S_0}, \qquad q = \frac{1 + r - d}{u - d}, \
 
 *Ejemplo:* $S_0 = 100$ €, $u = 1{,}2$, $d = 0{,}8$, $r = 5\,\%$ y una opción de compra con precio de ejercicio 100 €, que paga $V_u = 20$ € o $V_d = 0$. Entonces $q = 0{,}25/0{,}4 = 0{,}625$ y $V_0 = 0{,}625 \times 20/1{,}05 = 11{,}90$ €. Comprobación: comprar $\Delta = 0{,}5$ acciones cuesta 50 € y se financian pidiendo prestados $0{,}5 \times 80/1{,}05 = 38{,}10$ €; el coste neto, 11,90 €, es el precio de la opción.
 
-Lo sorprendente es que la probabilidad real de subida no aparece: el precio sale de la réplica, no de las preferencias. $q$ es la medida neutral al riesgo $Q$ del capítulo 3. Encadenando muchos periodos con $u = e^{\sigma\sqrt{\Delta t}}$ y $d = 1/u$, el árbol converge a la fórmula de Black y Scholes (capítulo 6). Una relación útil que no depende del modelo de precios, sino solo de la ausencia de arbitraje, es la **paridad put-call**: para opciones europeas de compra y de venta con el mismo precio de ejercicio y vencimiento, sobre una acción que no paga dividendos, $C - P = S_0 - K e^{-rT}$. Con una rentabilidad por dividendo continua $q$, $S_0$ se sustituye por $S_0 e^{-qT}$. Las opciones americanas, que se pueden ejercer antes, no cumplen esta igualdad exacta.
+Lo sorprendente es que la probabilidad real de subida no aparece: el precio sale de la réplica, no de las preferencias. $q$ es la medida neutral al riesgo $Q$ del capítulo 3. Encadenando muchos periodos con $u = e^{\sigma\sqrt{\Delta t}}$ y $d = 1/u$, el árbol converge a la fórmula de Black y Scholes (capítulo 6). Una relación útil que no depende del modelo de precios, sino solo de la ausencia de arbitraje, es la **paridad put-call**: para opciones europeas de compra y de venta con el mismo precio de ejercicio y vencimiento, sobre una acción que no paga dividendos, $C - P = S_0 - K e^{-rT}$. Con una rentabilidad por dividendo continua $q$, $S_0$ se sustituye por $S_0 e^{-qT}$. Las opciones americanas, que se pueden ejercer antes, no cumplen esta igualdad exacta. Aquí, como en la fórmula de Black y Scholes, $r$ es el tipo en capitalización continua; en el árbol, $1 + r$ era el factor de un periodo.
 
 **La fórmula de Black y Scholes.** Si el precio de la acción sigue el movimiento browniano geométrico del capítulo 4, con volatilidad constante $\sigma$, y se puede negociar sin costes y pedir prestado al tipo $r$, el límite del árbol da el precio de una opción europea de compra (Black y Scholes, 1973):
 
@@ -2034,7 +2034,7 @@ Las hipótesis son fuertes. La volatilidad no es constante (capítulo 7) y los r
 
 ## Tema D · Estacionariedad y cointegración
 
-Una serie es **estacionaria** si su distribución no cambia con el tiempo. Los precios de la mayoría de activos no lo son (su varianza crece con el tiempo, capítulo 4), mientras que sus rentabilidades suelen serlo de forma aproximada, algo que conviene contrastar en cada caso; por eso la estadística se hace con rentabilidades (capítulo 10). El contraste de Dickey y Fuller (1979) comprueba si una serie tiene una **raíz unitaria**, es decir, si se comporta como un paseo aleatorio.
+Una serie es **estacionaria** si su comportamiento estadístico no cambia con el tiempo: en sentido estricto, la distribución conjunta de cualquier grupo de observaciones no cambia al desplazarlas en el tiempo; en sentido débil, basta con que la media sea constante y la covarianza entre dos observaciones dependa solo de la distancia entre ellas. Los precios de la mayoría de activos no lo son (su varianza crece con el tiempo, capítulo 4), mientras que sus rentabilidades suelen serlo de forma aproximada, algo que conviene contrastar en cada caso; por eso la estadística se hace con rentabilidades (capítulo 10). El contraste de Dickey y Fuller (1979) comprueba si una serie tiene una **raíz unitaria**, como el paseo aleatorio, que es el caso más conocido.
 
 Dos precios no estacionarios están **cointegrados** si alguna combinación lineal de ellos, $s_t = P^A_t - \beta P^B_t$, sí es estacionaria (Engle y Granger, 1987): pueden alejarse, pero tienden a volver a su relación. Es la base de la **negociación por pares** (*pairs trading*). Cointegración y correlación son cosas distintas: dos activos pueden tener rentabilidades muy correlacionadas y precios que se separan sin límite, o al revés.
 
@@ -2056,7 +2056,7 @@ dd = 1 - W / np.maximum.accumulate(W)               # caída en cada fecha
 print(dd.max())                                     # caída máxima: 0.20 (de 115 a 92)
 ```
 
-Recuperar una caída $D$ exige una subida de $D/(1 - D)$: un 25 % tras perder un 20 %, y un 100 % tras perder un 50 % (capítulo 1). Muchos inversores juzgan una estrategia por su caída máxima más que por su volatilidad, y el **ratio de Calmar** divide la tasa de crecimiento anual compuesta por la caída máxima. Hay que compararlas con cuidado: la caída máxima esperada crece con la duración de la muestra (Magdon-Ismail *et al.*, 2004), así que una serie más larga tendrá, casi siempre, una caída máxima peor. El capítulo 14 da un resultado relacionado: con Kelly completo, la probabilidad de caer alguna vez a la mitad es del 50 %.
+Recuperar una caída $D$ exige una subida de $D/(1 - D)$: un 25 % tras perder un 20 %, y un 100 % tras perder un 50 % (capítulo 1). Muchos inversores juzgan una estrategia por su caída máxima más que por su volatilidad, y el **ratio de Calmar** divide la tasa de crecimiento anual compuesta por la caída máxima. Hay que compararlas con cuidado: la caída máxima esperada crece con la duración de la muestra (Magdon-Ismail *et al.*, 2004), así que una serie más larga tendrá, casi siempre, una caída máxima peor. El capítulo 14 da un resultado relacionado: en su modelo continuo, con Kelly completo, la probabilidad de caer alguna vez a la mitad es del 50 %.
 
 ---
 
@@ -2380,7 +2380,7 @@ El VaR solo dice dónde empieza la cola, así que dos carteras con colas muy dis
 | Volatilidad muestral | $\hat\sigma = \sqrt{\frac{1}{N-1}\sum_t (r_t - \bar r)^2}$ | 7 |
 | Anualizar la volatilidad | $\sigma_{\text{anual}} = \hat\sigma\sqrt{h}$ | 7 |
 | Ratio de Sharpe | $\text{SR} = (\mu - r_f)/\sigma$ | 8 |
-| Crecimiento compuesto | $g \approx \mu - \tfrac12\sigma^2$ | 9 |
+| Crecimiento logarítmico (aprox.) | $g \approx \mu - \tfrac12\sigma^2$; tasa compuesta $G = e^{g} - 1$ | 9 |
 | Covarianza | $\operatorname{Cov}(X, Y) = E[(X - \mu_X)(Y - \mu_Y)]$ | 10 |
 | Correlación | $\rho = \operatorname{Cov}(X, Y)/(\sigma_X\sigma_Y)$ | 10 |
 | Varianza de dos activos | $\sigma_p^2 = w_1^2\sigma_1^2 + w_2^2\sigma_2^2 + 2w_1w_2\rho\sigma_1\sigma_2$ | 11 |
