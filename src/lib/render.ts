@@ -13,6 +13,8 @@ import type { Root, Node as MdNode, PhrasingContent, Code, Heading, Strong, Text
 import type { Root as HRoot, Element } from 'hast';
 import { slugify, type Book, type Node } from './book';
 import { t } from '../i18n';
+import { citationId } from './biblio';
+import { toString as mdText } from 'mdast-util-to-string';
 
 export interface RenderCtx {
   lang: string;
@@ -25,6 +27,7 @@ export interface RenderCtx {
   usedIds?: Set<string>;
   pyCounter?: { n: number };
   linkTerms?: boolean;
+  linkCitations?: boolean;         // años de las citas «Autor (2001)» → bibliografía
 }
 
 let highlighter: Highlighter | null = null;
@@ -145,14 +148,21 @@ function transformMd(root: Root, ctx: RenderCtx): void {
     if (node.type === 'text' && parent && index !== undefined && parent.type !== 'link' && parent.type !== 'heading') {
       // Referencias cruzadas «capítulo 9» / «tema B» → enlace, solo a páginas publicadas.
       const value = (node as Text).value;
-      const re = /\b(?:[Cc]ap[ií]tulo\s+(\d{1,2})|[Tt]ema\s+([A-E]))\b/g;
+      const re = /\b(?:[Cc]ap[ií]tulo\s+(\d{1,2})|[Tt]ema\s+([A-E])|((?:1[6-9]|20)\d\d[a-z]?))\b/g;
+      let before: string | null = null;
       const pieces: PhrasingContent[] = [];
       let last = 0;
       let m: RegExpExecArray | null;
       while ((m = re.exec(value))) {
-        const href = m[1]
-          ? (Number(m[1]) !== ctx.chapter ? chapterUrl(ctx, Number(m[1])) : null)
-          : (m[2] !== ctx.topic ? topicUrl(ctx, m[2]) : null);
+        let href: string | null;
+        if (m[1]) href = Number(m[1]) !== ctx.chapter ? chapterUrl(ctx, Number(m[1])) : null;
+        else if (m[2]) href = m[2] !== ctx.topic ? topicUrl(ctx, m[2]) : null;
+        else {
+          if (ctx.linkCitations === false) continue;
+          before ??= parent.children.slice(0, index).map((c: any) => mdText(c)).join('');
+          const id = citationId(ctx.book, before + value.slice(0, m.index), m[3]);
+          href = id ? url(ctx, `${ctx.lang}/bibliografia/#${id}`) : null;
+        }
         if (!href) continue;
         if (m.index > last) pieces.push({ type: 'text', value: value.slice(last, m.index) });
         pieces.push({ type: 'link', url: href, title: null, children: [{ type: 'text', value: m[0] }] });
