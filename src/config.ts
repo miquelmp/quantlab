@@ -9,6 +9,24 @@ export const SITE = {
   author: 'Miquel Monserrat Pons',
   /** Año del aviso de autoría («© 2026 …»). */
   copyrightYear: 2026,
+  /**
+   * Perfiles del autor (datos estructurados «sameAs»): así los buscadores asocian el libro
+   * con la misma persona que esos perfiles. El primero sale también en «Sobre el autor».
+   */
+  authorProfiles: [
+    'https://www.linkedin.com/in/miquelmonserrat/',
+    'https://github.com/miquelmp',
+  ],
+  /** Otro libro del autor, una entrada por idioma (es el mismo libro traducido; cada web enlaza el suyo). */
+  authorBooks: [
+    { name: 'Pensamiento estratégico', lang: 'es', url: 'https://www.amazon.es/dp/B0DDWQMTD9/' },
+    { name: 'Strategic Thinking', lang: 'en', url: 'https://www.amazon.es/dp/B0DJ88K1R6/' },
+  ],
+  /**
+   * Código de verificación de Google Search Console (método «etiqueta HTML»: solo el valor de
+   * content="…"). Vacío = no se añade la etiqueta.
+   */
+  googleSiteVerification: 'AztqRbGiAF10l_th79g-1JpZbS-SQUHORhSSzhXVVIc',
 };
 
 /**

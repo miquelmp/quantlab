@@ -10,7 +10,8 @@ export default defineConfig({
   base: SITE.base,
   trailingSlash: 'always',
   build: { format: 'directory' },
-  integrations: [sitemap(), search(), pwa({ base: SITE.base, pyodide: PYODIDE_INDEX_URL })],
+  // Fuera del sitemap: la raíz (solo redirige al idioma) y las páginas sin contenido propio (llevan noindex).
+  integrations: [sitemap({ filter: (page) => !/\/(buscar|progreso|libro-completo|404)\/$/.test(page) && !page.endsWith(`${SITE.base}/`) }), search(), pwa({ base: SITE.base, pyodide: PYODIDE_INDEX_URL })],
   vite: {
     worker: { format: 'es' },
   },

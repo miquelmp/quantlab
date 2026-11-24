@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { LANGS } from '../../i18n/config';
+import { LANGS, DEFAULT_LANG } from '../../i18n/config';
+import { authorLd } from '../../lib/seo';
 import { t } from '../../i18n';
 import { loadBook, publishedChapters } from '../../lib/book';
 import { initRenderer, renderInline, chapterUrl, topicUrl, url, plain, type RenderCtx } from '../../lib/render';
@@ -18,18 +19,25 @@ const ctx: RenderCtx = { lang, base, book };
 const pub = publishedChapters(book);
 const first = pub[0];
 const [mainTitle, subTitle] = book.title.split(':').map((s) => s.trim());
+const abs = (p: string) => new URL(p, SITE.url).toString();
+// Las demás ediciones del libro: la original es la española; las otras son traducciones.
+const others = LANGS.filter((l) => l.code !== lang).map((l) => ({ '@type': 'Book', name: loadBook(l.code).title, inLanguage: l.code, url: abs(`${base}${l.code}/`) }));
+const translations = lang === DEFAULT_LANG ? { workTranslation: others } : { translationOfWork: others.filter((o) => o.inLanguage === DEFAULT_LANG) };
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Book',
   name: book.title,
   alternativeHeadline: book.subtitle,
   inLanguage: lang,
-  author: { '@type': 'Person', name: SITE.author },
-  copyrightHolder: { '@type': 'Person', name: SITE.author },
+  author: authorLd(lang),
+  copyrightHolder: { '@id': authorLd(lang)['@id'] },
   copyrightYear: SITE.copyrightYear,
   isAccessibleForFree: true,
   license: 'https://creativecommons.org/licenses/by-sa/4.0/',
   url: new URL(url(ctx, `${lang}/`), SITE.url).toString(),
+  bookFormat: 'https://schema.org/EBook',
+  encoding: { '@type': 'MediaObject', encodingFormat: 'application/pdf', contentUrl: abs(url(ctx, `${lang}/quantlab-libro.pdf`)) },
+  ...translations,
   hasPart: pub.map((c) => ({ '@type': 'Chapter', name: c.title, position: c.number, url: new URL(chapterUrl(ctx, c.number)!, SITE.url).toString() })),
 };
 const topics = book.topics.filter((tp) => tp.published);
