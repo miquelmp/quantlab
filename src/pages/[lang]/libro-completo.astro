@@ -85,10 +85,17 @@ const today = new Date().toLocaleDateString(lang, { year: 'numeric', month: 'lon
       <p class="pb-kicker">quantlab</p>
       <h1>{book.title}</h1>
       <p class="pb-subtitle">{book.subtitle}</p>
-      <p class="pb-meta">{t(lang, 'full.edition', { date: today })} · {t(lang, 'footer.version', { v: VERSION_LABEL })}<br /><a href={abs(`${lang}/`)}>{abs(`${lang}/`)}</a></p>
-      <p class="pb-license">{t(lang, 'full.license')}</p>
+      <p class="pb-author">{SITE.author}</p>
       <p class="pb-actions no-print"><a class="btn btn-primary" href={pdfHref} download>{t(lang, 'full.pdf')}</a> <span class="pb-hint">{t(lang, 'full.hint')}</span></p>
     </header>
+
+    <section class="pb-credits" aria-labelledby="pb-credits-h">
+      <h2 id="pb-credits-h" class="sr-only">{t(lang, 'full.credits')}</h2>
+      <p><strong>{book.title}</strong></p>
+      <p>{t(lang, 'footer.copyright', { year: SITE.copyrightYear, author: SITE.author })}</p>
+      <p class="pb-license">{t(lang, 'full.license')}</p>
+      <p class="pb-meta">{t(lang, 'full.edition', { date: today })}<br />{t(lang, 'footer.version', { v: VERSION_LABEL })}<br /><a href={abs(`${lang}/`)}>{abs(`${lang}/`)}</a></p>
+    </section>
 
     <nav class="pb-toc" aria-labelledby="pb-toc-h">
       <h2 id="pb-toc-h">{t(lang, 'full.contents')}</h2>

@@ -11,7 +11,7 @@ The text, formulas, exercises, solutions, glossary and chart images are publishe
 
 As long as you meet two conditions:
 
-- **Attribution**: give credit, link to the licence and indicate if you have made changes. For example: «*Foundations of Quantitative Finance*, quantlab, CC BY-SA 4.0».
+- **Attribution**: give credit, link to the licence and indicate if you have made changes. For example: «*Foundations of Quantitative Finance*, Miquel Monserrat Pons, quantlab, CC BY-SA 4.0».
 - **ShareAlike**: if you adapt the material, distribute your version under the same licence.
 
 The full legal text is in the file [LICENSE-CONTENT.txt](https://github.com/miquelmp/quantlab/blob/main/LICENSE-CONTENT.txt) in the repository.

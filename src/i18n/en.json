@@ -774,5 +774,7 @@
   "full.formula": "Formula",
   "full.read": "Read the complete book on one page",
   "footer.version": "Published version: {v}",
+  "footer.copyright": "© {year} {author}",
+  "full.credits": "Credits",
   "footer.fullBook": "Complete book and PDF"
 }

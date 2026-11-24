@@ -11,7 +11,7 @@ El texto, las fórmulas, los ejercicios, las soluciones, el glosario y las imág
 
 Siempre que cumplas dos condiciones:
 
-- **Atribución**: reconocer la autoría, enlazar la licencia e indicar si has hecho cambios. Por ejemplo: «*Fundamentos de finanzas cuantitativas*, quantlab, CC BY-SA 4.0».
+- **Atribución**: reconocer la autoría, enlazar la licencia e indicar si has hecho cambios. Por ejemplo: «*Fundamentos de finanzas cuantitativas*, Miquel Monserrat Pons, quantlab, CC BY-SA 4.0».
 - **Compartir igual**: si adaptas el material, distribuir tu versión con la misma licencia.
 
 El texto legal completo está en el fichero [LICENSE-CONTENT.txt](https://github.com/miquelmp/quantlab/blob/main/LICENSE-CONTENT.txt) del repositorio.

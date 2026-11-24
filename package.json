@@ -38,6 +38,7 @@
     "@types/mdast": "4.0.4",
     "axe-core": "4.14.0",
     "pagefind": "1.6.0",
+    "pdf-lib": "^1.17.1",
     "playwright": "1.63.0",
     "sharp": "0.35.5",
     "tsx": "4.20.6",
