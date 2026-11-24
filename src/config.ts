@@ -5,7 +5,10 @@ export const SITE = {
   /** Ruta base dentro del dominio (GitHub Pages de proyecto: /quantlab). */
   base: '/quantlab',
   repo: 'https://github.com/miquelmp/quantlab',
-  author: 'Miquel',
+  /** Autor del libro y de la web (portada, pie, metadatos y PDF). */
+  author: 'Miquel Monserrat Pons',
+  /** Año del aviso de autoría («© 2026 …»). */
+  copyrightYear: 2026,
 };
 
 /**

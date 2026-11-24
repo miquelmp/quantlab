@@ -7,10 +7,13 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
+import { PDFDocument } from 'pdf-lib';
 
 const DIST = path.resolve('dist');
 const BASE = '/quantlab/';
 const SITE = 'https://miquelmp.github.io';
+/** Autor en los metadatos del PDF (el mismo que SITE.author de src/config.ts). */
+const AUTHOR = 'Miquel Monserrat Pons';
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png',
   '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.json': 'application/json', '.webmanifest': 'application/manifest+json' };
 
@@ -57,6 +60,10 @@ try {
       headerTemplate: '<span></span>',
       footerTemplate: `<div style="width:100%;font-size:8px;color:#666;padding:0 16mm;display:flex;justify-content:space-between"><span>${title.replace(/</g, '&lt;')}</span><span class="pageNumber"></span></div>`,
     });
+    // Metadatos del documento (Chromium no pone el autor).
+    const doc = await PDFDocument.load(fs.readFileSync(out), { updateMetadata: false });
+    doc.setTitle(title); doc.setAuthor(AUTHOR); doc.setCreator('quantlab'); doc.setLanguage(lang);
+    fs.writeFileSync(out, await doc.save({ useObjectStreams: false }));
     console.log(`✓ ${path.relative(process.cwd(), out)} (${(fs.statSync(out).size / 1e6).toFixed(1)} MB)`);
     await page.close();
   }

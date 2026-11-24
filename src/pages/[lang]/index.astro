@@ -24,6 +24,9 @@ const jsonLd = {
   name: book.title,
   alternativeHeadline: book.subtitle,
   inLanguage: lang,
+  author: { '@type': 'Person', name: SITE.author },
+  copyrightHolder: { '@type': 'Person', name: SITE.author },
+  copyrightYear: SITE.copyrightYear,
   isAccessibleForFree: true,
   license: 'https://creativecommons.org/licenses/by-sa/4.0/',
   url: new URL(url(ctx, `${lang}/`), SITE.url).toString(),
@@ -38,6 +41,7 @@ const introText = plain((book.prefaceIntro.find((n) => n.type === 'paragraph') a
     <p class="chapter-kicker">{t(lang, 'site.name')}</p>
     <h1>{mainTitle}</h1>
     {subTitle && <p class="subtitle">{subTitle.charAt(0).toUpperCase() + subTitle.slice(1)}</p>}
+    <p class="byline">{SITE.author}</p>
     <p class="lead">{t(lang, 'site.tagline')} {book.subtitle}.</p>
     <div class="cta">
       <a class="btn btn-primary" href={chapterUrl(ctx, first.number)!}>{t(lang, 'home.start')}</a>

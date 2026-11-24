@@ -432,6 +432,7 @@ pre { margin: 0; }
 .hero { padding: 2rem 0 1rem; max-width: 50rem; }
 .hero h1 { font-size: clamp(2rem, 1.3rem + 3vw, 3.1rem); line-height: 1.08; letter-spacing: -0.025em; margin: 0.25rem 0 0.75rem; }
 .hero .subtitle { font-size: 1.2rem; color: var(--text-2); margin: 0 0 1rem; }
+.hero .byline { font-weight: 600; margin: -0.5rem 0 1rem; }
 .hero .lead { font-size: 1.05rem; color: var(--text-2); }
 .cta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0; }
 .cta .btn { min-height: 46px; padding: 0.5rem 1.1rem; font-size: 1rem; }
@@ -497,6 +498,8 @@ pre { margin: 0; }
 .pb-cover h1 { font-size: 2.4rem; margin: 0.2rem 0; }
 .pb-kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; font-weight: 700; color: var(--text-2); margin: 0; }
 .pb-subtitle { font-size: 1.25rem; color: var(--text-2); margin: 0.25rem 0 1rem; }
+.pb-author { font-size: 1.15rem; font-weight: 600; margin: 0 0 1rem; }
+.pb-credits { margin: 1.5rem 0; font-size: 0.875rem; color: var(--text-2); }
 .pb-meta, .pb-license, .pb-online, .pb-hint { font-size: 0.875rem; color: var(--text-2); }
 .pb-online a { overflow-wrap: anywhere; }
 .pb-question { font-style: italic; color: var(--text-2); }
@@ -522,6 +525,7 @@ pre { margin: 0; }
   .no-print, .print-book .py-bar, .print-book .py-out:empty { display: none !important; }
   .print-book { max-width: none; font-size: 10.5pt; }
   .print-book .pb-cover { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; border: 0; }
+  .print-book .pb-credits { break-before: page; min-height: 85vh; display: flex; flex-direction: column; justify-content: flex-end; margin: 0; }
   .print-book .pb-toc, .print-book .pb-block, .print-book .pb-chapter { break-before: page; }
   .print-book h1, .print-book h2, .print-book h3, .print-book h4 { break-after: avoid; }
   .print-book .pb-chart, .print-book .pb-panel, .print-book table, .print-book pre, .print-book .katex-display { break-inside: avoid; }

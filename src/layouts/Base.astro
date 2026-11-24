@@ -55,11 +55,13 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
+  <meta name="author" content={SITE.author} />
   <link rel="canonical" href={canonical} />
   {LANGS.length > 1 && LANGS.map((l) => (
     <link rel="alternate" hreflang={l.htmlLang} href={new URL(u(`${l.code}/${pathIn(path, lang, l.code)}`), SITE.url).toString()} />
   ))}
   <meta property="og:type" content={ogType} />
+  {ogType === 'article' && <meta property="article:author" content={SITE.author} />}
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
@@ -151,7 +153,7 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
         <li><a href={SITE.repo}>{t(lang, 'footer.source')}</a></li>
       </ul>
       <p style="margin:0">{t(lang, 'footer.licenseShort')} · {t(lang, 'site.bookTitle')}</p>
-      <p class="site-version">{t(lang, 'footer.version', { v: VERSION_LABEL })}</p>
+      <p class="site-version">{t(lang, 'footer.copyright', { year: SITE.copyrightYear, author: SITE.author })} · {t(lang, 'footer.version', { v: VERSION_LABEL })}</p>
     </div>
   </footer>
   <script type="application/json" id="ui-strings" set:html={JSON.stringify(uiStrings)} />
