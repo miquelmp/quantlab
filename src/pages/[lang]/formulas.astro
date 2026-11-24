@@ -45,6 +45,26 @@ const chapters = [...new Set(book.formulas.map((f) => f.chapter))];
       </table>
     </div>
     <Fragment set:html={renderBlocks(book.formulasNote, ctx)} />
+    <h2 id="siglas">{t(lang, 'formulas.symbolsTitle')}</h2>
+    <p>{t(lang, 'formulas.symbolsIntro')}</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label={t(lang, 'formulas.symbolsTitle')}>
+      <table>
+        <thead><tr><th scope="col">{t(lang, 'formulas.symbol')}</th><th scope="col">{t(lang, 'formulas.origin')}</th><th scope="col">{t(lang, 'formulas.meaning')}</th><th scope="col">{t(lang, 'formulas.chapter')}</th></tr></thead>
+        <tbody>
+          {book.symbols.map((s) => {
+            const href = /^\d+$/.test(s.ref) ? chapterUrl(ctx, Number(s.ref)) : null;
+            return (
+              <tr>
+                <th scope="row" set:html={renderInline(s.symbol, { ...ctx, inline: true })} />
+                <td set:html={renderInline(s.origin, ctx)} />
+                <td set:html={renderInline(s.meaning, ctx)} />
+                <td>{href ? <a href={href}>{s.ref}</a> : s.ref}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   </div>
   <script>
     const sel = document.getElementById('f-ch') as HTMLSelectElement | null;
