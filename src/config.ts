@@ -26,7 +26,7 @@ export const SITE = {
    * Código de verificación de Google Search Console (método «etiqueta HTML»: solo el valor de
    * content="…"). Vacío = no se añade la etiqueta.
    */
-  googleSiteVerification: '',
+  googleSiteVerification: 'AztqRbGiAF10l_th79g-1JpZbS-SQUHORhSSzhXVVIc',
 };
 
 /**
