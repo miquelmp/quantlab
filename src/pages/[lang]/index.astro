@@ -35,7 +35,7 @@ const introText = plain((book.prefaceIntro.find((n) => n.type === 'paragraph') a
 ---
 <Base lang={lang} title={t(lang, 'site.bookTitle')} description={t(lang, 'site.tagline') + ' ' + book.subtitle} path="" jsonLd={jsonLd}>
   <section class="hero">
-    <p class="chapter-kicker">{t(lang, 'site.name')} · {t(lang, 'site.pilot')}</p>
+    <p class="chapter-kicker">{t(lang, 'site.name')}</p>
     <h1>{mainTitle}</h1>
     {subTitle && <p class="subtitle">{subTitle.charAt(0).toUpperCase() + subTitle.slice(1)}</p>}
     <p class="lead">{t(lang, 'site.tagline')} {book.subtitle}.</p>

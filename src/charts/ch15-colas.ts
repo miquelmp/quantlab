@@ -118,10 +118,13 @@ export function computeTails(s: S15): D15 {
 const M = { top: 12, right: 16, bottom: 40, left: 52 };
 const pct = (v: number, ctx: ChartCtx, d = 0) => fmtPct(v, d, ctx.fmt);
 const num = (v: number, ctx: ChartCtx, d = 1) => fmtNum(v, d, ctx.fmt);
+/** Probabilidad siempre en porcentaje; las muy pequeñas, en notación científica (p. ej. «6,3·10⁻³ %»). */
 const sci = (p: number, ctx: ChartCtx) => {
   if (p >= 0.001) return fmtPct(p, p >= 0.01 ? 1 : 2, ctx.fmt);
-  const e = Math.floor(Math.log10(p));
-  return `${fmtNum(p / 10 ** e, 1, ctx.fmt)}·10${String(e).replace('-', '⁻').replace(/\d/g, (d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[+d])}`;
+  const q = p * 100;
+  const e = Math.floor(Math.log10(q));
+  const pow = `10${String(e).replace('-', '⁻').replace(/\d/g, (d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[+d])}`;
+  return `${fmtNum(q / 10 ** e, 1, ctx.fmt)}·${pow}${ctx.fmt.decimal === '.' ? '%' : ' %'}`;
 };
 
 /** Mínimo y máximo por grupos de días: conserva los extremos con pocos trazos. */

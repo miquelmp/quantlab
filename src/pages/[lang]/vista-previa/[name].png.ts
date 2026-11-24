@@ -10,7 +10,7 @@ export function ogCards(lang: string): { name: string; card: OgCard }[] {
   const book = loadBook(lang);
   const site = t(lang, 'site.name');
   const footer = book.title.split(':')[0];
-  const list = [{ name: 'portada', card: { site, kicker: t(lang, 'site.pilot'), title: book.title.split(':')[0], footer: t(lang, 'site.tagline') } }];
+  const list = [{ name: 'portada', card: { site, kicker: t(lang, 'site.name'), title: book.title.split(':')[0], footer: t(lang, 'site.tagline') } }];
   for (const c of publishedChapters(book)) {
     const part = book.parts.find((p) => p.number === c.part)!;
     list.push({ name: c.slug, card: { site, kicker: `${t(lang, 'nav.chapter')} ${c.number} · ${t(lang, 'nav.part')} ${part.roman}`, title: c.title, footer } });
