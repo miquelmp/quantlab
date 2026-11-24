@@ -1,4 +1,5 @@
 ---
+import { authorRef } from '../../../lib/seo';
 import Base from '../../../layouts/Base.astro';
 import Chart from '../../../components/Chart.astro';
 import Exercises from '../../../components/Exercises.astro';
@@ -57,7 +58,8 @@ const jsonLd = [
     license: 'https://creativecommons.org/licenses/by-sa/4.0/',
     learningResourceType: 'chapter',
     timeRequired: `PT${ch.minutesLevel1 + ch.minutesAdvanced}M`,
-    isPartOf: { '@type': 'Book', name: book.title, url: new URL(url(ctx, `${lang}/`), SITE.url).toString() },
+    author: authorRef,
+    isPartOf: { '@type': 'Book', name: book.title, author: authorRef, url: new URL(url(ctx, `${lang}/`), SITE.url).toString() },
   },
   {
     '@context': 'https://schema.org',

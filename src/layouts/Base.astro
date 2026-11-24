@@ -3,7 +3,7 @@ import { VERSION_LABEL } from '../lib/version';
 import 'katex/dist/katex.min.css';
 import '../styles/global.css';
 import { SITE, ANALYTICS_GOATCOUNTER } from '../config';
-import { LANGS, getLang } from '../i18n/config';
+import { LANGS, DEFAULT_LANG, getLang } from '../i18n/config';
 import { pathIn } from '../i18n/paths';
 import { t, tPrefix } from '../i18n';
 import { loadBook } from '../lib/book';
@@ -18,7 +18,10 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   ogType?: string;
   current?: string;
-  /** false: la página no entra en el índice de búsqueda (el propio buscador, la 404). */
+  /**
+   * false: la página no entra en el índice de búsqueda (el propio buscador, la 404) ni en los
+   * buscadores de internet (noindex; también se quita del sitemap en astro.config.mjs).
+   */
   searchable?: boolean;
 }
 
@@ -35,7 +38,8 @@ const ctx = { lang, base, book };
 // Imagen para compartir (src/pages/[lang]/vista-previa/): la del capítulo, tema o Laboratorio, o la de portada.
 const ogName = path.match(/^(?:capitulos|temas)\/([^/]+)\//)?.[1] ?? (path === 'laboratorio/' ? 'laboratorio' : 'portada');
 const ogImage = new URL(u(`${lang}/vista-previa/${ogName}.png`), SITE.url).toString();
-const fullTitle = title === t(lang, 'site.bookTitle') ? `${title} · ${t(lang, 'site.name')}` : `${title} · ${t(lang, 'site.bookTitle')}`;
+// Portada: «Título · Autor», para que el nombre del autor salga en los resultados de búsqueda.
+const fullTitle = title === t(lang, 'site.bookTitle') ? `${title} · ${SITE.author}` : `${title} · ${t(lang, 'site.bookTitle')}`;
 const uiStrings = tPrefix(lang, 'chapter.', 'ex.', 'py.', 'index.', 'chart.');
 const nav = [
   { key: 'index', href: u(`${lang}/indice/`), label: t(lang, 'nav.index') },
@@ -56,10 +60,13 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
   <meta name="author" content={SITE.author} />
+  {!searchable && <meta name="robots" content="noindex, follow" />}
+  {SITE.googleSiteVerification && <meta name="google-site-verification" content={SITE.googleSiteVerification} />}
   <link rel="canonical" href={canonical} />
   {LANGS.length > 1 && LANGS.map((l) => (
     <link rel="alternate" hreflang={l.htmlLang} href={new URL(u(`${l.code}/${pathIn(path, lang, l.code)}`), SITE.url).toString()} />
   ))}
+  {LANGS.length > 1 && <link rel="alternate" hreflang="x-default" href={new URL(u(`${DEFAULT_LANG}/${pathIn(path, lang, DEFAULT_LANG)}`), SITE.url).toString()} />}
   <meta property="og:type" content={ogType} />
   {ogType === 'article' && <meta property="article:author" content={SITE.author} />}
   <meta property="og:title" content={title} />
