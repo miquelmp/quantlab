@@ -29,6 +29,7 @@ Especificación funcional: `ES_Analisis_Funcional_Web_v2.md` (en los ficheros de
 - **Pistas** (RF-EJ-05): `content/es/pistas.yaml`, 1–2 por ejercicio publicado (lo exige `check:content`), Markdown con `$…$` entre comillas simples; se muestran antes de la respuesta.
 - **Preguntas rápidas** (RF-EJ-07): `content/es/preguntas.yaml`, 2–4 de opción múltiple por capítulo (`correcta` cuenta desde 0; lo exige `check:content`); `src/components/QuickQuiz.astro` al principio de «Ejercicios», corrección en `initQuiz()` de `site.ts`.
 - **Libro completo y PDF**: `src/pages/[lang]/libro-completo.astro` (todo el libro en una página, con estilos de impresión `.print-book`; gráficos como imagen con valores por defecto) y `scripts/pdf.mjs` (`npm run pdf`, después de compilar: Playwright la guarda como `dist/<idioma>/quantlab-libro.pdf`; en GitHub se ejecuta antes de comprobar enlaces). Ni la página ni el PDF se guardan para uso sin conexión.
+- **Versión publicada**: `src/lib/version.ts` la calcula en cada compilación (fecha y hora de Madrid · 7 cifras del commit, `GITHUB_SHA` en GitHub) y sale en el pie de todas las páginas y en la portada del libro completo y del PDF. Sirve al autor para comprobar si un cambio ya está publicado.
 - **Analítica**: GoatCounter (anónima, sin cookies), `ANALYTICS_GOATCOUNTER` en `src/config.ts`; panel del autor en https://miquelmp.goatcounter.com/. Explicada en `content/es/paginas/privacidad.md`.
 
 ## Tareas habituales
