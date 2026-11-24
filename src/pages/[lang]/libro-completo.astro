@@ -207,6 +207,12 @@ const today = new Date().toLocaleDateString(lang, { year: 'numeric', month: 'lon
         <thead><tr><th scope="col">{t(lang, 'full.concept')}</th><th scope="col">{t(lang, 'full.formula')}</th><th scope="col">{t(lang, 'nav.chapter')}</th></tr></thead>
         <tbody>{book.formulas.map((f) => <tr><td set:html={renderInline(f.concept, ctx)} /><td set:html={renderInline(f.formula, ctx)} /><td>{f.chapter}</td></tr>)}</tbody>
       </table>
+      <h2>{t(lang, 'formulas.symbolsTitle')}</h2>
+      <p>{t(lang, 'formulas.symbolsIntro')}</p>
+      <table class="pb-table">
+        <thead><tr><th scope="col">{t(lang, 'formulas.symbol')}</th><th scope="col">{t(lang, 'formulas.origin')}</th><th scope="col">{t(lang, 'formulas.meaning')}</th><th scope="col">{t(lang, 'nav.chapter')}</th></tr></thead>
+        <tbody>{book.symbols.map((s) => <tr><td set:html={renderInline(s.symbol, { ...ctx, inline: true })} /><td set:html={renderInline(s.origin, ctx)} /><td set:html={renderInline(s.meaning, ctx)} /><td>{s.ref}</td></tr>)}</tbody>
+      </table>
     </section>
 
     <section id="glosario" class="pb-block">

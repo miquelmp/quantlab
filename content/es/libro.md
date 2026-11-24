@@ -75,11 +75,11 @@ Si sumáramos los porcentajes concluiríamos que la inversión ha ganado un 5 % 
 
 Con rentabilidades logarítmicas el problema desaparece: $\ln(50/40) = +0{,}2231$ y $\ln(40/50) = -0{,}2231$, que suman exactamente cero.
 
-El ejemplo contiene otra lección: tras una caída del 20 % no basta una subida del 20 % para recuperarse, hace falta un 25 %. En general, para deshacer una pérdida $L$ (en tanto por uno) se necesita una ganancia $L/(1-L)$: un 11,1 % tras perder un 10 %, un 100 % tras perder un 50 % y un 900 % tras perder un 90 %.
+El ejemplo contiene otra lección: tras una caída del 20 % no basta una subida del 20 % para recuperarse, hace falta un 25 %. En general, para deshacer una pérdida $L$ (del inglés *loss*, en tanto por uno) se necesita una ganancia $L/(1-L)$: un 11,1 % tras perder un 10 %, un 100 % tras perder un 50 % y un 900 % tras perder un 90 %.
 
 ### Formalización
 
-Sea $P_0$ el valor de la inversión al principio del periodo y $P_1$ su valor al final. La rentabilidad simple es
+Sea $P_0$ (de *precio*) el valor de la inversión al principio del periodo y $P_1$ su valor al final. La rentabilidad simple es
 
 $$R = \frac{P_1 - P_0}{P_0} = \frac{P_1}{P_0} - 1,$$
 
@@ -87,7 +87,7 @@ expresada en tanto por uno (0,25 equivale a un 25 %). La rentabilidad logarítmi
 
 $$r = \ln\frac{P_1}{P_0} = \ln(1 + R).$$
 
-Si una inversión atraviesa $T$ periodos con rentabilidades simples $R_1, \dots, R_T$, su valor final es $P_T = P_0 (1 + R_1)(1 + R_2)\cdots(1 + R_T)$. Tomando logaritmos, el producto se convierte en suma:
+Si una inversión atraviesa $T$ (de *tiempo*) periodos con rentabilidades simples $R_1, \dots, R_T$, su valor final es $P_T = P_0 (1 + R_1)(1 + R_2)\cdots(1 + R_T)$. Tomando logaritmos, el producto se convierte en suma:
 
 $$1 + R_{0,T} = \prod_{t=1}^{T}(1 + R_t), \qquad r_{0,T} = \sum_{t=1}^{T} r_t.$$
 
@@ -178,7 +178,7 @@ Con rentabilidades mensuales, la rentabilidad anual equivalente es $(1 + R_{\tex
 #### Rentabilidad nominal, real y en exceso
 
 - **Rentabilidad real** (descontada la inflación $\pi$), por la ecuación de Fisher (1930): $1 + R_{\text{real}} = \dfrac{1 + R_{\text{nom}}}{1 + \pi}$, aproximadamente $R_{\text{real}} \approx R_{\text{nom}} - \pi$. Con un 5 % nominal y un 3 % de inflación, la rentabilidad real exacta es $1{,}05/1{,}03 - 1 = 1{,}94\,\%$.
-- **Rentabilidad en exceso**: $R_t - r_{f,t}$, la rentabilidad por encima del activo libre de riesgo; es la magnitud que usan el ratio de Sharpe (capítulo 8) y el CAPM (capítulo 13).
+- **Rentabilidad en exceso**: $R_t - r_{f,t}$, la rentabilidad por encima del activo libre de riesgo (la $f$ viene del inglés *risk-free*, libre de riesgo); es la magnitud que usan el ratio de Sharpe (capítulo 8) y el CAPM (capítulo 13).
 
 #### Apalancamiento
 
@@ -221,7 +221,7 @@ Fíjate también en la diferencia entre interés simple y compuesto. Con interé
 
 ### Formalización
 
-Sea $VP$ una cantidad disponible hoy, $i$ el tipo de interés anual y $T$ el número de años. Con capitalización anual, el valor futuro es
+Sea $VP$ (*valor presente*) una cantidad disponible hoy, $i$ (de *interés*) el tipo de interés anual y $T$ (de *tiempo*) el número de años. Con capitalización anual, el valor futuro, $VF$, es
 
 $$VF = VP\,(1 + i)^T,$$
 
@@ -231,7 +231,7 @@ $$VP = \frac{VF}{(1 + i)^T}.$$
 
 El cociente $1/(1+i)^T$ se llama **factor de descuento**: es el valor hoy de un euro pagadero dentro de $T$ años. Con tipos positivos es menor que uno, y se reduce tanto al alargar el plazo como al subir el tipo.
 
-Si en lugar de un solo pago hay varios, $C_1, C_2, \dots, C_T$, al final de cada año, el valor presente del conjunto es la suma de los valores presentes de cada pago:
+Si en lugar de un solo pago hay varios, $C_1, C_2, \dots, C_T$ (la $C$ viene del inglés *cash flow*, flujo de caja), al final de cada año, el valor presente del conjunto es la suma de los valores presentes de cada pago:
 
 $$VP = \sum_{t=1}^{T}\frac{C_t}{(1+i)^t}.$$
 
@@ -289,15 +289,15 @@ Usando la suma de una progresión geométrica se obtienen fórmulas cerradas muy
 
 - **Renta constante (anualidad)** de $C$ durante $T$ periodos: $VP = C\,\dfrac{1 - (1+i)^{-T}}{i}$ (si $i = 0$, simplemente $VP = C\,T$). Ejemplo: 100 € anuales durante 10 años al 5 % valen hoy 772,17 €.
 - **Renta perpetua**: $VP = C/i$ (límite $T \to \infty$, si $i > 0$).
-- **Renta perpetua creciente** a una tasa $g < i$: $VP = \dfrac{C_1}{i - g}$, base del modelo de dividendos de Gordon para valorar acciones.
+- **Renta perpetua creciente** a una tasa $g < i$ (la $g$ viene del inglés *growth*, crecimiento): $VP = \dfrac{C_1}{i - g}$, base del modelo de dividendos de Gordon para valorar acciones.
 
 #### VAN y TIR
 
-El **valor actual neto** de un proyecto con inversión inicial $I_0$ es $\text{VAN} = -I_0 + \sum_t C_t/(1+i)^t$; se acepta si $\text{VAN} > 0$. La **tasa interna de rentabilidad** (TIR) es el tipo $i^*$ que hace $\text{VAN} = 0$. Con flujos que cambian de signo más de una vez, la TIR puede no ser única (regla de los signos de Descartes), por lo que el VAN es el criterio teóricamente preferido.
+El **valor actual neto** (VAN) de un proyecto con inversión inicial $I_0$ es $\text{VAN} = -I_0 + \sum_t C_t/(1+i)^t$; se acepta si $\text{VAN} > 0$. La **tasa interna de rentabilidad** (TIR) es el tipo $i^*$ que hace $\text{VAN} = 0$. Con flujos que cambian de signo más de una vez, la TIR puede no ser única (regla de los signos de Descartes), por lo que el VAN es el criterio teóricamente preferido.
 
 #### Bonos: precio, rentabilidad a vencimiento, duración y convexidad
 
-El precio de un bono con cupón $c$, nominal $N$ y vencimiento $T$ descontado a su **rentabilidad a vencimiento** (TIR) $y$ es
+El precio de un bono con cupón $c$, nominal $N$ y vencimiento $T$ descontado a su **rentabilidad a vencimiento** (TIR) $y$ (del inglés *yield*, rendimiento) es
 
 $$P = \sum_{t=1}^{T} \frac{cN}{(1+y)^t} + \frac{N}{(1+y)^T}.$$
 
@@ -352,7 +352,7 @@ Cada jugada cuesta, de media, casi 17 céntimos al jugador. Eso no impide que al
 
 ### Formalización
 
-Sea $X$ una variable aleatoria que toma los valores $x_1, x_2, \dots, x_K$ con probabilidades $p_1, p_2, \dots, p_K$, que suman uno. Su valor esperado es
+Sea $X$ una variable aleatoria que toma los valores $x_1, x_2, \dots, x_K$ con probabilidades $p_1, p_2, \dots, p_K$, que suman uno. Su valor esperado, $E[X]$ (la $E$ de *esperanza*), es
 
 $$E[X] = \sum_{k=1}^{K} p_k\,x_k.$$
 
@@ -463,7 +463,7 @@ La misma regla sirve para rentabilidades. Si una acción tiene una volatilidad d
 
 ### Formalización
 
-Sea $S_0$ el valor inicial y $X_1, X_2, \dots$ los pasos, independientes y con la misma distribución, de media $\mu$ y desviación típica $\sigma$. El paseo aleatorio es
+Sea $S_0$ (la $S$ de *suma*: el paseo va sumando pasos) el valor inicial y $X_1, X_2, \dots$ los pasos, independientes y con la misma distribución, de media $\mu$ y desviación típica $\sigma$. El paseo aleatorio es
 
 $$S_n = S_0 + X_1 + X_2 + \cdots + X_n.$$
 
@@ -542,7 +542,7 @@ modelo base de Black y Scholes (1973). El término $-\frac12\sigma^2$ es, de nue
 
 Louis Bachelier (1900) modeló por primera vez los precios de la Bolsa de París como un paseo aleatorio, cinco años antes del trabajo de Einstein sobre el movimiento browniano. Karl Pearson acuñó el término *random walk* en una carta a *Nature* (1905). Samuelson (1965) demostró que los precios «correctamente anticipados» fluctúan como una martingala, y Fama (1970) sistematizó la **hipótesis de los mercados eficientes**: si los precios incorporan toda la información disponible, sus cambios futuros son impredecibles con esa información.
 
-Campbell, Lo y MacKinlay (1997, cap. 2) distinguen tres hipótesis de fuerza decreciente: **RW1**, incrementos i.i.d. (paseo aleatorio en sentido estricto); **RW2**, incrementos independientes pero no necesariamente idénticos (admite volatilidad cambiante), y **RW3**, incrementos solo incorrelados. La hipótesis de **martingala** (cambios impredecibles en media) queda entre RW2 y RW3: implica incorrelación, pero no independencia. Lo y MacKinlay (1988) propusieron el **test del cociente de varianzas**,
+Campbell, Lo y MacKinlay (1997, cap. 2) distinguen tres hipótesis de fuerza decreciente: **RW1**, incrementos i.i.d. (paseo aleatorio en sentido estricto); **RW2**, incrementos independientes pero no necesariamente idénticos (admite volatilidad cambiante), y **RW3**, incrementos solo incorrelados. La hipótesis de **martingala** (cambios impredecibles en media) queda entre RW2 y RW3: implica incorrelación, pero no independencia. Lo y MacKinlay (1988) propusieron el **test del cociente de varianzas** ($VR$, del inglés *variance ratio*),
 
 $$VR(q) = \frac{\operatorname{Var}\big(r_t + r_{t-1} + \cdots + r_{t-q+1}\big)}{q\,\operatorname{Var}(r_t)},$$
 
@@ -688,7 +688,7 @@ La media supera a la mediana: la distribución de la riqueza futura es asimétri
 
 #### Cuándo falla la campana
 
-El TCL requiere varianza finita y una dependencia débil. Si la varianza es infinita, el TCL clásico deja de aplicarse. Cuando las colas decrecen como una potencia de índice $\alpha < 2$, las sumas, normalizadas de otra forma, convergen a una **distribución estable de Lévy** no gaussiana, pero no es un resultado universal: hay incluso distribuciones de varianza infinita cuyas sumas tienden a la normal con otra normalización; Mandelbrot (1963) propuso este modelo para los precios del algodón. La mayoría de estudios encuentra en las rentabilidades diarias colas de tipo potencia con un índice de cola $\alpha$ entre 2 y 5, con valores típicos cercanos a 3 para acciones e índices (la «ley cúbica inversa»: Gopikrishnan *et al.*, 1999; Cont, 2001; véase el capítulo 15), compatibles con una varianza finita, aunque una muestra finita no puede demostrarlo del todo, de modo que:
+El TCL (teorema central del límite) requiere varianza finita y una dependencia débil. Si la varianza es infinita, el TCL clásico deja de aplicarse. Cuando las colas decrecen como una potencia de índice $\alpha < 2$, las sumas, normalizadas de otra forma, convergen a una **distribución estable de Lévy** no gaussiana, pero no es un resultado universal: hay incluso distribuciones de varianza infinita cuyas sumas tienden a la normal con otra normalización; Mandelbrot (1963) propuso este modelo para los precios del algodón. La mayoría de estudios encuentra en las rentabilidades diarias colas de tipo potencia con un índice de cola $\alpha$ entre 2 y 5, con valores típicos cercanos a 3 para acciones e índices (la «ley cúbica inversa»: Gopikrishnan *et al.*, 1999; Cont, 2001; véase el capítulo 15), compatibles con una varianza finita, aunque una muestra finita no puede demostrarlo del todo, de modo que:
 
 - A horizontes cortos (diarios o intradía) la normal infravalora mucho los extremos: un movimiento de más de $4\sigma$ (en cualquier sentido) debería ocurrir con probabilidad $6{,}3 \times 10^{-5}$, unas 1,6 veces cada cien años bursátiles, y se observa con mucha mayor frecuencia.
 - A horizontes largos (mensuales, anuales) la distribución se acerca a la normal, el fenómeno llamado **gaussianidad agregacional** (Cont, 2001), aunque la convergencia es lenta por la dependencia de la volatilidad.
@@ -892,8 +892,8 @@ La **media**, en cambio, se estima muy mal: su error estándar es $\sigma/\sqrt{
 
 Uno de los hechos empíricos mejor establecidos es el **agrupamiento de volatilidad** (Mandelbrot, 1963; Cont, 2001): a periodos agitados les siguen periodos agitados. Modelos principales:
 
-- **Media móvil exponencial (EWMA)**, popularizada por RiskMetrics (J.P. Morgan/Reuters, 1996): $\sigma_t^2 = \lambda\,\sigma_{t-1}^2 + (1 - \lambda)\,r_{t-1}^2$, con $\lambda = 0{,}94$ para datos diarios.
-- **GARCH(1,1)** (Engle, 1982; Bollerslev, 1986):
+- **Media móvil exponencial** (EWMA, del inglés *exponentially weighted moving average*), popularizada por RiskMetrics (J.P. Morgan/Reuters, 1996): $\sigma_t^2 = \lambda\,\sigma_{t-1}^2 + (1 - \lambda)\,r_{t-1}^2$, con $\lambda = 0{,}94$ para datos diarios.
+- **GARCH(1,1)**, del inglés *generalized autoregressive conditional heteroskedasticity* (Engle, 1982; Bollerslev, 1986):
 $$\sigma_t^2 = \omega + \alpha\,r_{t-1}^2 + \beta\,\sigma_{t-1}^2, \qquad \omega > 0,\ \alpha, \beta \ge 0,\ \alpha + \beta < 1.$$
 La varianza a largo plazo es $\omega/(1 - \alpha - \beta)$ y la persistencia $\alpha + \beta$ suele estar entre 0,95 y 0,99 en datos diarios de acciones. EWMA es el caso límite $\omega = 0$, $\alpha + \beta = 1$. Engle recibió el Nobel de Economía de 2003 por este trabajo.
 - **Efecto apalancamiento** (Black, 1976): las caídas de precio tienden a aumentar la volatilidad más que las subidas del mismo tamaño. Variantes asimétricas como GJR-GARCH (Glosten, Jagannathan y Runkle, 1993) lo recogen.
@@ -938,11 +938,11 @@ El fondo C es el que más gana, pero el B es el que mejor remunera el riesgo. ¿
 
 ### Formalización
 
-Sea $\mu$ la rentabilidad media anual de una inversión, $\sigma$ su volatilidad anual y $r_f$ el tipo libre de riesgo. El ratio de Sharpe es
+Sea $\mu$ la rentabilidad media anual de una inversión, $\sigma$ su volatilidad anual y $r_f$ el tipo libre de riesgo (la $f$ viene del inglés *risk-free*). El ratio de Sharpe, SR (del inglés *Sharpe ratio*), es
 
 $$\text{SR} = \frac{\mu - r_f}{\sigma}.$$
 
-Si se invierte una fracción $w > 0$ del capital en la inversión y el resto, $1 - w$, en el activo libre de riesgo (con $w > 1$ si se pide prestado), la rentabilidad en exceso y la volatilidad de la combinación se multiplican ambas por $w$:
+Si se invierte una fracción $w > 0$ (del inglés *weight*, peso) del capital en la inversión y el resto, $1 - w$, en el activo libre de riesgo (con $w > 1$ si se pide prestado), la rentabilidad en exceso y la volatilidad de la combinación se multiplican ambas por $w$:
 
 $$\mu_w - r_f = w\,(\mu - r_f), \qquad \sigma_w = w\,\sigma \qquad\Longrightarrow\qquad \text{SR}_w = \text{SR}.$$
 
@@ -1037,7 +1037,7 @@ El ratio de Sharpe determina así cuánto puede crecer la riqueza con un apalanc
 
 Si un activo sube un 10 % y después baja un 10 %, no vuelve al punto de partida: termina un 1 % por debajo, porque la bajada se aplica sobre una cantidad mayor que la subida. Las rentabilidades se componen multiplicando, no sumando, y esa asimetría hace que la volatilidad tenga un coste: cuanto más oscila una inversión, más se aleja su crecimiento real de su rentabilidad media. Esa diferencia se conoce como **lastre de la volatilidad**.
 
-La magnitud relevante para el inversor a largo plazo no es la media aritmética de las rentabilidades, sino la **tasa de crecimiento compuesto**: la rentabilidad constante que habría producido la misma riqueza final, es decir, la media geométrica del capítulo 1, $G$. No es lo mismo que la media de las rentabilidades logarítmicas, $g$, aunque están ligadas por $G = e^{g} - 1$: un 10 % compuesto equivale a un 9,53 % logarítmico. Para tasas moderadas casi coinciden, y por eso este capítulo las trata como aproximadamente iguales.
+La magnitud relevante para el inversor a largo plazo no es la media aritmética de las rentabilidades, sino la **tasa de crecimiento compuesto**: la rentabilidad constante que habría producido la misma riqueza final, es decir, la media geométrica del capítulo 1, $G$. No es lo mismo que la media de las rentabilidades logarítmicas, $g$ (del inglés *growth*, crecimiento), aunque están ligadas por $G = e^{g} - 1$: un 10 % compuesto equivale a un 9,53 % logarítmico. Para tasas moderadas casi coinciden, y por eso este capítulo las trata como aproximadamente iguales.
 
 ### Un ejemplo resuelto
 
@@ -1273,7 +1273,7 @@ Las primeras acciones añadidas reducen mucho el riesgo; las siguientes, cada ve
 
 ### Formalización
 
-Para dos activos con pesos $w_1$ y $w_2$, volatilidades $\sigma_1$ y $\sigma_2$ y correlación $\rho$, la varianza de la cartera es
+Para dos activos con pesos $w_1$ y $w_2$ (del inglés *weight*), volatilidades $\sigma_1$ y $\sigma_2$ y correlación $\rho$, la varianza de la cartera, $\sigma_p^2$ (la $p$ viene del inglés *portfolio*, cartera), es
 
 $$\sigma_p^2 = w_1^2\sigma_1^2 + w_2^2\sigma_2^2 + 2\,w_1 w_2\,\rho\,\sigma_1\sigma_2.$$
 
@@ -1388,7 +1388,7 @@ La rentabilidad media de la cartera es siempre la media ponderada de las de sus 
 
 ### Formalización
 
-Para una cartera de dos activos con pesos $w$ y $1 - w$, la rentabilidad media es
+Para una cartera de dos activos con pesos $w$ y $1 - w$ (del inglés *weight*), la rentabilidad media de la cartera, $\mu_p$ (de *portfolio*), es
 
 $$\mu_p = w\,\mu_1 + (1 - w)\,\mu_2,$$
 
@@ -1485,7 +1485,7 @@ Markowitz recibió el Premio Nobel de Economía en 1990, junto con William Sharp
 
 El capítulo 11 mostró que el riesgo de un activo tiene dos componentes: uno común a todo el mercado y otro específico de ese activo, que se puede eliminar diversificando. Esta distinción tiene una consecuencia profunda. Si cualquier inversor puede librarse del **riesgo específico** sin coste, combinando muchos activos, el mercado no tiene por qué pagar una prima por soportarlo. Lo único que debería remunerarse es la exposición al riesgo que no se puede diversificar: el de la **cartera de mercado**, que contiene todos los activos con riesgo en proporción a su valor.
 
-La **beta** mide esa exposición: cuánto tiende a moverse un activo cuando se mueve el mercado. Una beta de 1 indica que el activo acompaña, de media, los movimientos del mercado en la misma proporción; una beta de 1,5, que los amplifica un 50 %; una de 0,6, que los amortigua, y una negativa, que tiende a moverse en sentido contrario. El **modelo de valoración de activos financieros** (CAPM, por sus siglas en inglés) concluye que la rentabilidad esperada de cada activo es el tipo libre de riesgo más su beta multiplicada por la **prima de riesgo del mercado**, la rentabilidad esperada del mercado por encima del tipo libre de riesgo.
+La **beta** mide esa exposición: cuánto tiende a moverse un activo cuando se mueve el mercado. Una beta de 1 indica que el activo acompaña, de media, los movimientos del mercado en la misma proporción; una beta de 1,5, que los amplifica un 50 %; una de 0,6, que los amortigua, y una negativa, que tiende a moverse en sentido contrario. El **modelo de valoración de activos financieros** (CAPM, del inglés *capital asset pricing model*) concluye que la rentabilidad esperada de cada activo es el tipo libre de riesgo más su beta multiplicada por la **prima de riesgo del mercado**, la rentabilidad esperada del mercado por encima del tipo libre de riesgo.
 
 ### Un ejemplo resuelto
 
@@ -1620,7 +1620,7 @@ Para entender el criterio conviene fijarse en el jugador **mediano**, el que que
 
 Un jugador dispone de una moneda trucada que sale cara el 53 % de las veces y apuesta siempre a cara, con pago a la par: si gana, recibe lo apostado; si pierde, lo pierde. En cada jugada arriesga una fracción fija $f$ de su capital. ¿Qué fracción le conviene?
 
-Con la fórmula que se deduce más abajo, la fracción de Kelly es $f^* = 2 \times 0{,}53 - 1 = 6\,\%$. La tabla muestra la tasa de crecimiento logarítmica por jugada, $g(f)$, y el factor por el que se multiplica la riqueza mediana tras 1.000 jugadas, $e^{1000\,g(f)}$:
+Con la fórmula que se deduce más abajo, la fracción de Kelly es $f^* = 2 \times 0{,}53 - 1 = 6\,\%$. La tabla muestra la tasa de crecimiento logarítmica por jugada, $g(f)$ (la $g$ viene del inglés *growth*, crecimiento), y el factor por el que se multiplica la riqueza mediana tras 1.000 jugadas, $e^{1000\,g(f)}$:
 
 | Fracción apostada | 3 % | 6 % (Kelly) | 12 % | 15 % |
 |---|---|---|---|---|
@@ -1678,7 +1678,7 @@ for x in (f / 2, f, 2 * f, 2.5 * f):
 
 #### Derivación
 
-Con una apuesta que paga $b$ por unidad con probabilidad $p$ y pierde la unidad con probabilidad $q = 1 - p$, apostando cada vez la fracción $f$ de la riqueza, tras $n$ apuestas con $k$ aciertos se tiene $W_n = W_0 (1 + bf)^k (1 - f)^{n-k}$. Por la ley de los grandes números, $k/n \to p$ y la tasa de crecimiento por apuesta converge a
+Con una apuesta que paga $b$ por unidad con probabilidad $p$ y pierde la unidad con probabilidad $q = 1 - p$, apostando cada vez la fracción $f$ de la riqueza $W$ (del inglés *wealth*), tras $n$ apuestas con $k$ aciertos se tiene $W_n = W_0 (1 + bf)^k (1 - f)^{n-k}$. Por la ley de los grandes números, $k/n \to p$ y la tasa de crecimiento por apuesta converge a
 
 $$g(f) = \lim_{n\to\infty}\frac1n \ln\frac{W_n}{W_0} = p\ln(1 + bf) + q\ln(1 - f).$$
 
@@ -1844,9 +1844,9 @@ $$z_{CF} = z + \frac{(z^2 - 1)\,S}{6} + \frac{(z^3 - 3z)(K - 3)}{24} - \frac{(2z
 
 ### La idea
 
-Un gestor de riesgos necesita resumir en una cifra cuánto puede perder una cartera en un mal periodo. El **valor en riesgo** (VaR) lo hace así: fija un horizonte (un día, diez días, un año) y un **nivel de confianza** (por ejemplo, el 99 %), y busca la pérdida que solo se supera con la probabilidad restante (el 1 %). Un VaR diario al 99 % de 50.000 € significa que, en condiciones normales del modelo, la pérdida de un día solo debería superar los 50.000 €, de media, uno de cada cien días.
+Un gestor de riesgos necesita resumir en una cifra cuánto puede perder una cartera en un mal periodo. El **valor en riesgo** (VaR, del inglés *value at risk*) lo hace así: fija un horizonte (un día, diez días, un año) y un **nivel de confianza** (por ejemplo, el 99 %), y busca la pérdida que solo se supera con la probabilidad restante (el 1 %). Un VaR diario al 99 % de 50.000 € significa que, en condiciones normales del modelo, la pérdida de un día solo debería superar los 50.000 €, de media, uno de cada cien días.
 
-Es importante entender lo que el VaR no dice. No es la pérdida máxima posible: es el umbral a partir del cual empiezan los peores casos, y no informa de cuánto se pierde cuando se cruza. Dos carteras con el mismo VaR pueden tener peores días muy distintos. El **déficit esperado** (ES, por sus siglas en inglés), también llamado VaR condicional, completa la información: es la pérdida media en ese 1 % de peores casos (con distribuciones continuas, la pérdida media cuando se supera el VaR).
+Es importante entender lo que el VaR no dice. No es la pérdida máxima posible: es el umbral a partir del cual empiezan los peores casos, y no informa de cuánto se pierde cuando se cruza. Dos carteras con el mismo VaR pueden tener peores días muy distintos. El **déficit esperado** (ES, del inglés *expected shortfall*), también llamado VaR condicional, completa la información: es la pérdida media en ese 1 % de peores casos (con distribuciones continuas, la pérdida media cuando se supera el VaR).
 
 ### Un ejemplo resuelto
 
@@ -1863,7 +1863,7 @@ Si las rentabilidades siguieran en cambio una $t$ de 4 grados de libertad con la
 
 ### Formalización
 
-Sea $L$ la pérdida de la cartera en el horizonte elegido y $c$ el nivel de confianza. Si la distribución de pérdidas es continua, el VaR es la pérdida que solo se supera con probabilidad $1 - c$:
+Sea $L$ (del inglés *loss*) la pérdida de la cartera en el horizonte elegido y $c$ el nivel de confianza. Si la distribución de pérdidas es continua, el VaR es la pérdida que solo se supera con probabilidad $1 - c$:
 
 $$P\big(L > \text{VaR}_c\big) = 1 - c,$$
 
@@ -1989,13 +1989,13 @@ El impacto crece con el tamaño de la orden de forma cóncava. La evidencia emp�
 
 $$\text{impacto} \approx Y\,\sigma_{\text{día}}\sqrt{\frac{Q}{V}},$$
 
-donde $Q$ es el tamaño de la orden, $V$ el volumen diario negociado, $\sigma_{\text{día}}$ la volatilidad diaria e $Y$ una constante del orden de 1 (Almgren *et al.*, 2005; Bouchaud *et al.*, 2018). Una orden del 1 % del volumen diario en una acción con una volatilidad diaria del 2 % mueve el precio alrededor de un 0,2 %. Repartir las órdenes grandes en el tiempo reduce el impacto pero aumenta el riesgo de que el precio se mueva mientras tanto; Almgren y Chriss (2001) resolvieron este equilibrio.
+donde $Q$ (del inglés *quantity*, cantidad) es el tamaño de la orden, $V$ el volumen diario negociado, $\sigma_{\text{día}}$ la volatilidad diaria e $Y$ una constante del orden de 1 (Almgren *et al.*, 2005; Bouchaud *et al.*, 2018). Una orden del 1 % del volumen diario en una acción con una volatilidad diaria del 2 % mueve el precio alrededor de un 0,2 %. Repartir las órdenes grandes en el tiempo reduce el impacto pero aumenta el riesgo de que el precio se mueva mientras tanto; Almgren y Chriss (2001) resolvieron este equilibrio.
 
 La **liquidez** también es un riesgo: en una crisis, la horquilla se ensancha y el impacto aumenta justo cuando todos quieren vender. El VaR clásico lo ignora (capítulo 16), y por eso el FRTB asigna horizontes de liquidez más largos a los factores menos líquidos.
 
 ## Tema C · Del valor esperado a las opciones: el árbol binomial
 
-El árbol binomial (Cox, Ross y Rubinstein, 1979) es el puente más sencillo entre el valor esperado (capítulo 3) y la valoración de opciones. En un periodo, una acción que vale $S_0$ pasa a valer $uS_0$ o $dS_0$, con $d < 1 + r < u$ para que no haya arbitraje. Una opción que paga $V_u$ o $V_d$ se puede **replicar** comprando $\Delta$ acciones y pidiendo prestado el resto:
+El árbol binomial (Cox, Ross y Rubinstein, 1979) es el puente más sencillo entre el valor esperado (capítulo 3) y la valoración de opciones. En un periodo, una acción que vale $S_0$ (la $S$ viene del inglés *stock*, acción) pasa a valer $uS_0$ o $dS_0$ (la $u$ y la $d$ vienen del inglés *up* y *down*, subida y bajada), con $d < 1 + r < u$ para que no haya arbitraje. Una opción que paga $V_u$ o $V_d$ se puede **replicar** comprando $\Delta$ acciones y pidiendo prestado el resto:
 
 $$\Delta = \frac{V_u - V_d}{(u - d)\,S_0}, \qquad q = \frac{1 + r - d}{u - d}, \qquad V_0 = \frac{q\,V_u + (1 - q)\,V_d}{1 + r}.$$
 
@@ -2016,7 +2016,7 @@ $$C = S_0\,N(d_1) - K e^{-rT}\,N(d_2), \qquad d_1 = \frac{\ln(S_0/K) + \left(r +
 
 | Símbolo | Significado |
 |---|---|
-| $C$ | el precio de la opción de compra hoy |
+| $C$ | el precio de la opción de compra hoy (la $C$ viene de *call*, su nombre en inglés) |
 | $S_0$ | el precio de la acción hoy |
 | $K$ | el precio de ejercicio |
 | $T$ | el plazo hasta el vencimiento, en años |
@@ -2024,7 +2024,7 @@ $$C = S_0\,N(d_1) - K e^{-rT}\,N(d_2), \qquad d_1 = \frac{\ln(S_0/K) + \left(r +
 | $\sigma$ | la volatilidad anual de la acción |
 | $N(\cdot)$ | la función de distribución de la normal estándar (capítulo 5) |
 
-El precio de la opción de venta sale de la paridad put-call: $P = K e^{-rT}\,N(-d_2) - S_0\,N(-d_1)$.
+El precio de la opción de venta, $P$ (de *put*, su nombre en inglés), sale de la paridad put-call: $P = K e^{-rT}\,N(-d_2) - S_0\,N(-d_1)$.
 
 *Ejemplo:* con $S_0 = K = 100$ €, $r = 3\,\%$, $\sigma = 20\,\%$ y $T = 1$ año, $d_1 = (0 + 0{,}05)/0{,}2 = 0{,}25$ y $d_2 = 0{,}05$. Entonces $N(d_1) = 0{,}5987$, $N(d_2) = 0{,}5199$ y $C = 100 \times 0{,}5987 - 97{,}04 \times 0{,}5199 = 59{,}87 - 50{,}46 = 9{,}41$ €, el mismo valor que aproximaba la simulación del capítulo 6. La venta vale $P = 9{,}413 - 100 + 97{,}045 = 6{,}46$ €.
 
@@ -2038,11 +2038,11 @@ Una serie es **estacionaria** si su comportamiento estadístico no cambia con el
 
 En el caso clásico, dos precios integrados de orden uno, $I(1)$ (no estacionarios, pero con incrementos estacionarios, como un paseo aleatorio), están **cointegrados** si alguna combinación lineal no trivial de ellos, $s_t = P^A_t - \beta P^B_t$ con $\beta \ne 0$, es estacionaria, $I(0)$ (Engle y Granger, 1987): pueden alejarse, pero tienden a volver a su relación. Es la base de la **negociación por pares** (*pairs trading*). Cointegración y correlación son cosas distintas: dos activos pueden tener rentabilidades muy correlacionadas y precios que se separan sin límite, o al revés.
 
-Si el diferencial sigue un proceso autorregresivo $s_t = \phi\,s_{t-1} + \varepsilon_t$ con $0 < \phi < 1$, su **semivida** de reversión es $\ln 2/(-\ln\phi)$. *Ejemplo:* con $\phi = 0{,}95$ diario, la semivida es de unos 13,5 días. Las relaciones de cointegración se rompen a menudo (fusiones, cambios de negocio), así que hay que reestimarlas y limitar las pérdidas.
+Si el diferencial (en inglés *spread*, de ahí la $s$) sigue un proceso autorregresivo $s_t = \phi\,s_{t-1} + \varepsilon_t$ con $0 < \phi < 1$, su **semivida** de reversión es $\ln 2/(-\ln\phi)$. *Ejemplo:* con $\phi = 0{,}95$ diario, la semivida es de unos 13,5 días. Las relaciones de cointegración se rompen a menudo (fusiones, cambios de negocio), así que hay que reestimarlas y limitar las pérdidas.
 
 ## Tema E · Caídas máximas (*drawdown*)
 
-La **caída** en $t$ mide cuánto ha perdido la cartera desde su máximo anterior, y la **caída máxima** es la peor de todo el periodo:
+La **caída** en $t$ mide cuánto ha perdido la cartera desde su máximo anterior, y la **caída máxima** es la peor de todo el periodo ($DD$ viene del inglés *drawdown*, caída; $MDD$, de *maximum drawdown*, y $W$, de *wealth*, riqueza, es el valor de la cartera):
 
 $$DD_t = 1 - \frac{W_t}{\max_{s \le t} W_s}, \qquad MDD = \max_t DD_t.$$
 
@@ -2395,6 +2395,40 @@ El VaR solo dice dónde empieza la cola, así que dos carteras con colas muy dis
 | Déficit esperado normal (rentabilidad de media cero) | $\text{ES}_c = \varphi(z_c)\,\sigma\,V/(1 - c)$ | 16 |
 
 Cuantiles de la normal estándar que conviene recordar: $z_{0{,}95} = 1{,}645$; $z_{0{,}975} = 1{,}960$; $z_{0{,}99} = 2{,}326$; $z_{0{,}995} = 2{,}576$.
+
+| Símbolo | De dónde viene | Qué es | Cap. |
+|---|---|---|---|
+| $P$ | *precio* | el valor de una inversión | 1 |
+| $R$, $r$ | *rentabilidad* | rentabilidad simple y logarítmica | 1 |
+| $T$ | *tiempo* | número de periodos o de años | 1 |
+| $L$ | inglés *loss* (pérdida) | una pérdida | 1 |
+| $r_f$ | inglés *risk-free* (libre de riesgo) | el tipo libre de riesgo | 1 |
+| $VP$, $VF$ | *valor presente*, *valor futuro* | lo que vale una cantidad hoy y dentro de $T$ años | 2 |
+| $i$ | *interés* | el tipo de interés | 2 |
+| $C_t$ | inglés *cash flow* (flujo de caja) | el pago del periodo $t$ | 2 |
+| $g$ | inglés *growth* (crecimiento) | una tasa de crecimiento | 2 |
+| $y$ | inglés *yield* (rendimiento) | la rentabilidad a vencimiento de un bono | 2 |
+| VAN, TIR, TAE | *valor actual neto*, *tasa interna de rentabilidad*, *tasa anual equivalente* | criterios para comparar inversiones y préstamos | 2 |
+| $E[\cdot]$ | *esperanza* | el valor esperado | 3 |
+| $S_n$ | *suma* | la posición de un paseo aleatorio | 4 |
+| EE | *error estándar* | el error de una estimación | 6 |
+| EWMA, GARCH | inglés *exponentially weighted moving average*, *generalized autoregressive conditional heteroskedasticity* | modelos de volatilidad cambiante | 7 |
+| SR | inglés *Sharpe ratio* | el ratio de Sharpe | 8 |
+| $w$ | inglés *weight* (peso) | el peso de un activo en la cartera | 8 |
+| subíndice $p$ | inglés *portfolio* (cartera) | una medida de la cartera, como $\sigma_p$ | 11 |
+| subíndice $m$ | *mercado* | una medida del mercado, como $R_m$ | 13 |
+| CAPM | inglés *capital asset pricing model* | el modelo de valoración de activos financieros | 13 |
+| $f$ | *fracción* | la fracción del capital que se apuesta | 14 |
+| $W$ | inglés *wealth* (riqueza) | la riqueza o el valor de la cartera | 14 |
+| VaR | inglés *value at risk* | el valor en riesgo | 16 |
+| ES | inglés *expected shortfall* | el déficit esperado | 16 |
+| $c$ | *confianza* | el nivel de confianza | 16 |
+| $Q$ | inglés *quantity* (cantidad) | el tamaño de una orden | B |
+| $S$ (en opciones) | inglés *stock* (acción) | el precio de la acción | C |
+| $u$, $d$ | inglés *up*, *down* (subida, bajada) | los factores de subida y bajada del árbol | C |
+| $C$, $P$ (en opciones) | inglés *call*, *put* | el precio de la opción de compra y de venta | C |
+| $s_t$ | inglés *spread* (diferencial) | el diferencial entre dos precios | D |
+| $DD$, $MDD$ | inglés *drawdown*, *maximum drawdown* | la caída y la caída máxima | E |
 
 ---
 

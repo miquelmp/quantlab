@@ -23,6 +23,7 @@ export interface RenderCtx {
   chapter?: number;                // capítulo actual (para no enlazarse a sí mismo)
   topic?: string;                  // letra del tema actual
   headingShift?: number;           // h3 del libro → h2 de la página: shift = -1
+  inline?: boolean;                // true: una fórmula sola en el párrafo no se convierte en destacada (tabla de siglas)
   usedTerms?: Set<string>;         // términos del glosario ya enlazados en esta página
   usedIds?: Set<string>;
   pyCounter?: { n: number };
@@ -119,7 +120,7 @@ function transformMd(root: Root, ctx: RenderCtx): void {
     }
     // «$$…$$» en una sola línea lo lee remark-math como fórmula en línea: si ocupa todo el
     // párrafo, es una fórmula destacada (centrada, con desplazamiento horizontal si no cabe).
-    if (node.type === 'paragraph' && parent && index !== undefined) {
+    if (node.type === 'paragraph' && parent && index !== undefined && !ctx.inline) {
       const kids = (node as any).children.filter((c: any) => !(c.type === 'text' && !c.value.trim()));
       if (kids.length === 1 && kids[0].type === 'inlineMath') {
         parent.children[index] = { type: 'math', value: kids[0].value, data: { hName: 'div', hProperties: { className: ['math', 'math-display'] }, hChildren: [{ type: 'text', value: kids[0].value }] } };

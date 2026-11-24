@@ -79,7 +79,7 @@ The example contains another lesson: after a 20% fall, a 20% rise is not enough 
 
 ### Formalization
 
-Let $P_0$ be the value of the investment at the start of the period and $P_1$ its value at the end. The simple return is
+Let $P_0$ (for *price*) be the value of the investment at the start of the period and $P_1$ its value at the end. The simple return is
 
 $$R = \frac{P_1 - P_0}{P_0} = \frac{P_1}{P_0} - 1,$$
 
@@ -87,7 +87,7 @@ expressed as a decimal (0.25 is equivalent to 25%). The log return, or continuou
 
 $$r = \ln\frac{P_1}{P_0} = \ln(1 + R).$$
 
-If an investment goes through $T$ periods with simple returns $R_1, \dots, R_T$, its final value is $P_T = P_0 (1 + R_1)(1 + R_2)\cdots(1 + R_T)$. Taking logarithms, the product becomes a sum:
+If an investment goes through $T$ (for *time*) periods with simple returns $R_1, \dots, R_T$, its final value is $P_T = P_0 (1 + R_1)(1 + R_2)\cdots(1 + R_T)$. Taking logarithms, the product becomes a sum:
 
 $$1 + R_{0,T} = \prod_{t=1}^{T}(1 + R_t), \qquad r_{0,T} = \sum_{t=1}^{T} r_t.$$
 
@@ -221,19 +221,19 @@ Notice also the difference between simple and compound interest. With simple int
 
 ### Formalization
 
-Let $VP$ be an amount available today, $i$ the annual interest rate and $T$ the number of years. With annual compounding, the future value is
+Let $PV$ (*present value*) be an amount available today, $i$ (for *interest*) the annual interest rate and $T$ (for *time*) the number of years. With annual compounding, the future value, $FV$, is
 
-$$VF = VP\,(1 + i)^T,$$
+$$FV = PV\,(1 + i)^T,$$
 
-because each year the balance is multiplied by $1 + i$. Solving for it, the present value of an amount $VF$ to be received in $T$ years is
+because each year the balance is multiplied by $1 + i$. Solving for it, the present value of an amount $FV$ to be received in $T$ years is
 
-$$VP = \frac{VF}{(1 + i)^T}.$$
+$$PV = \frac{FV}{(1 + i)^T}.$$
 
-(We write $VP$ and $VF$, from the Spanish *valor presente* and *valor futuro*, for the present and future values.) The ratio $1/(1+i)^T$ is called the **discount factor**: it is the value today of one euro payable in $T$ years. With positive rates it is less than one, and it shrinks both when the horizon lengthens and when the rate rises.
+The ratio $1/(1+i)^T$ is called the **discount factor**: it is the value today of one euro payable in $T$ years. With positive rates it is less than one, and it shrinks both when the horizon lengthens and when the rate rises.
 
-If instead of a single payment there are several, $C_1, C_2, \dots, C_T$, at the end of each year, the present value of the whole is the sum of the present values of each payment:
+If instead of a single payment there are several, $C_1, C_2, \dots, C_T$ (the $C$ stands for *cash flow*), at the end of each year, the present value of the whole is the sum of the present values of each payment:
 
-$$VP = \sum_{t=1}^{T}\frac{C_t}{(1+i)^t}.$$
+$$PV = \sum_{t=1}^{T}\frac{C_t}{(1+i)^t}.$$
 
 ### Interactive chart
 
@@ -271,11 +271,11 @@ print(round(valor_presente([0, 0, 11_000], 0.04), 2))    # 9778.96
 
 If a nominal annual rate $i$ is compounded $m$ times a year, the future value after $T$ years is
 
-$$VF = VP\left(1 + \frac{i}{m}\right)^{mT}.$$
+$$FV = PV\left(1 + \frac{i}{m}\right)^{mT}.$$
 
 When $m \to \infty$, using $\lim_{m\to\infty}(1 + x/m)^m = e^x$, we obtain **continuous compounding**:
 
-$$VF = VP\,e^{iT}, \qquad VP = VF\,e^{-iT}.$$
+$$FV = PV\,e^{iT}, \qquad PV = FV\,e^{-iT}.$$
 
 The equivalent **effective annual rate** is $(1 + i/m)^m - 1$. For $i = 5\%$: with annual compounding, 5.000%; monthly, 5.116%; continuous, $e^{0.05} - 1 = 5.127\%$. Continuous compounding is the standard convention in derivative pricing because it simplifies the calculations (discount factors multiply by adding exponents).
 
@@ -283,17 +283,17 @@ The equivalent **effective annual rate** is $(1 + i/m)^m - 1$. For $i = 5\%$: wi
 
 For cash flows $C_1, \dots, C_T$ with a constant discount rate $i$:
 
-$$VP = \sum_{t=1}^{T} \frac{C_t}{(1+i)^t}.$$
+$$PV = \sum_{t=1}^{T} \frac{C_t}{(1+i)^t}.$$
 
 Using the sum of a geometric progression we get widely used closed formulas:
 
-- **Level annuity** of $C$ for $T$ periods: $VP = C\,\dfrac{1 - (1+i)^{-T}}{i}$ (if $i = 0$, simply $VP = C\,T$). Example: €100 a year for 10 years at 5% is worth €772.17 today.
-- **Perpetuity**: $VP = C/i$ (the limit $T \to \infty$, if $i > 0$).
-- **Growing perpetuity** at a rate $g < i$: $VP = \dfrac{C_1}{i - g}$, the basis of Gordon's dividend model for valuing shares.
+- **Level annuity** of $C$ for $T$ periods: $PV = C\,\dfrac{1 - (1+i)^{-T}}{i}$ (if $i = 0$, simply $PV = C\,T$). Example: €100 a year for 10 years at 5% is worth €772.17 today.
+- **Perpetuity**: $PV = C/i$ (the limit $T \to \infty$, if $i > 0$).
+- **Growing perpetuity** at a rate $g < i$ (the $g$ stands for *growth*): $PV = \dfrac{C_1}{i - g}$, the basis of Gordon's dividend model for valuing shares.
 
 #### NPV and IRR
 
-The **net present value** of a project with initial investment $I_0$ is $\text{NPV} = -I_0 + \sum_t C_t/(1+i)^t$; it is accepted if $\text{NPV} > 0$. The **internal rate of return** (IRR) is the rate $i^*$ that makes $\text{NPV} = 0$. With cash flows that change sign more than once, the IRR may not be unique (Descartes' rule of signs), which is why NPV is the theoretically preferred criterion.
+The **net present value** (NPV) of a project with initial investment $I_0$ is $\text{NPV} = -I_0 + \sum_t C_t/(1+i)^t$; it is accepted if $\text{NPV} > 0$. The **internal rate of return** (IRR) is the rate $i^*$ that makes $\text{NPV} = 0$. With cash flows that change sign more than once, the IRR may not be unique (Descartes' rule of signs), which is why NPV is the theoretically preferred criterion.
 
 #### Bonds: price, yield to maturity, duration and convexity
 
@@ -352,7 +352,7 @@ Each play costs the player, on average, almost 17 cents. That does not stop some
 
 ### Formalization
 
-Let $X$ be a random variable that takes the values $x_1, x_2, \dots, x_K$ with probabilities $p_1, p_2, \dots, p_K$, which add up to one. Its expected value is
+Let $X$ be a random variable that takes the values $x_1, x_2, \dots, x_K$ with probabilities $p_1, p_2, \dots, p_K$, which add up to one. Its expected value, $E[X]$ (the $E$ stands for *expectation*), is
 
 $$E[X] = \sum_{k=1}^{K} p_k\,x_k.$$
 
@@ -463,7 +463,7 @@ The same rule applies to returns. If a share has a daily volatility of 1.2% and 
 
 ### Formalization
 
-Let $S_0$ be the initial value and $X_1, X_2, \dots$ the steps, independent and with the same distribution, with mean $\mu$ and standard deviation $\sigma$. The random walk is
+Let $S_0$ (the $S$ stands for *sum*: the walk keeps adding steps) be the initial value and $X_1, X_2, \dots$ the steps, independent and with the same distribution, with mean $\mu$ and standard deviation $\sigma$. The random walk is
 
 $$S_n = S_0 + X_1 + X_2 + \cdots + X_n.$$
 
@@ -542,7 +542,7 @@ the base model of Black and Scholes (1973). The term $-\frac12\sigma^2$ is, once
 
 Louis Bachelier (1900) was the first to model prices on the Paris Bourse as a random walk, five years before Einstein's work on Brownian motion. Karl Pearson coined the term *random walk* in a letter to *Nature* (1905). Samuelson (1965) showed that «properly anticipated» prices fluctuate like a martingale, and Fama (1970) systematized the **efficient market hypothesis**: if prices incorporate all available information, their future changes are unpredictable with that information.
 
-Campbell, Lo and MacKinlay (1997, ch. 2) distinguish three hypotheses of decreasing strength: **RW1**, i.i.d. increments (a random walk in the strict sense); **RW2**, independent but not necessarily identical increments (allowing changing volatility), and **RW3**, merely uncorrelated increments. The **martingale** hypothesis (changes unpredictable in mean) lies between RW2 and RW3: it implies uncorrelatedness, but not independence. Lo and MacKinlay (1988) proposed the **variance ratio test**,
+Campbell, Lo and MacKinlay (1997, ch. 2) distinguish three hypotheses of decreasing strength: **RW1**, i.i.d. increments (a random walk in the strict sense); **RW2**, independent but not necessarily identical increments (allowing changing volatility), and **RW3**, merely uncorrelated increments. The **martingale** hypothesis (changes unpredictable in mean) lies between RW2 and RW3: it implies uncorrelatedness, but not independence. Lo and MacKinlay (1988) proposed the **variance ratio test** ($VR$),
 
 $$VR(q) = \frac{\operatorname{Var}\big(r_t + r_{t-1} + \cdots + r_{t-q+1}\big)}{q\,\operatorname{Var}(r_t)},$$
 
@@ -688,7 +688,7 @@ The mean exceeds the median: the distribution of future wealth is skewed to the 
 
 #### When the bell fails
 
-The CLT requires finite variance and weak dependence. If the variance is infinite, the classical CLT no longer applies. When the tails decay as a power law with index $\alpha < 2$, the sums, normalized differently, converge to a non-Gaussian **Lévy stable distribution**, but this is not a universal result: there are even infinite-variance distributions whose sums tend to the normal with a different normalization; Mandelbrot (1963) proposed this model for cotton prices. Most studies find in daily returns power-law tails with a tail index $\alpha$ between 2 and 5, with typical values close to 3 for stocks and indices (the «inverse cubic law»: Gopikrishnan *et al.*, 1999; Cont, 2001; see chapter 15), compatible with finite variance, although a finite sample cannot fully prove it, so that:
+The CLT (central limit theorem) requires finite variance and weak dependence. If the variance is infinite, the classical CLT no longer applies. When the tails decay as a power law with index $\alpha < 2$, the sums, normalized differently, converge to a non-Gaussian **Lévy stable distribution**, but this is not a universal result: there are even infinite-variance distributions whose sums tend to the normal with a different normalization; Mandelbrot (1963) proposed this model for cotton prices. Most studies find in daily returns power-law tails with a tail index $\alpha$ between 2 and 5, with typical values close to 3 for stocks and indices (the «inverse cubic law»: Gopikrishnan *et al.*, 1999; Cont, 2001; see chapter 15), compatible with finite variance, although a finite sample cannot fully prove it, so that:
 
 - At short horizons (daily or intraday) the normal greatly underestimates extremes: a move of more than $4\sigma$ (in either direction) should occur with probability $6.3 \times 10^{-5}$, about 1.6 times every hundred trading years, and it is observed much more often.
 - At long horizons (monthly, annual) the distribution gets closer to the normal, the phenomenon called **aggregational Gaussianity** (Cont, 2001), although convergence is slow because of volatility dependence.
@@ -894,7 +894,7 @@ The **mean**, by contrast, is estimated very poorly: its standard error is $\sig
 One of the best-established empirical facts is **volatility clustering** (Mandelbrot, 1963; Cont, 2001): turbulent periods are followed by turbulent periods. Main models:
 
 - **Exponentially weighted moving average (EWMA)**, popularized by RiskMetrics (J.P. Morgan/Reuters, 1996): $\sigma_t^2 = \lambda\,\sigma_{t-1}^2 + (1 - \lambda)\,r_{t-1}^2$, with $\lambda = 0.94$ for daily data.
-- **GARCH(1,1)** (Engle, 1982; Bollerslev, 1986):
+- **GARCH(1,1)**, short for *generalized autoregressive conditional heteroskedasticity* (Engle, 1982; Bollerslev, 1986):
 $$\sigma_t^2 = \omega + \alpha\,r_{t-1}^2 + \beta\,\sigma_{t-1}^2, \qquad \omega > 0,\ \alpha, \beta \ge 0,\ \alpha + \beta < 1.$$
 The long-run variance is $\omega/(1 - \alpha - \beta)$ and the persistence $\alpha + \beta$ is usually between 0.95 and 0.99 in daily stock data. EWMA is the limiting case $\omega = 0$, $\alpha + \beta = 1$. Engle received the 2003 Nobel Prize in Economics for this work.
 - **Leverage effect** (Black, 1976): price falls tend to increase volatility more than rises of the same size. Asymmetric variants such as GJR-GARCH (Glosten, Jagannathan and Runkle, 1993) capture it.
@@ -940,11 +940,11 @@ Fund C earns the most, but B rewards risk best. Why should we care if B earns le
 
 ### Formalization
 
-Let $\mu$ be the mean annual return of an investment, $\sigma$ its annual volatility and $r_f$ the risk-free rate. The Sharpe ratio is
+Let $\mu$ be the mean annual return of an investment, $\sigma$ its annual volatility and $r_f$ the risk-free rate (the $f$ stands for *risk-free*). The Sharpe ratio, SR, is
 
 $$\text{SR} = \frac{\mu - r_f}{\sigma}.$$
 
-If a fraction $w > 0$ of capital is invested in it and the rest, $1 - w$, in the risk-free asset (with $w > 1$ when borrowing), the excess return and the volatility of the combination are both multiplied by $w$:
+If a fraction $w > 0$ (for *weight*) of capital is invested in it and the rest, $1 - w$, in the risk-free asset (with $w > 1$ when borrowing), the excess return and the volatility of the combination are both multiplied by $w$:
 
 $$\mu_w - r_f = w\,(\mu - r_f), \qquad \sigma_w = w\,\sigma \qquad\Longrightarrow\qquad \text{SR}_w = \text{SR}.$$
 
@@ -1275,7 +1275,7 @@ The first stocks added reduce risk a lot; the following ones, less and less. The
 
 ### Formalization
 
-For two assets with weights $w_1$ and $w_2$, volatilities $\sigma_1$ and $\sigma_2$ and correlation $\rho$, the variance of the portfolio is
+For two assets with weights $w_1$ and $w_2$, volatilities $\sigma_1$ and $\sigma_2$ and correlation $\rho$, the variance of the portfolio, $\sigma_p^2$ (the $p$ stands for *portfolio*), is
 
 $$\sigma_p^2 = w_1^2\sigma_1^2 + w_2^2\sigma_2^2 + 2\,w_1 w_2\,\rho\,\sigma_1\sigma_2.$$
 
@@ -1390,7 +1390,7 @@ The mean return of the portfolio is always the weighted average of those of its 
 
 ### Formalization
 
-For a portfolio of two assets with weights $w$ and $1 - w$, the mean return is
+For a portfolio of two assets with weights $w$ and $1 - w$, the mean return of the portfolio, $\mu_p$, is
 
 $$\mu_p = w\,\mu_1 + (1 - w)\,\mu_2,$$
 
@@ -1991,13 +1991,13 @@ Impact grows with the size of the order in a concave way. Empirical evidence sup
 
 $$\text{impact} \approx Y\,\sigma_{\text{day}}\sqrt{\frac{Q}{V}},$$
 
-where $Q$ is the size of the order, $V$ the daily traded volume, $\sigma_{\text{day}}$ the daily volatility and $Y$ a constant of the order of 1 (Almgren *et al.*, 2005; Bouchaud *et al.*, 2018). An order of 1% of the daily volume in a stock with a daily volatility of 2% moves the price by about 0.2%. Spreading large orders over time reduces impact but increases the risk that the price moves in the meantime; Almgren and Chriss (2001) solved this trade-off.
+where $Q$ (for *quantity*) is the size of the order, $V$ the daily traded volume, $\sigma_{\text{day}}$ the daily volatility and $Y$ a constant of the order of 1 (Almgren *et al.*, 2005; Bouchaud *et al.*, 2018). An order of 1% of the daily volume in a stock with a daily volatility of 2% moves the price by about 0.2%. Spreading large orders over time reduces impact but increases the risk that the price moves in the meantime; Almgren and Chriss (2001) solved this trade-off.
 
 **Liquidity** is also a risk: in a crisis, the spread widens and impact increases precisely when everyone wants to sell. Classic VaR ignores it (chapter 16), which is why the FRTB assigns longer liquidity horizons to less liquid factors.
 
 ## Topic C · From expected value to options: the binomial tree
 
-The binomial tree (Cox, Ross and Rubinstein, 1979) is the simplest bridge between expected value (chapter 3) and option pricing. In one period, a stock worth $S_0$ comes to be worth $uS_0$ or $dS_0$, with $d < 1 + r < u$ so that there is no arbitrage. An option that pays $V_u$ or $V_d$ can be **replicated** by buying $\Delta$ shares and borrowing the rest:
+The binomial tree (Cox, Ross and Rubinstein, 1979) is the simplest bridge between expected value (chapter 3) and option pricing. In one period, a stock worth $S_0$ comes to be worth $uS_0$ or $dS_0$ (the $u$ and $d$ stand for *up* and *down*), with $d < 1 + r < u$ so that there is no arbitrage. An option that pays $V_u$ or $V_d$ can be **replicated** by buying $\Delta$ shares and borrowing the rest:
 
 $$\Delta = \frac{V_u - V_d}{(u - d)\,S_0}, \qquad q = \frac{1 + r - d}{u - d}, \qquad V_0 = \frac{q\,V_u + (1 - q)\,V_d}{1 + r}.$$
 
@@ -2044,7 +2044,7 @@ If the spread follows an autoregressive process $s_t = \phi\,s_{t-1} + \varepsil
 
 ## Topic E · Maximum drawdown
 
-The **drawdown** at $t$ measures how much the portfolio has lost since its previous peak, and the **maximum drawdown** is the worst of the whole period:
+The **drawdown** at $t$ measures how much the portfolio has lost since its previous peak, and the **maximum drawdown** is the worst of the whole period ($DD$ stands for *drawdown*, $MDD$ for *maximum drawdown* and $W$, for *wealth*, is the portfolio's value):
 
 $$DD_t = 1 - \frac{W_t}{\max_{s \le t} W_s}, \qquad MDD = \max_t DD_t.$$
 
@@ -2397,6 +2397,40 @@ VaR only says where the tail begins, so two portfolios with very different tails
 | Normal expected shortfall (zero-mean return) | $\text{ES}_c = \varphi(z_c)\,\sigma\,V/(1 - c)$ | 16 |
 
 Quantiles of the standard normal worth remembering: $z_{0.95} = 1.645$; $z_{0.975} = 1.960$; $z_{0.99} = 2.326$; $z_{0.995} = 2.576$.
+
+| Symbol | Where it comes from | What it is | Ch. |
+|---|---|---|---|
+| $P$ | *price* | the value of an investment | 1 |
+| $R$, $r$ | *return* | simple and log return | 1 |
+| $T$ | *time* | number of periods or years | 1 |
+| $L$ | *loss* | a loss | 1 |
+| $r_f$ | *risk-free* | the risk-free rate | 1 |
+| $PV$, $FV$ | *present value*, *future value* | what an amount is worth today and in $T$ years | 2 |
+| $i$ | *interest* | the interest rate | 2 |
+| $C_t$ | *cash flow* | the payment in period $t$ | 2 |
+| $g$ | *growth* | a growth rate | 2 |
+| $y$ | *yield* | a bond's yield to maturity | 2 |
+| NPV, IRR, APR | *net present value*, *internal rate of return*, *annual percentage rate* | criteria for comparing investments and loans | 2 |
+| $E[\cdot]$ | *expectation* | the expected value | 3 |
+| $S_n$ | *sum* | the position of a random walk | 4 |
+| SE | *standard error* | the error of an estimate | 6 |
+| EWMA, GARCH | *exponentially weighted moving average*, *generalized autoregressive conditional heteroskedasticity* | models of changing volatility | 7 |
+| SR | *Sharpe ratio* | the Sharpe ratio | 8 |
+| $w$ | *weight* | an asset's weight in the portfolio | 8 |
+| subscript $p$ | *portfolio* | a portfolio measure, such as $\sigma_p$ | 11 |
+| subscript $m$ | *market* | a market measure, such as $R_m$ | 13 |
+| CAPM | *capital asset pricing model* | the capital asset pricing model | 13 |
+| $f$ | *fraction* | the fraction of capital that is bet | 14 |
+| $W$ | *wealth* | wealth or the value of the portfolio | 14 |
+| VaR | *value at risk* | value at risk | 16 |
+| ES | *expected shortfall* | expected shortfall | 16 |
+| $c$ | *confidence* | the confidence level | 16 |
+| $Q$ | *quantity* | the size of an order | B |
+| $S$ (options) | *stock* | the share price | C |
+| $u$, $d$ | *up*, *down* | the tree's up and down factors | C |
+| $C$, $P$ (options) | *call*, *put* | the price of the call and the put | C |
+| $s_t$ | *spread* | the spread between two prices | D |
+| $DD$, $MDD$ | *drawdown*, *maximum drawdown* | drawdown and maximum drawdown | E |
 
 ---
 

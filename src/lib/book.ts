@@ -96,6 +96,8 @@ export interface GlossaryTerm {
 }
 
 export interface FormulaRow { concept: PhrasingContent[]; conceptText: string; formula: PhrasingContent[]; chapter: number }
+/** Segunda tabla del «Resumen de fórmulas»: de dónde viene cada letra o sigla. */
+export interface SymbolRow { symbol: PhrasingContent[]; origin: PhrasingContent[]; meaning: PhrasingContent[]; ref: string }
 
 export interface Book {
   lang: string;
@@ -114,6 +116,7 @@ export interface Book {
   glossaryIntro: string;
   formulas: FormulaRow[];
   formulasNote: Node[];
+  symbols: SymbolRow[];
 }
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
@@ -410,6 +413,7 @@ export function loadBook(lang: string): Book {
   let glossaryIntro = '';
   let formulas: FormulaRow[] = [];
   let formulasNote: Node[] = [];
+  let symbols: SymbolRow[] = [];
   let solutions = new Map<string, { answer: PhrasingContent[]; solution: Node[] }>();
   let disclaimer: PhrasingContent[] = [];
 
@@ -454,6 +458,11 @@ export function loadBook(lang: string): Book {
         formula: r[1], chapter: Number(text({ type: 'paragraph', children: r[2] } as Paragraph)),
       }));
       formulasNote = g.nodes.filter((n) => n.type === 'paragraph');
+      const st = g.nodes.filter((n) => n.type === 'table')[1] as Table | undefined;
+      if (!st) throw new Error(`«${ht}»: falta la segunda tabla (letras y siglas: símbolo | de dónde viene | qué es | cap.).`);
+      symbols = tableRows(st).map((r) => ({
+        symbol: r[0], origin: r[1], meaning: r[2], ref: text({ type: 'paragraph', children: r[3] } as Paragraph),
+      }));
       extras.push({ title: ht, key: 'formulas' });
       continue;
     }
@@ -511,7 +520,7 @@ export function loadBook(lang: string): Book {
     lang, title, subtitle, disclaimer,
     disclaimerText: text({ type: 'paragraph', children: disclaimer } as Paragraph),
     preface, prefaceIntro: prefSplit[0].nodes,
-    parts, chapters, topics, topicsIntro, extras, glossary, glossaryIntro, formulas, formulasNote,
+    parts, chapters, topics, topicsIntro, extras, glossary, glossaryIntro, formulas, formulasNote, symbols,
   };
   cache.set(lang, book);
   return book;
