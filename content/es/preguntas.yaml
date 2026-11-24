@@ -191,7 +191,7 @@
   - pregunta: '¿Qué significa que unas rentabilidades tienen colas gruesas?'
     opciones: ['Que son muy volátiles', 'Que los movimientos extremos son mucho más frecuentes de lo que predice una normal con la misma volatilidad', 'Que su media es negativa', 'Que nunca hay días tranquilos']
     correcta: 1
-    explicacion: 'Con la misma volatilidad, los sucesos de muchas desviaciones típicas aparecen con más frecuencia que en la normal (y, en compensación, hay más días tranquilos).'
+    explicacion: 'Con la misma volatilidad, los sucesos de muchas desviaciones típicas aparecen con más frecuencia que en la normal (y, en modelos como la $t$ de Student, también más días tranquilos).'
   - pregunta: 'Bajo normalidad, la probabilidad de una caída diaria de más de cinco desviaciones típicas es de unos $2{,}9 \times 10^{-7}$. Con 252 sesiones al año, ¿cada cuánto cabría esperar una?'
     opciones: ['Cada año', 'Cada 100 años', 'Cada 1.000 años', 'Cada 14.000 años, aproximadamente']
     correcta: 3

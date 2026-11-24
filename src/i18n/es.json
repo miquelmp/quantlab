@@ -697,7 +697,7 @@
   "tB.tableCaption": "Coste anual y Sharpe neto según la rotación (coste por operación: {c})",
   "tD.title": "Un diferencial que vuelve a su media",
   "tD.chartDesc": "Simula el diferencial entre dos precios cointegrados, sₜ = φ·sₜ₋₁ + εₜ, y muestra su semivida de reversión. Con φ = 1 el diferencial es un paseo aleatorio.",
-  "tD.observe": "Con φ menor que 1 el diferencial se aleja pero vuelve una y otra vez a cero, dentro de una banda estable. Cuanto más cerca de 1 está φ, más larga es la semivida y más tarda en volver; con φ = 1 la banda desaparece y el diferencial ya no vuelve.",
+  "tD.observe": "Con φ menor que 1 el diferencial se aleja pero vuelve una y otra vez a cero, dentro de una banda estable. Cuanto más cerca de 1 está φ, más larga es la semivida y más tarda en volver; con φ = 1 el diferencial es un paseo aleatorio: puede cruzar el cero por azar, pero ya no hay ninguna fuerza que lo devuelva ni una banda estable.",
   "tD.heading": "Gráfico interactivo",
   "tD.phi": "Persistencia φ",
   "tD.days": "Días simulados",
@@ -713,7 +713,7 @@
   "tD.descLeft": "Diferencial con φ = {p} durante {n} días; cruza el cero {c} veces.",
   "tD.descRight": "Con φ = {p}, la semivida es de {h} días.",
   "tD.statHl": "Semivida",
-  "tD.rwNote": " (paseo aleatorio: no vuelve)",
+  "tD.rwNote": " (paseo aleatorio: sin reversión)",
   "tD.statSd": "Desviación típica estable",
   "tD.statCross": "Veces que cruza el cero",
   "tD.describe": "Con φ = {p}, el diferencial tiene una semivida de {h} días y en {n} días cruza el cero {c} veces.",
@@ -774,5 +774,6 @@
   "full.concept": "Concepto",
   "full.formula": "Fórmula",
   "full.read": "Leer el libro completo en una página",
+  "footer.version": "Versión publicada: {v}",
   "footer.fullBook": "Libro completo y PDF"
 }

@@ -1,4 +1,5 @@
 ---
+import { VERSION_LABEL } from '../lib/version';
 import 'katex/dist/katex.min.css';
 import '../styles/global.css';
 import { SITE, ANALYTICS_GOATCOUNTER } from '../config';
@@ -150,7 +151,8 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
         <li><a href={u(`${lang}/libro-completo/`)}>{t(lang, 'footer.fullBook')}</a></li>
         <li><a href={SITE.repo}>{t(lang, 'footer.source')}</a></li>
       </ul>
-      <p style="margin:0">{t(lang, 'footer.licenseShort')} · {t(lang, 'site.bookTitle')} ({SITE.bookVersion})</p>
+      <p style="margin:0">{t(lang, 'footer.licenseShort')} · {t(lang, 'site.bookTitle')}</p>
+      <p class="site-version">{t(lang, 'footer.version', { v: VERSION_LABEL })}</p>
     </div>
   </footer>
   <script type="application/json" id="ui-strings" set:html={JSON.stringify(uiStrings)} />

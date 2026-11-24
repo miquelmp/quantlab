@@ -157,7 +157,7 @@
   - 'The 99% VaR of a zero-mean normal is $2.326\,\sigma$ times the value of the portfolio.'
   - 'Over ten days, multiply by $\sqrt{10}$.'
 "16.2":
-  - 'Under normality, expected shortfall is $\sigma\,\varphi(z_\alpha)/(1 - \alpha)$, with $\varphi$ the normal density.'
+  - 'Under normality and with zero mean, expected shortfall is $\sigma\,\varphi(z_\alpha)/(1 - \alpha)$, with $\varphi$ the normal density.'
   - 'At 99%, $z = 2.326$, $\varphi(2.326) \approx 0.0267$ and $1 - \alpha = 0.01$.'
 "16.3":
   - 'Check the limits of the green, yellow and red zones for 250 days in the Going further section.'
