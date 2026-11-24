@@ -1727,7 +1727,7 @@ Betting a fraction $c f^*$ with $0 < c \le 1$ gives, in the continuous model, a 
 
 ### The idea
 
-According to the normal distribution, moves of more than four or five standard deviations should be so rare that nobody would see one in their whole professional life. In real markets they appear with some regularity. The distributions of daily returns of stocks, currencies or commodities have **fat tails**: they concentrate more probability in the extremes (and also near the centre) than a normal with the same volatility, at the expense of the intermediate zone.
+According to the normal distribution, moves of more than five standard deviations should be so rare that almost nobody would see one in their whole professional life (over 30 years of independent sessions, the probability of seeing at least one would be 0.4%), and those of more than four, infrequent but observable (that probability rises to 38%). In real markets they appear with some regularity. The distributions of daily returns of stocks, currencies or commodities have **fat tails**: they concentrate more probability in the extremes than a normal with the same volatility. Many fat-tailed models, such as the rescaled Student $t$, also concentrate more probability near the centre, at the expense of the intermediate zone, although this second property is not universal.
 
 The classic measure of the weight of the tails is **kurtosis**, which averages the fourth power of the deviations from the mean. When raised to the fourth power, extreme values weigh far more than moderate ones, so kurtosis is, in practice, an indicator of the frequency and size of extremes. The normal has kurtosis 3; daily returns usually exceed that value comfortably.
 
@@ -2175,7 +2175,7 @@ Each phase reuses the functions of the previous ones. For each one the chapters 
 1. **Uncertainty of the estimates** (chapters 6, 7 and 10). Resample the months of the history with replacement (*bootstrap*) a thousand times and obtain the distribution of the estimated means, volatilities and correlation. Compare the width of those distributions with the theoretical standard errors.
 2. **Optimized portfolios** (chapters 11 and 12). Calculate the minimum variance portfolio and the maximum Sharpe ratio portfolio, fully invested, without short sales and with a maximum of 35% per asset. Then simulate a second independent history with the same base seed plus one and check how they behave out of sample against the equal-weight portfolio.
 3. **Ten-year projection** (chapters 4, 6 and 9). For each portfolio, simulate 10,000 ten-year paths with fat tails and obtain the median, the 5th and 95th percentiles of final wealth, the median compound growth rate and the distribution of the maximum drawdown.
-4. **Extreme risk** (chapters 15 and 16). Calculate the monthly VaR and expected shortfall at 97.5% and 99% of each portfolio in three ways: with the normal formula, with the simulated history and with the paths of the previous phase. Apply the Kupiec test to the normal VaR on the history.
+4. **Extreme risk** (chapters 15 and 16). Calculate the monthly VaR and expected shortfall at 97.5% and 99% of each portfolio in three ways: with the normal formula (including the mean, as in the Going further section of chapter 16), with the simulated history and with the paths of the previous phase. Apply the Kupiec test to the normal VaR on the history.
 5. **Report** (chapters 8, 13 and 16). Summarize in a table, for each portfolio, the mean return, the volatility, the Sharpe ratio with its standard error, the beta against world equities, the maximum drawdown, the VaR and the expected shortfall. Add a paragraph that interprets the results and points out which figures are reliable and which are not.
 
 ---
@@ -2387,14 +2387,14 @@ VaR only says where the tail begins, so two portfolios with very different tails
 | Correlation | $\rho = \operatorname{Cov}(X, Y)/(\sigma_X\sigma_Y)$ | 10 |
 | Variance of two assets | $\sigma_p^2 = w_1^2\sigma_1^2 + w_2^2\sigma_2^2 + 2w_1w_2\rho\sigma_1\sigma_2$ | 11 |
 | $N$ identical assets | $\sigma_p^2 = \sigma^2\,[1/N + (1 - 1/N)\rho]$ | 11 |
-| Minimum variance (two assets) | $w^* = \dfrac{\sigma_2^2 - \rho\sigma_1\sigma_2}{\sigma_1^2 + \sigma_2^2 - 2\rho\sigma_1\sigma_2}$ | 12 |
+| Minimum variance (two assets) | $w^* = \dfrac{\sigma_2^2 - \rho\sigma_1\sigma_2}{\sigma_1^2 + \sigma_2^2 - 2\rho\sigma_1\sigma_2}$, with no restrictions on the weights (outside $[0, 1]$ it requires short sales; without them, it is clipped to that interval) | 12 |
 | Beta | $\beta_i = \operatorname{Cov}(R_i, R_m)/\sigma_m^2 = \rho_{im}\sigma_i/\sigma_m$ | 13 |
 | CAPM | $E[R_i] = r_f + \beta_i\,(E[R_m] - r_f)$ | 13 |
 | Growth of a bet | $g(f) = p\ln(1 + bf) + (1 - p)\ln(1 - f)$ | 14 |
 | Kelly fraction | $f^* = p - (1 - p)/b$; $\quad$ continuous: $f^* = (\mu - r)/\sigma^2$ | 14 |
 | Kurtosis | $\kappa = E[(X - \mu)^4]/\sigma^4$ (normal: 3) | 15 |
-| Normal VaR | $\text{VaR}_c = z_c\,\sigma\,V$ | 16 |
-| Normal expected shortfall | $\text{ES}_c = \varphi(z_c)\,\sigma\,V/(1 - c)$ | 16 |
+| Normal VaR (zero-mean return) | $\text{VaR}_c = z_c\,\sigma\,V$ | 16 |
+| Normal expected shortfall (zero-mean return) | $\text{ES}_c = \varphi(z_c)\,\sigma\,V/(1 - c)$ | 16 |
 
 Quantiles of the standard normal worth remembering: $z_{0.95} = 1.645$; $z_{0.975} = 1.960$; $z_{0.99} = 2.326$; $z_{0.995} = 2.576$.
 

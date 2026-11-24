@@ -1725,7 +1725,7 @@ Las **caídas** son importantes incluso con Kelly completo. En el modelo continu
 
 ### La idea
 
-Según la distribución normal, los movimientos de más de cuatro o cinco desviaciones típicas deberían ser tan raros que nadie los vería en toda su vida profesional. En los mercados reales aparecen con cierta regularidad. Las distribuciones de rentabilidades diarias de acciones, divisas o materias primas tienen **colas gruesas**: concentran más probabilidad en los extremos (y también cerca del centro) que una normal con la misma volatilidad, a costa de la zona intermedia.
+Según la distribución normal, los movimientos de más de cinco desviaciones típicas deberían ser tan raros que casi nadie vería uno en toda su vida profesional (en 30 años de sesiones independientes, la probabilidad de ver al menos uno sería del 0,4 %), y los de más de cuatro, poco frecuentes aunque observables (esa probabilidad sube al 38 %). En los mercados reales aparecen con cierta regularidad. Las distribuciones de rentabilidades diarias de acciones, divisas o materias primas tienen **colas gruesas**: concentran más probabilidad en los extremos que una normal con la misma volatilidad. Muchos modelos de colas gruesas, como la $t$ de Student reescalada, concentran también más probabilidad cerca del centro, a costa de la zona intermedia, aunque esta segunda propiedad no es universal.
 
 La medida clásica del peso de las colas es la **curtosis**, que promedia la cuarta potencia de las desviaciones respecto a la media. Al elevar a la cuarta, los valores extremos pesan muchísimo más que los moderados, así que la curtosis es, en la práctica, un indicador de la frecuencia y el tamaño de los extremos. La normal tiene curtosis 3; las rentabilidades diarias suelen superar con holgura ese valor.
 
@@ -2173,7 +2173,7 @@ Cada fase reutiliza las funciones de las anteriores. Para cada una se indican lo
 1. **Incertidumbre de las estimaciones** (capítulos 6, 7 y 10). Remuestrea con reemplazo los meses de la historia (*bootstrap*) mil veces y obtén la distribución de las medias, las volatilidades y la correlación estimadas. Compara la anchura de esas distribuciones con los errores estándar teóricos.
 2. **Carteras optimizadas** (capítulos 11 y 12). Calcula la cartera de mínima varianza y la de máximo ratio de Sharpe, totalmente invertidas, sin ventas en corto y con un máximo del 35 % por activo. Después, simula una segunda historia independiente con la misma semilla base más uno y comprueba cómo se comportan fuera de muestra frente a la cartera de pesos iguales.
 3. **Proyección a diez años** (capítulos 4, 6 y 9). Para cada cartera, simula 10.000 trayectorias de diez años con colas gruesas y obtén la mediana, los percentiles 5 y 95 de la riqueza final, la tasa de crecimiento compuesto mediana y la distribución de la caída máxima.
-4. **Riesgo extremo** (capítulos 15 y 16). Calcula el VaR y el déficit esperado mensuales al 97,5 % y al 99 % de cada cartera de tres formas: con la fórmula normal, con la historia simulada y con las trayectorias de la fase anterior. Aplica el contraste de Kupiec al VaR normal sobre la historia.
+4. **Riesgo extremo** (capítulos 15 y 16). Calcula el VaR y el déficit esperado mensuales al 97,5 % y al 99 % de cada cartera de tres formas: con la fórmula normal (incluida la media, como en la Ampliación del capítulo 16), con la historia simulada y con las trayectorias de la fase anterior. Aplica el contraste de Kupiec al VaR normal sobre la historia.
 5. **Informe** (capítulos 8, 13 y 16). Resume en una tabla, para cada cartera, la rentabilidad media, la volatilidad, el ratio de Sharpe con su error estándar, la beta respecto a las acciones mundiales, la caída máxima, el VaR y el déficit esperado. Añade un párrafo que interprete los resultados y señale qué cifras son fiables y cuáles no.
 
 ---
@@ -2385,14 +2385,14 @@ El VaR solo dice dónde empieza la cola, así que dos carteras con colas muy dis
 | Correlación | $\rho = \operatorname{Cov}(X, Y)/(\sigma_X\sigma_Y)$ | 10 |
 | Varianza de dos activos | $\sigma_p^2 = w_1^2\sigma_1^2 + w_2^2\sigma_2^2 + 2w_1w_2\rho\sigma_1\sigma_2$ | 11 |
 | $N$ activos iguales | $\sigma_p^2 = \sigma^2\,[1/N + (1 - 1/N)\rho]$ | 11 |
-| Mínima varianza (dos activos) | $w^* = \dfrac{\sigma_2^2 - \rho\sigma_1\sigma_2}{\sigma_1^2 + \sigma_2^2 - 2\rho\sigma_1\sigma_2}$ | 12 |
+| Mínima varianza (dos activos) | $w^* = \dfrac{\sigma_2^2 - \rho\sigma_1\sigma_2}{\sigma_1^2 + \sigma_2^2 - 2\rho\sigma_1\sigma_2}$, sin restricciones sobre los pesos (si queda fuera de $[0, 1]$, exige ventas en corto; sin ellas, se limita a ese intervalo) | 12 |
 | Beta | $\beta_i = \operatorname{Cov}(R_i, R_m)/\sigma_m^2 = \rho_{im}\sigma_i/\sigma_m$ | 13 |
 | CAPM | $E[R_i] = r_f + \beta_i\,(E[R_m] - r_f)$ | 13 |
 | Crecimiento de una apuesta | $g(f) = p\ln(1 + bf) + (1 - p)\ln(1 - f)$ | 14 |
 | Fracción de Kelly | $f^* = p - (1 - p)/b$; $\quad$ continua: $f^* = (\mu - r)/\sigma^2$ | 14 |
 | Curtosis | $\kappa = E[(X - \mu)^4]/\sigma^4$ (normal: 3) | 15 |
-| VaR normal | $\text{VaR}_c = z_c\,\sigma\,V$ | 16 |
-| Déficit esperado normal | $\text{ES}_c = \varphi(z_c)\,\sigma\,V/(1 - c)$ | 16 |
+| VaR normal (rentabilidad de media cero) | $\text{VaR}_c = z_c\,\sigma\,V$ | 16 |
+| Déficit esperado normal (rentabilidad de media cero) | $\text{ES}_c = \varphi(z_c)\,\sigma\,V/(1 - c)$ | 16 |
 
 Cuantiles de la normal estándar que conviene recordar: $z_{0{,}95} = 1{,}645$; $z_{0{,}975} = 1{,}960$; $z_{0{,}99} = 2{,}326$; $z_{0{,}995} = 2{,}576$.
 

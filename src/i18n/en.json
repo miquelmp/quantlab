@@ -697,7 +697,7 @@
   "tB.tableCaption": "Annual cost and net Sharpe by turnover (cost per trade: {c})",
   "tD.title": "A spread that reverts to its mean",
   "tD.chartDesc": "Simulates the spread between two cointegrated prices, sₜ = φ·sₜ₋₁ + εₜ, and shows its reversion half-life. With φ = 1 the spread is a random walk.",
-  "tD.observe": "With φ below 1 the spread wanders off but comes back to zero again and again, within a stable band. The closer φ is to 1, the longer the half-life and the slower the return; with φ = 1 the band disappears and the spread no longer comes back.",
+  "tD.observe": "With φ below 1 the spread wanders off but comes back to zero again and again, within a stable band. The closer φ is to 1, the longer the half-life and the slower the return; with φ = 1 the spread is a random walk: it can cross zero by chance, but there is no longer any force pulling it back, nor a stable band.",
   "tD.heading": "Interactive chart",
   "tD.phi": "Persistence φ",
   "tD.days": "Simulated days",
@@ -713,7 +713,7 @@
   "tD.descLeft": "Spread with φ = {p} over {n} days; it crosses zero {c} times.",
   "tD.descRight": "With φ = {p}, the half-life is {h} days.",
   "tD.statHl": "Half-life",
-  "tD.rwNote": " (random walk: it does not come back)",
+  "tD.rwNote": " (random walk: no reversion)",
   "tD.statSd": "Stationary standard deviation",
   "tD.statCross": "Zero crossings",
   "tD.describe": "With φ = {p}, the spread has a half-life of {h} days and crosses zero {c} times in {n} days.",
@@ -774,5 +774,6 @@
   "full.concept": "Concept",
   "full.formula": "Formula",
   "full.read": "Read the complete book on one page",
+  "footer.version": "Published version: {v}",
   "footer.fullBook": "Complete book and PDF"
 }

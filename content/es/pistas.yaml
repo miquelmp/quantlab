@@ -157,7 +157,7 @@
   - 'El VaR al 99 % de una normal de media cero es $2{,}326\,\sigma$ veces el valor de la cartera.'
   - 'A diez días, multiplica por $\sqrt{10}$.'
 "16.2":
-  - 'Bajo normalidad, el déficit esperado es $\sigma\,\varphi(z_\alpha)/(1 - \alpha)$, con $\varphi$ la densidad normal.'
+  - 'Bajo normalidad y con media cero, el déficit esperado es $\sigma\,\varphi(z_\alpha)/(1 - \alpha)$, con $\varphi$ la densidad normal.'
   - 'Al 99 %, $z = 2{,}326$, $\varphi(2{,}326) \approx 0{,}0267$ y $1 - \alpha = 0{,}01$.'
 "16.3":
   - 'Revisa en la Ampliación los límites de las zonas verde, amarilla y roja para 250 días.'

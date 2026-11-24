@@ -4,6 +4,7 @@
  * PDF descargable (`/<idioma>/quantlab-libro.pdf`) después de compilar. Los gráficos salen como
  * imagen con los valores por defecto, con el enlace a su versión interactiva.
  */
+import { VERSION_LABEL } from '../../lib/version';
 import Base from '../../layouts/Base.astro';
 import { LANGS } from '../../i18n/config';
 import { t, tPrefix, numberFormat } from '../../i18n';
@@ -84,7 +85,7 @@ const today = new Date().toLocaleDateString(lang, { year: 'numeric', month: 'lon
       <p class="pb-kicker">quantlab</p>
       <h1>{book.title}</h1>
       <p class="pb-subtitle">{book.subtitle}</p>
-      <p class="pb-meta">{t(lang, 'full.edition', { date: today })}<br /><a href={abs(`${lang}/`)}>{abs(`${lang}/`)}</a></p>
+      <p class="pb-meta">{t(lang, 'full.edition', { date: today })} · {t(lang, 'footer.version', { v: VERSION_LABEL })}<br /><a href={abs(`${lang}/`)}>{abs(`${lang}/`)}</a></p>
       <p class="pb-license">{t(lang, 'full.license')}</p>
       <p class="pb-actions no-print"><a class="btn btn-primary" href={pdfHref} download>{t(lang, 'full.pdf')}</a> <span class="pb-hint">{t(lang, 'full.hint')}</span></p>
     </header>

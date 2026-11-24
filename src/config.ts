@@ -6,8 +6,6 @@ export const SITE = {
   base: '/quantlab',
   repo: 'https://github.com/miquelmp/quantlab',
   author: 'Miquel',
-  /** Versión del libro publicada (se muestra en el pie). */
-  bookVersion: 'v4',
 };
 
 /**

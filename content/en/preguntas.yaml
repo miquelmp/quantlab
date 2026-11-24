@@ -191,7 +191,7 @@
   - pregunta: 'What does it mean that returns have fat tails?'
     opciones: ['That they are very volatile', 'That extreme moves are much more frequent than a normal with the same volatility predicts', 'That their mean is negative', 'That there are never quiet days']
     correcta: 1
-    explicacion: 'With the same volatility, events of many standard deviations appear more often than under the normal (and, to compensate, there are more quiet days).'
+    explicacion: 'With the same volatility, events of many standard deviations appear more often than under the normal (and, in models such as the Student $t$, also more quiet days).'
   - pregunta: 'Under normality, the probability of a daily fall of more than five standard deviations is about $2.9 \times 10^{-7}$. With 252 sessions a year, how often could one be expected?'
     opciones: ['Every year', 'Every 100 years', 'Every 1,000 years', 'Every 14,000 years or so']
     correcta: 3
